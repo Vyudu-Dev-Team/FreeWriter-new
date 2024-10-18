@@ -1,13 +1,60 @@
-# You can override the included template(s) by including variable overrides
-# SAST customization: https://docs.gitlab.com/ee/user/application_security/sast/#customizing-the-sast-settings
-# Secret Detection customization: https://docs.gitlab.com/ee/user/application_security/secret_detection/pipeline/#customization
-# Dependency Scanning customization: https://docs.gitlab.com/ee/user/application_security/dependency_scanning/#customizing-the-dependency-scanning-settings
-# Container Scanning customization: https://docs.gitlab.com/ee/user/application_security/container_scanning/#customizing-the-container-scanning-settings
-# Note that environment variables can be set in several places
-# See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
+# .gitlab-ci.yml
+
 stages:
-- test
+  - install
+  - test
+  - build
+  - deploy
+
+variables:
+  NODE_ENV: 'production'
+  CACHE_DIR: '.cache'
+
+# Install dependencies (frontend and backend)
+install_dependencies:
+  stage: install
+  script:
+    - cd frontend && npm ci
+    - cd ../backend && npm ci
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - frontend/node_modules
+      - backend/node_modules
+
+# Run unit tests
+test:
+  stage: test
+  script:
+    - cd frontend && npm test
+    - cd ../backend && npm run test
+
+# Security SAST scan
 sast:
   stage: test
-include:
-- template: Security/SAST.gitlab-ci.yml
+  include:
+    - template: Security/SAST.gitlab-ci.yml
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "develop"
+
+# Build frontend and backend
+build:
+  stage: build
+  script:
+    - cd frontend && npm run build
+    - cd ../backend && npm run build
+  artifacts:
+    paths:
+      - frontend/dist
+      - backend/dist
+
+# Deploy the project
+deploy:
+  stage: deploy
+  script:
+    - echo "Deploying the project..."
+    # Add your deployment commands here, e.g., SSH to server or upload artifacts.
+  only:
+    - main
+  environment:
+    name: production
