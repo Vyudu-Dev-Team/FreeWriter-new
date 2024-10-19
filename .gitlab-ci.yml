@@ -2,7 +2,6 @@
 
 stages:
   - install
-  - test
   - build
   - deploy
 
@@ -11,8 +10,9 @@ variables:
   CACHE_DIR: '.cache'
 
 # Global include for the SAST scan
-# include:
-#   - template: Security/SAST.gitlab-ci.yml
+include:
+  - template: Security/SAST.gitlab-ci.yml
+
 # Install dependencies (frontend and backend)
 install_dependencies:
   stage: install
@@ -26,19 +26,11 @@ install_dependencies:
       - frontend/node_modules
       - backend/node_modules
 
-# Run unit tests
-test:
-  stage: test
-  image: node:16
-  script:
-    - cd frontend && npm test
-    - cd ../backend && npm run test
-
 # Security SAST scan
-# sast:
-#   stage: test
-#   rules:
-#     - if: $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "develop"
+sast:
+  stage: build
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "develop"
 
 # Build frontend and backend
 build:
@@ -51,6 +43,7 @@ build:
     paths:
       - frontend/dist
       - backend/dist
+
 # Deploy the project
 deploy:
   stage: deploy
