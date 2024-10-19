@@ -36,8 +36,10 @@ sast:
 build:
   stage: build
   image: node:16
-  script:
-    - cd frontend && npm run build
+ script:
+    - cd frontend
+    - npm install -g vite  # Install Vite globally
+    - npm run build
     - cd ../backend && npm run build
   artifacts:
     paths:
