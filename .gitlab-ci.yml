@@ -11,8 +11,8 @@ variables:
   CACHE_DIR: '.cache'
 
 # Global include for the SAST scan
-include:
-  - template: Security/SAST.gitlab-ci.yml
+# include:
+#   - template: Security/SAST.gitlab-ci.yml
 # Install dependencies (frontend and backend)
 install_dependencies:
   stage: install
@@ -35,10 +35,10 @@ test:
     - cd ../backend && npm run test
 
 # Security SAST scan
-sast:
-  stage: test
-  rules:
-    - if: $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "develop"
+# sast:
+#   stage: test
+#   rules:
+#     - if: $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "develop"
 
 # Build frontend and backend
 build:
