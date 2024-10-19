@@ -10,9 +10,13 @@ variables:
   NODE_ENV: 'production'
   CACHE_DIR: '.cache'
 
+# Global include for the SAST scan
+include:
+  - template: Security/SAST.gitlab-ci.yml
 # Install dependencies (frontend and backend)
 install_dependencies:
   stage: install
+  image: node:16
   script:
     - cd frontend && npm ci
     - cd ../backend && npm ci
@@ -25,6 +29,7 @@ install_dependencies:
 # Run unit tests
 test:
   stage: test
+  image: node:16
   script:
     - cd frontend && npm test
     - cd ../backend && npm run test
@@ -32,14 +37,13 @@ test:
 # Security SAST scan
 sast:
   stage: test
-  include:
-    - template: Security/SAST.gitlab-ci.yml
   rules:
     - if: $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "develop"
 
 # Build frontend and backend
 build:
   stage: build
+  image: node:16
   script:
     - cd frontend && npm run build
     - cd ../backend && npm run build
@@ -47,10 +51,10 @@ build:
     paths:
       - frontend/dist
       - backend/dist
-
 # Deploy the project
 deploy:
   stage: deploy
+  image: ruby:3.1
   script:
     - echo "Deploying the project..."
     # Add your deployment commands here, e.g., SSH to server or upload artifacts.
