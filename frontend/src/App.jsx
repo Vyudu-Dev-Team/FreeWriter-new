@@ -10,9 +10,9 @@ import Register from './components/Register';
 import Dashboard from './components/Dashboard';
 import StoryMap from './components/StoryMap';
 import DeckManager from './components/DeckManager';
-import WritingWorkspace from './pages/WritingWorkspace';
+import WritingWorkspace from './components/WritingWorkspace';
 import PrivateRoute from './components/PrivateRoute';
-import NotificationCenter from './components/NotificationCenter';
+// import NotificationCenter from './components/NotificationCenter';
 import BadgeDisplay from './components/BadgeDisplay';
 import SketchGenerator from './components/SketchGenerator';
 import FeedbackForm from './components/FeedbackForm';
@@ -35,7 +35,7 @@ function App() {
             <Route path="/story-map/:storyId" element={<PrivateRoute><StoryMap /></PrivateRoute>} />
             <Route path="/deck" element={<PrivateRoute><DeckManager /></PrivateRoute>} />
             <Route path="/write/:storyId" element={<PrivateRoute><WritingWorkspace /></PrivateRoute>} />
-            <Route path="/notifications" element={<PrivateRoute><NotificationCenter /></PrivateRoute>} />
+            {/* <Route path="/notifications" element={<PrivateRoute><NotificationCenter /></PrivateRoute>} /> */}
             <Route path="/badges" element={<PrivateRoute><BadgeDisplay /></PrivateRoute>} />
             <Route path="/sketch" element={<PrivateRoute><SketchGenerator /></PrivateRoute>} />
             <Route path="/feedback" element={<PrivateRoute><FeedbackForm /></PrivateRoute>} />
