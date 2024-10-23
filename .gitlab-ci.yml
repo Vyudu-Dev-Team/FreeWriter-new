@@ -1,60 +1,52 @@
-# .gitlab-ci.yml
+# GitLab CI/CD Configuration
 
 stages:
-  - install
   - test
+  - security
   - build
   - deploy
 
 variables:
-  NODE_ENV: 'production'
-  CACHE_DIR: '.cache'
+  NODE_VERSION: "18"
 
-# Install dependencies (frontend and backend)
-install_dependencies:
-  stage: install
-  script:
-    - cd frontend && npm ci
-    - cd ../backend && npm ci
-  cache:
-    key: ${CI_COMMIT_REF_SLUG}
-    paths:
-      - frontend/node_modules
-      - backend/node_modules
-
-# Run unit tests
 test:
   stage: test
+  image: node:${NODE_VERSION}
   script:
-    - cd frontend && npm test
-    - cd ../backend && npm run test
+    - cd backend
+    - npm ci
+    - npm test
+    - cd ../frontend
+    - npm ci
+    - npm test
 
-# Security SAST scan
-sast:
-  stage: test
-  include:
-    - template: Security/SAST.gitlab-ci.yml
-  rules:
-    - if: $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "develop"
+security:
+  stage: security
+  image: node:${NODE_VERSION}
+  script:
+    - npm install -g npm-audit-resolver
+    - cd backend
+    - npm audit --audit-level=moderate
+    - cd ../frontend
+    - npm audit --audit-level=moderate
 
-# Build frontend and backend
 build:
   stage: build
+  image: node:${NODE_VERSION}
   script:
-    - cd frontend && npm run build
-    - cd ../backend && npm run build
+    - cd frontend
+    - npm ci
+    - npm run build
   artifacts:
     paths:
       - frontend/dist
-      - backend/dist
 
-# Deploy the project
 deploy:
   stage: deploy
+  image: node:${NODE_VERSION}
   script:
-    - echo "Deploying the project..."
-    # Add your deployment commands here, e.g., SSH to server or upload artifacts.
+    - npm install -g vercel
+    - cd frontend
+    - vercel --token $VERCEL_TOKEN --prod
   only:
     - main
-  environment:
-    name: production
