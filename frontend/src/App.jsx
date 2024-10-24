@@ -18,6 +18,8 @@ import SketchGenerator from './components/SketchGenerator';
 import FeedbackForm from './components/FeedbackForm';
 import Onboarding from './components/Onboarding';
 import { AppProvider } from './contexts/AppContext';
+import ProfilePage from './components/ProfilePage'
+
 
 function App() {
   return (
@@ -28,6 +30,7 @@ function App() {
           <Navbar />
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/onboarding" element={<PrivateRoute><Onboarding /></PrivateRoute>} />

@@ -4,10 +4,28 @@ import { Link as RouterLink } from 'react-router-dom';
 import axios from 'axios';
 
 function Dashboard() {
-  // ... (previous state and useEffect)
+  const [loading, setLoading] = useState(true);
+  const [stories, setStories] = useState([]);
+  const [error, setError] = useState(null);
+
+  
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  // Add loading state handling
+  {loading && (
+    <Container sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+      <CircularProgress />
+    </Container>
+  )}
+
+  // Add empty state handling
+  {!loading && stories.length === 0 && (
+    <Typography variant="body1" sx={{ mt: 2 }}>
+      No stories yet. Create your first story to get started!
+    </Typography>
+  )}
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4, px: isMobile ? 2 : 3 }}>
@@ -27,7 +45,7 @@ function Dashboard() {
               <CardContent sx={{ flexGrow: 1 }}>
                 <Typography variant="h6" gutterBottom>{story.title}</Typography>
                 <Typography variant="body2" color="textSecondary">
-                  {new Date(story.createdAt).toLocaleDateString()}
+                  {story.createdAt ? new Date(story.createdAt).toLocaleDateString() : 'Date unavailable'}
                 </Typography>
               </CardContent>
               <CardActions>
