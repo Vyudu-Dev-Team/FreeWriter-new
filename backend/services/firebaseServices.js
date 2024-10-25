@@ -1,10 +1,10 @@
-import admin from 'firebase-admin';
+import admin from 'firebase-admin'; // Import Firebase Admin SDK
 
-const serviceAccount = require('../path/to/serviceAccountKey.json');
-
+// Initialize Firebase Admin SDK with application default credentials
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: process.env.FIREBASE_DATABASE_URL
+  credential: admin.credential.applicationDefault(), 
+  databaseURL: 'https://module-1-database-default-rtdb.firebaseio.com',
+  // databaseURL: process.env.FIREBASE_DATABASE_URL, 
 });
 
 const db = admin.database();
