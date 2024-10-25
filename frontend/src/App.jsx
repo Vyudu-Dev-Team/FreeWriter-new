@@ -18,7 +18,7 @@ import SketchGenerator from './components/SketchGenerator';
 import FeedbackForm from './components/FeedbackForm';
 import Onboarding from './components/Onboarding';
 import { AppProvider } from './contexts/AppContext';
-import ProfilePage from './components/ProfileSetup';
+import ProfilePage from './components/profileSetup';
 
 
 function App() {
