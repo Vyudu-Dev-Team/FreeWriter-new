@@ -20,14 +20,14 @@ freeWriter is an innovative storytelling and writing assistance tool designed to
 
 1. Clone the repository:
    ```
-   git clone https://github.com/your-username/freewriter.git
+   git clone https://gitlab.com/VyuduInc/freewriter
    cd freewriter
    ```
 
 2. Install frontend dependencies:
    ```
    cd frontend
-   npm install
+   npm install (if error, try npm i --force)
    ```
 
 3. Set up environment variables:
