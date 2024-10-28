@@ -7,24 +7,21 @@ import rateLimit from 'express-rate-limit';
 import { errorHandler, notFound } from './middleware/errorMiddleware.js';
 import userRoutes from './routes/users.js';
 import storyRoutes from './routes/stories.js';
-import admin from 'firebase-admin';
 import morgan from 'morgan';
 import mongoSanitize from 'express-mongo-sanitize';
 import xss from 'xss-clean';
 import hpp from 'hpp';
-import connectDB from './config/database.js'; // Ensure correct path
+import connectDB from './config/database.js';
 
 // Load environment variables
 dotenv.config();
 
 // Handle uncaught exceptions
 process.on('uncaughtException', (err) => {
-  console.error('UNCAUGHT EXCEPTION!  Shutting down...');
+  console.error('UNCAUGHT EXCEPTION! 💥 Shutting down...');
   console.error(err.name, err.message);
   process.exit(1);
 });
-
-
 
 // Connect to the database
 connectDB();
@@ -57,8 +54,8 @@ const limiter = rateLimit({
 app.use(limiter);
 
 // API Routes
-app.use('/api/users', userRoutes); // User-related routes
-app.use('/api/stories', storyRoutes); // Story-related routes
+app.use('/api/users', userRoutes);
+app.use('/api/stories', storyRoutes);
 
 // Error handling middleware
 app.use(notFound);

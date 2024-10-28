@@ -1,3 +1,5 @@
+import AppError from '../utils/appError.js';
+
 // Middleware for handling 404 Not Found errors
 export const notFound = (req, res, next) => {
   const error = new Error(`Not Found - ${req.originalUrl}`);
@@ -17,26 +19,19 @@ export const errorHandler = (err, req, res, next) => {
   }
 
   // Determine the HTTP status code
-  let statusCode = res.statusCode === 200 ? 500 : res.statusCode;
+  let statusCode = res.statusCode === 200 ? (err.statusCode || 500) : res.statusCode;
 
-  // Check if this is a validation error and set appropriate status
-  if (err.name === 'ValidationError') {
-    statusCode = 400; // Bad Request for validation errors
-  }
+  // Set the message based on whether the error is operational
+  const message = err.isOperational ? err.message : 'An unexpected error occurred';
 
   // Respond with a structured error response
   res.status(statusCode).json({
     success: false,
-    message: err.message || 'An unexpected error occurred. Please try again later.',
-    // In production, avoid sending stack trace to the client for security
-    ...(process.env.NODE_ENV !== 'production' && { stack: err.stack }),
-    // Optionally include additional debug info in development
+    message,
+    ...(process.env.NODE_ENV !== 'production' && { stack: err.stack }), // Include stack trace in development
     ...(process.env.NODE_ENV !== 'production' && {
       method: req.method,
       url: req.originalUrl,
     }),
   });
 };
-
-
-
