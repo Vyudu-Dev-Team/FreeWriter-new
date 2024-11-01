@@ -26,6 +26,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Snackbar,
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import { useAppContext } from "../contexts/AppContext";
@@ -44,6 +45,8 @@ function Dashboard() {
   const [openDialog, setOpenDialog] = useState(false);
   const [validationError, setValidationError] = useState(null);
   const [inputError, setInputError] = useState(null);
+  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [isAiLoading, setIsAiLoading] = useState(false);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -64,6 +67,7 @@ function Dashboard() {
       setNewStoryTitle("");
       setWritingMode("");
       setOpenDialog(false);
+      setShowSnackbar(true);
     } catch (err) {
       dispatch({ type: "SET_ERROR", payload: "Failed to create story" });
     } finally {
@@ -78,6 +82,7 @@ function Dashboard() {
     }
 
     try {
+      setIsAiLoading(true);
       const { data } = await axios.post("/api/ai/prompt", { input: userInput });
       setAiResponse(data.response);
       setChatHistory([
@@ -89,6 +94,8 @@ function Dashboard() {
       setInputError(null);
     } catch (err) {
       dispatch({ type: "SET_ERROR", payload: "Failed to get AI response" });
+    } finally {
+      setIsAiLoading(false);
     }
   };
 
@@ -109,7 +116,16 @@ function Dashboard() {
           variant="contained"
           color="primary"
           onClick={() => setOpenDialog(true)}
-          sx={{ mb: 2 }}
+          sx={{
+            mb: 2,
+            backgroundColor: theme.palette.primary.main,
+            '&:hover': {
+              backgroundColor: theme.palette.primary.dark,
+              boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
+            },
+            padding: "10px 20px",
+            borderRadius: "8px",
+          }}
         >
           Create New Story
         </Button>
@@ -132,6 +148,8 @@ function Dashboard() {
                   height: "100%",
                   display: "flex",
                   flexDirection: "column",
+                  transition: "transform 0.3s ease",
+                  "&:hover": { transform: "scale(1.02)" },
                 }}
               >
                 <CardContent sx={{ flexGrow: 1 }}>
@@ -231,8 +249,9 @@ function Dashboard() {
             variant="contained"
             color="primary"
             onClick={handleAIInteraction}
+            disabled={isAiLoading}
           >
-            Send
+            {isAiLoading ? <CircularProgress size={24} /> : "Send"}
           </Button>
         </Box>
 
@@ -272,6 +291,13 @@ function Dashboard() {
           </Alert>
         )}
       </Box>
+
+      <Snackbar
+        open={showSnackbar}
+        autoHideDuration={3000}
+        onClose={() => setShowSnackbar(false)}
+        message="Story created successfully!"
+      />
     </Container>
   );
 }
