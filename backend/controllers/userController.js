@@ -1,10 +1,11 @@
+import crypto from 'crypto';
 import { validationResult } from 'express-validator';
 import jwt from 'jsonwebtoken';
-import User from '../models/User.js'; 
-import Profile from '../models/Profile.js'; 
-import { errorHandler, notFound } from '../middleware/errorMiddleware.js';
+import Profile from '../models/Profile.js';
+import User from '../models/User.js';
 import AppError from '../utils/appError.js';
-import { updatePreferences, getPreferences } from '../services/preferencesService.js';
+import { sendVerificationEmail } from '../utils/sendEmail.js';
+
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -159,4 +160,89 @@ export const logoutUser = (req, res) => {
     httpOnly: true,
   });
   res.status(200).json({ status: 'success' });
+};
+
+
+
+
+//Emails verfication and auth logics:
+
+export const sendVerificationToken = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return next(new AppError('User not found', 404));
+    }
+
+    if (user.isEmailVerified) {
+      return next(new AppError('Email is already verified', 400));
+    }
+
+    // Generate verification token
+    const verificationToken = crypto.randomBytes(32).toString('hex');
+    const hashedToken = crypto
+      .createHash('sha256')
+      .update(verificationToken)
+      .digest('hex');
+
+    // Save token to user
+    user.emailVerificationToken = hashedToken;
+    user.emailVerificationExpires = Date.now() + 24 * 60 * 60 * 1000; // 24 hours
+    await user.save({ validateBeforeSave: false });
+
+    // Send verification email
+    try {
+      await sendVerificationEmail(user, verificationToken);
+
+      res.status(200).json({
+        status: 'success',
+        message: 'Verification email sent!'
+      });
+    } catch (err) {
+      user.emailVerificationToken = undefined;
+      user.emailVerificationExpires = undefined;
+      await user.save({ validateBeforeSave: false });
+
+      return next(new AppError('There was an error sending the verification email. Try again later.', 500));
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+
+export const verifyEmail = async (req, res, next) => {
+  try {
+    const { token } = req.params;
+
+    // Hash token from URL
+    const hashedToken = crypto
+      .createHash('sha256')
+      .update(token)
+      .digest('hex');
+
+    // Find user with matching token that hasn't expired
+    const user = await User.findOne({
+      emailVerificationToken: hashedToken,
+      emailVerificationExpires: { $gt: Date.now() }
+    });
+
+    if (!user) {
+      return next(new AppError('Token is invalid or has expired', 400));
+    }
+
+    // Update user
+    user.isEmailVerified = true;
+    user.emailVerificationToken = undefined;
+    user.emailVerificationExpires = undefined;
+    await user.save({ validateBeforeSave: false });
+
+    // Log user in
+    createSendToken(user, 200, res);
+  } catch (error) {
+    next(error);
+  }
 };

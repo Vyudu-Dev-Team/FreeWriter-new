@@ -1,16 +1,20 @@
 import express from 'express';
-import { body } from 'express-validator'; 
-import authMiddleware from '../middleware/auth.js'; 
+import { body } from 'express-validator';
 import {
-  registerUser,
-  loginUser,
+  sendVerificationToken,
+  verifyEmail
+} from '../controllers/authController.js';
+import {
   getUserProfile,
+  loginUser,
+  registerUser,
   updateUserProfile,
-} from '../controllers/userController.js'; 
-import{
-  updatePreferences,
+} from '../controllers/userController.js';
+import authMiddleware from '../middleware/auth.js';
+import {
   getPreferences,
-}from '../services/preferencesService.js'
+  updatePreferences,
+} from '../services/preferencesService.js';
 
 const router = express.Router();
 
@@ -34,6 +38,12 @@ router.post(
   ],
   loginUser
 );
+
+
+
+
+router.post('/verify-email/send', sendVerificationToken);
+router.get('/verify-email/:token', verifyEmail);
 
 router.get('/profile', authMiddleware, getUserProfile);
 router.put('/profile', authMiddleware, updateUserProfile);
