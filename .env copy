@@ -1,0 +1,24 @@
+PORT=5000
+MONGODB_URI=mongodb+srv://Switch:<password>@freewriter.onunp.mongodb.net/?retryWrites=true&w=majority&appName=Freewriter
+JWT_SECRET=qijlbtplaknlhdoz
+JWT_EXPIRES_IN=90d
+JWT_COOKIE_EXPIRES_IN=90
+
+
+# Email Configuration
+MAIL_DRIVER=smtp
+MAIL_HOST=smtp.googlemail.com
+MAIL_PORT=465
+EMAIL_SERVICE=gmail
+MAIL_USERNAME=saccounaitas7@gmail.com
+MAIL_PASSWORD=qijlbtplaknlhdoz
+MAIL_ENCRYPTION=ssl
+MAIL_FROM_ADDRESS=no-reply@admintemplate.com
+MAIL_FROM_NAME="Freewriter"
+
+# Security
+EMAIL_VERIFICATION_SECRET=qijlbtplaknlhdoz
+PASSWORD_RESET_SECRET=qijlbtplaknlhdoz
+
+# Frontend URL
+FRONTEND_URL=http://localhost:3000
