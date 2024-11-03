@@ -6,11 +6,15 @@ import {
   loginUser,
   getUserProfile,
   updateUserProfile,
+  forgotPassword,
+  resetPassword,
+  logoutUser,
+  verifyEmail,
+  sendVerificationToken,
+  updateUserPreferences,
+  getUserPreferences,
+  resetUserPreferences,
 } from '../controllers/userController.js'; 
-import{
-  updatePreferences,
-  getPreferences,
-}from '../services/preferencesService.js'
 
 const router = express.Router();
 
@@ -35,9 +39,23 @@ router.post(
   loginUser
 );
 
+
+router.post('/verify-email/send', sendVerificationToken);
+router.get('/verify-email/:token', verifyEmail);
+router.post('/forgotPassword', forgotPassword);
+router.patch('/resetPassword/:token', resetPassword);
+
 router.get('/profile', authMiddleware, getUserProfile);
-router.put('/profile', authMiddleware, updateUserProfile);
-router.put('/preferences', authMiddleware, updatePreferences);
-router.get('/preferences', authMiddleware, getPreferences);
+router.put('/profile', authMiddleware, [
+  body('username').optional().isLength({ min: 3 }).withMessage('Username must be at least 3 characters long'),
+  body('writingMode').optional().isIn(['plotter', 'pantser']).withMessage('Invalid writing mode'),
+  body('goals').optional().isArray().withMessage('Goals must be an array'),
+  body('goals.*').isIn(['daily_writing', 'finish_novel', 'improve_skills', 'publish_book', 'other']).withMessage('Invalid goal'),
+], updateUserProfile);
+
+
+router.put('/preferences', authMiddleware, updateUserPreferences);
+router.get('/preferences', authMiddleware, getUserPreferences);
+router.post('/logout', authMiddleware, logoutUser);
 
 export default router;
