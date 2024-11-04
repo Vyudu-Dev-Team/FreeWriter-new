@@ -7,6 +7,7 @@ import rateLimit from 'express-rate-limit';
 import { errorHandler, notFound } from './middleware/errorMiddleware.js';
 import userRoutes from './routes/users.js';
 import storyRoutes from './routes/stories.js';
+import profileRoutes from './routes/profile.js'; // Updated to use import
 
 dotenv.config();
 
@@ -34,6 +35,8 @@ app.use(express.json());
 // Routes
 app.use('/api/users', userRoutes);
 app.use('/api/stories', storyRoutes);
+app.use('/api/profile', profileRoutes);
+
 
 // Error handling middleware
 app.use(notFound);
