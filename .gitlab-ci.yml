@@ -1,6 +1,5 @@
-# GitLab CI/CD Configuration
-
 stages:
+  - setup
   - test
   - security
   - build
@@ -8,6 +7,23 @@ stages:
 
 variables:
   NODE_VERSION: "18"
+
+# Etapa de preparação para garantir que o ambiente esteja configurado corretamente
+setup:
+  stage: setup
+  image: node:${NODE_VERSION}
+  script:
+    - npm install -g npm@latest
+    - |
+      if [ ! -f backend/package-lock.json ]; then
+        echo "package-lock.json não encontrado no backend. Executando npm install."
+        cd backend && npm install && cd ..
+      fi
+    - |
+      if [ ! -f frontend/package-lock.json ]; then
+        echo "package-lock.json não encontrado no frontend. Executando npm install."
+        cd frontend && npm install && cd ..
+      fi
 
 test:
   stage: test
