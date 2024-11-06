@@ -102,12 +102,28 @@ export function AppProvider({ children }) {
     setAuthToken(null);
     dispatch({ type: 'LOGOUT' });
   };
+  const saveProfile = async (profileData) => {
+    try {
+      dispatch({ type: 'SET_LOADING', payload: true });
+      const res = await userAPI.updateProfile(profileData);
+      dispatch({ type: 'SET_USER', payload: res.data });
+      dispatch({ type: 'SET_ERROR', payload: null });
+      return true;
+    } catch (error) {
+      dispatch({ type: 'SET_ERROR', payload: error.response?.data?.message || 'Failed to update profile' });
+      return false;
+    } finally {
+      dispatch({ type: 'SET_LOADING', payload: false });
+    }
+  };
+
 
   const value = {
     state,
     dispatch,
     login,
     register,
+    saveProfile,
     logout
   };
 
