@@ -1,420 +1,438 @@
 import React, { useState } from 'react';
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardActions,
+  Box,
   TextField,
   Button,
   Typography,
-  Divider,
   Link,
-  Box,
   Alert,
   IconButton,
-  InputAdornment
+  InputAdornment,
+  Container,
 } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import GoogleIcon from '@mui/icons-material/Google';
-import { useAppContext } from '../contexts/AppContext';
 import { useNavigate } from 'react-router-dom';
+import { useAppContext } from '../contexts/AppContext';
+import { ArrowBack } from '@mui/icons-material';
+import styled from '@mui/styled-engine';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
+const StyledContainer = styled(Container)({
+  minHeight: '100vh',
+  width: '100vw',
+  maxWidth: '100% !important',
+  margin: 0,
+  padding: '2rem',
+  display: 'flex',
+  flexDirection: 'column',
+  backgroundColor: 'black',
+  color: 'white',
+  position: 'relative'
+});
+
+const theme = createTheme({
+  palette: {
+    mode: 'dark',
+    primary: {
+      main: '#b8ff57',
+    },
+    secondary: {
+      main: '#6c5ce7',
+    },
+  },
+  typography: {
+    fontFamily: 'PixelSplitter, "Courier New", Courier, monospace',
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: 'uppercase',
+          fontFamily: 'PixelSplitter, "Courier New", Courier, monospace',
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          backgroundColor: 'white',
+          '& .MuiInputBase-root': {
+            backgroundColor: 'white',
+            fontFamily: 'PixelSplitter, "Courier New", Courier, monospace',
+          },
+          '& .MuiInputBase-input': {
+            color: 'black',
+            backgroundColor: 'white',
+            fontFamily: 'PixelSplitter, "Courier New", Courier, monospace',
+          },
+          '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+              borderColor: 'transparent',
+            },
+            '&:hover fieldset': {
+              borderColor: 'transparent',
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: 'transparent',
+            },
+          },
+        },
+      },
+    },
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          fontFamily: 'PixelSplitter, "Courier New", Courier, monospace',
+        },
+      },
+    },
+  },
+});
+
+const StyledForm = styled('form')({
+  width: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '24px'
+});
 
 function RegisterComponent() {
   const [formData, setFormData] = useState({
     username: '',
     email: '',
     password: '',
-    confirmPassword: ''
   });
   const [errors, setErrors] = useState({});
-  const [serverError, setServerError] = useState('');
-  const navigate = useNavigate();
-  const { register, state, dispatch } = useAppContext();
-  const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  
+  const { register, state, dispatch } = useAppContext();
+  const navigate = useNavigate();
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    // Username validation
+    if (!formData.username.trim()) {
+      newErrors.username = 'Username is required';
+    } else if (formData.username.length < 3) {
+      newErrors.username = 'Username must be at least 3 characters';
+    } else if (formData.username.length > 20) {
+      newErrors.username = 'Username must be less than 20 characters';
+    } else if (!/^[a-zA-Z0-9_]+$/.test(formData.username)) {
+      newErrors.username = 'Username can only contain letters, numbers, and underscores';
+    }
+
+    // Email validation
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email address';
+    }
+
+    // Password validation
+    if (!formData.password) {
+      newErrors.password = 'Password is required';
+    } else if (formData.password.length < 8) {
+      newErrors.password = 'Password must be at least 8 characters';
+    } else if (!/(?=.*[a-z])/.test(formData.password)) {
+      newErrors.password = 'Password must contain at least one lowercase letter';
+    } else if (!/(?=.*[A-Z])/.test(formData.password)) {
+      newErrors.password = 'Password must contain at least one uppercase letter';
+    } else if (!/(?=.*\d)/.test(formData.password)) {
+      newErrors.password = 'Password must contain at least one number';
+    } else if (!/(?=.*[!@#$%^&*])/.test(formData.password)) {
+      newErrors.password = 'Password must contain at least one special character (!@#$%^&*)';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevData => ({
-      ...prevData,
+    setFormData(prev => ({
+      ...prev,
       [name]: value
     }));
-    
+    // Clear error when user starts typing
     if (errors[name]) {
-      setErrors(prevErrors => ({
-        ...prevErrors,
+      setErrors(prev => ({
+        ...prev,
         [name]: ''
       }));
     }
   };
 
-  const validateForm = () => {
-    let tempErrors = {};
-
-    if (!formData.username.trim()) {
-      tempErrors.username = 'Full Name is required';
-    } else if (formData.username.trim().length < 2) {
-      tempErrors.username = 'Username must be at least 2 characters long';
-    }
-
-    if (!formData.email) {
-      tempErrors.email = 'Email is required';
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(formData.email)) {
-      tempErrors.email = 'Invalid email address';
-    }
-
-    if (!formData.password) {
-      tempErrors.password = 'Password is required';
-    } else if (formData.password.length < 8) {
-      tempErrors.password = 'Password must be at least 8 characters long';
-    } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(formData.password)) {
-      tempErrors.password = 'Password must contain at least one uppercase letter, one lowercase letter, and one number';
-    }
-
-    if (!formData.confirmPassword) {
-      tempErrors.confirmPassword = 'Please confirm your password';
-    } else if (formData.password !== formData.confirmPassword) {
-      tempErrors.confirmPassword = 'Passwords do not match';
-    }
-
-    setErrors(tempErrors);
-    return Object.keys(tempErrors).length === 0;
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (validateForm()) {
-      try {
-        setIsLoading(true);
-        const success = await register({
-          username: formData.username,
-          email: formData.email,
-          password: formData.password
-        });
-
-        if (success) {
-          navigate('/dashboard');
-        }
-      } finally {
-        setIsLoading(false);
-      }
+    if (!validateForm()) {
+      return;
     }
-  };
 
-  const handleGoogleLogin = async () => {
     try {
-      setServerError('');
-      window.location.href = `${process.env.REACT_APP_API_URL}/auth/google`;
+      dispatch({ type: 'SET_ERROR', payload: null });
+      const success = await register({
+        username: formData.username.trim(),
+        email: formData.email.trim().toLowerCase(),
+        password: formData.password
+      });
+
+      if (success) {
+        navigate('/dashboard');
+      }
     } catch (error) {
-      setServerError('Google login failed. Please try again.');
-    }
+      // Handle specific error cases
+      if (error.code === 'auth/email-already-in-use') {
+        setErrors(prev => ({
+          ...prev,
+          email: 'This email is already registered'
+        }));
+      } else if (error.code === 'auth/username-already-in-use') {
+        setErrors(prev => ({
+          ...prev,
+          username: 'This username is already taken'
+        }));
+      } else {
+        setErrors(prev => ({
+          ...prev,
+          submit: error.message || 'Registration failed. Please try again.'
+        }));
+      }
+    } 
   };
+
+  const handleClickShowPassword = () => setShowPassword(prev => !prev);
 
   return (
-    <Box sx={{
-      display: 'flex',
-      minHeight: '100vh',
-      alignItems: 'center',
-      justifyContent: 'center',
-      bgcolor: 'grey.50',
-      py: 4
-    }}>
-      <Card sx={{
-        width: '100%',
-        maxWidth: 400, 
-        boxShadow: '0 8px 32px rgba(0,0,0,0.08)',
-        borderRadius: 2, 
-        border: '1px solid',
-        borderColor: 'grey.100'
-      }}>
-        <form onSubmit={handleSubmit}>
-          <CardHeader
-            title={
-              <Typography
-                variant="h5" 
-                align="center"
-                color="primary"
-                gutterBottom
-                sx={{
-                  fontWeight: 700,
-                  fontSize: { xs: '1.5rem', sm: '1.75rem' } 
-                }}
-              >
-                Create an account
-              </Typography>
-            }
-            subheader={
-              <Typography
-                variant="body2"
-                align="center"
-                color="text.secondary"
-                sx={{
-                  mb: 1.5, 
-                  fontSize: '0.875rem', 
-                  lineHeight: 1.5
-                }}
-              >
-                Enter your information to register
-              </Typography>
-            }
-            sx={{ pb: 0, pt: 2 }} 
-          />
-          <CardContent sx={{
+    <ThemeProvider theme={theme}>
+      <StyledContainer>
+        <Link
+          href="#"
+          color="inherit"
+          sx={{
+            position: 'absolute',
+            top: '2rem',
+            left: '2rem',
             display: 'flex',
-            flexDirection: 'column',
-            gap: 2, 
-            px: 3, 
-            py: 2 
-          }}>
-            {state.error && (
-              <Alert
-                severity="error"
-                sx={{ borderRadius: 1 }}
-                onClose={() => dispatch({ type: 'SET_ERROR', payload: null })}
-              >
+            alignItems: 'center',
+            textDecoration: 'none',
+            '&:hover': { textDecoration: 'underline' }
+          }}
+          onClick={(e) => {
+            e.preventDefault();
+            navigate('/');
+          }}
+        >
+          <ArrowBack sx={{ mr: 1 }} />
+          GO BACK
+        </Link>
+
+        <Box sx={{
+
+          maxWidth: '60%',
+          padding: '2rem 4rem',
+          background: 'rgba(73, 11, 244, 1)',
+          margin: 'auto',
+          mt: '4rem',
+          borderRadius: '1rem'
+        }}>
+          <Typography
+            variant="h4"
+            component="h1"
+            align="center"
+            gutterBottom
+            sx={{ mb: 4, letterSpacing: 4, fontSize: '40px' }}
+          >
+            CREATE AN ACCOUNT
+          </Typography>
+
+          <StyledForm onSubmit={handleSubmit} noValidate autoComplete="off">
+          {state.error && (
+              <Alert severity="error"
+              onClose={() => dispatch({ type: 'SET_ERROR', payload: null })}
+               sx={{ mb: 3, color: 'red' }}>
                 {state.error}
               </Alert>
             )}
-            <TextField
-              name="username"
-              label="Username"
-              variant="outlined"
-              fullWidth
-              required
-              value={formData.username}
-              onChange={handleChange}
-              error={!!errors.username}
-              helperText={errors.username}
-              sx={{
-                '& .MuiOutlinedInput-root': {
-                  borderRadius: 1.5, 
-                  backgroundColor: 'grey.50',
-                  transition: 'all 0.2s ease-in-out',
-                  '&:hover fieldset': {
-                    borderColor: 'primary.main',
-                    borderWidth: '2px',
-                  },
-                  '&.Mui-focused fieldset': {
-                    borderWidth: '2px',
-                  }
-                },
-                '& .MuiInputLabel-root': {
-                  '&.Mui-focused': {
-                    color: 'primary.main',
-                  }
-                },
-                '& .MuiInputBase-input': {
-                  padding: '12px 14px', 
-                }
-              }}
-            />
-            <TextField
-              name="email"
-              label="Email"
-              type="email"
-              variant="outlined"
-              fullWidth
-              required
-              value={formData.email}
-              onChange={handleChange}
-              error={!!errors.email}
-              helperText={errors.email}
-              sx={{
-                '& .MuiOutlinedInput-root': {
-                  borderRadius: 1.5, 
-                  backgroundColor: 'grey.50',
-                  transition: 'all 0.2s ease-in-out',
-                  '&:hover fieldset': {
-                    borderColor: 'primary.main',
-                    borderWidth: '2px',
-                  },
-                  '&.Mui-focused fieldset': {
-                    borderWidth: '2px',
-                  }
-                },
-                '& .MuiInputLabel-root': {
-                  '&.Mui-focused': {
-                    color: 'primary.main',
-                  }
-                },
-                '& .MuiInputBase-input': {
-                  padding: '12px 14px', 
-                }
-              }}
-            />
-            <TextField
-              name="password"
-              label="Password"
-              type={showPassword ? 'text' : 'password'}
-              variant="outlined"
-              fullWidth
-              required
-              value={formData.password}
-              onChange={handleChange}
-              error={!!errors.password}
-              helperText={errors.password}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={() => setShowPassword(!showPassword)}
-                      edge="end"
-                    >
-                      {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-              sx={{
-                '& .MuiOutlinedInput-root': {
-                  borderRadius: 1.5, 
-                  backgroundColor: 'grey.50',
-                  transition: 'all 0.2s ease-in-out',
-                  '&:hover fieldset': {
-                    borderColor: 'primary.main',
-                    borderWidth: '2px',
-                  },
-                  '&.Mui-focused fieldset': {
-                    borderWidth: '2px',
-                  }
-                },
-                '& .MuiInputLabel-root': {
-                  '&.Mui-focused': {
-                    color: 'primary.main',
-                  }
-                },
-                '& .MuiInputBase-input': {
-                  padding: '12px 14px', 
-                }
-              }}
-            />
-            <TextField
-              name="confirmPassword"
-              label="Confirm Password"
-              type={showConfirmPassword ? 'text' : 'password'}
-              variant="outlined"
-              fullWidth
-              required
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              error={!!errors.confirmPassword}
-              helperText={errors.confirmPassword}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                      edge="end"
-                    >
-                      {showConfirmPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-              sx={{
-                '& .MuiOutlinedInput-root': {
-                  borderRadius: 1.5, 
-                  backgroundColor: 'grey.50',
-                  transition: 'all 0.2s ease-in-out',
-                  '&:hover fieldset': {
-                    borderColor: 'primary.main',
-                    borderWidth: '2px',
-                  },
-                  '&.Mui-focused fieldset': {
-                    borderWidth: '2px',
-                  }
-                },
-                '& .MuiInputLabel-root': {
-                  '&.Mui-focused': {
-                    color: 'primary.main',
-                  }
-                },
-                '& .MuiInputBase-input': {
-                  padding: '12px 14px', 
-                }
-              }}
-            />
-          </CardContent>
-          <CardActions sx={{
-            flexDirection: 'column',
-            alignItems: 'stretch',
-            px: 3, 
-            pb: 3 
-          }}>
-            <Button
-              type="submit"
-              variant="contained"
-              fullWidth
-              disabled={isLoading}
-              sx={{
-                mb: 2, 
-                height: 42, 
-                borderRadius: 1.5, 
-                textTransform: 'none',
-                fontSize: '1rem', 
-                fontWeight: 600,
-                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-                '&:hover': {
-                  boxShadow: '0 6px 16px rgba(0,0,0,0.2)',
-                }
-              }}
-            >
-              {isLoading ? 'Creating Account...' : 'Create Account'}
-            </Button>
-            <Divider sx={{
-              width: '100%',
-              mb: 2, 
-              '&::before, &::after': {
-                borderColor: 'grey.200',
-              },
-              '& .MuiDivider-wrapper': {
-                color: 'text.secondary',
-                fontSize: '0.875rem'
-              }
-            }}>
-              Or Continue With
-            </Divider>
-            <Button
-              onClick={handleGoogleLogin}
-              variant="outlined"
-              fullWidth
-              startIcon={<GoogleIcon />}
-              sx={{
-                mb: 2, 
-                height: 42, 
-                borderRadius: 1.5, 
-                textTransform: 'none',
-                fontSize: '0.9375rem', 
-                fontWeight: 500,
-                borderColor: 'grey.300',
-                backgroundColor: 'white',
-                '&:hover': {
-                  backgroundColor: 'grey.50',
-                  borderColor: 'grey.400',
-                }
-              }}
-            >
-              Continue with Google
-            </Button>
-            <Typography variant="body2" align="center">
-              Already have an account?{' '}
-              <Link
-                href="/login"
-                underline="hover"
-                color="primary"
-                sx={{ fontWeight: 500 }}
+            <Box>
+              <Typography
+                variant="caption"
+                component="label"
+                htmlFor="username"
+                sx={{ display: 'block', textAlign: 'left', mb: 1, fontSize: '1rem' }}
               >
-                Sign in
-              </Link>
-            </Typography>
-          </CardActions>
-        </form>
-      </Card>
-    </Box>
+                USERNAME:
+              </Typography>
+              <TextField
+                fullWidth
+                id="username"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+                error={!!errors.username}
+                helperText={errors.username}
+                placeholder="USERNAME"
+                disabled={state.loading}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: 'rgba(0, 0, 0, 0.23)',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: 'rgba(0, 0, 0, 0.87)',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: 'rgba(73, 11, 244, 0.8)',
+                    },
+                  },
+                  '& .MuiInputBase-input': {
+                    fontSize: '1rem',
+                  },
+                }}
+              />
+            </Box>
+
+
+            <Box>
+              <Typography
+                variant="caption"
+                component="label"
+                htmlFor="email"
+                sx={{ display: 'block', textAlign: 'left', mb: 1, fontSize: '1rem' }}
+              >
+                EMAIL:
+              </Typography>
+              <TextField
+                fullWidth
+                id="email"
+                name="email"
+                type="text"
+                value={formData.email}
+                onChange={handleChange}
+                error={!!errors.email}
+                helperText={errors.email}
+                placeholder="EMAIL"
+                disabled={state.loading}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: 'rgba(0, 0, 0, 0.23)',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: 'rgba(0, 0, 0, 0.87)',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: 'rgba(73, 11, 244, 0.8)',
+                    },
+                  },
+                  '& .MuiInputBase-input': {
+                    fontSize: '1rem',
+                  },
+                }}
+              />
+            </Box>
+
+            <Box>
+              <Typography
+                variant="caption"
+                component="label"
+                htmlFor="password"
+                sx={{ display: 'block', textAlign: 'left', mb: 1, fontSize: '1rem' }}
+              >
+                PASSWORD:
+              </Typography>
+              <TextField
+                fullWidth
+                id="password"
+                name="password"
+                type={showPassword ? 'text' : 'password'}
+                value={formData.password}
+                onChange={handleChange}
+                error={!!errors.password}
+                helperText={errors.password}
+                placeholder={showPassword ? 'PASSWORD' : '********'}
+                disabled={state.loading}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        sx={{ color: 'black' }}
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: 'rgba(0, 0, 0, 0.23)',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: 'rgba(0, 0, 0, 0.87)',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: 'rgba(73, 11, 244, 0.8)',
+                    },
+                  },
+                  '& .MuiInputBase-input': {
+                    fontSize: '1rem',
+                  },
+                  '& input[type="password"]': {
+                    fontFamily: 'Verdana',
+                    WebkitTextSecurity: showPassword ? 'disc' : 'password',
+                  },
+                  '& input::placeholder': {
+                    fontFamily: 'PixelSplitter, "Courier New", Courier, monospace',
+                  }
+                }}
+              />
+            </Box>
+
+            <Box sx={{ display: 'flex', gap: 4, my: 4 }}>
+              <Button
+                variant="contained"
+                fullWidth
+                onClick={() => {
+                  dispatch({ type: 'SET_ERROR', payload: null });
+                  navigate('/login');
+                }}
+                sx={{ 
+                  flex: 2, 
+                  color: 'white', 
+                  borderRadius: '1px', 
+                  p: 2, 
+                  fontSize: '1rem', 
+                  bgcolor: 'black', 
+                  whiteSpace: 'nowrap',
+                  opacity: 1,
+                  '&:hover': {
+                    bgcolor: 'black',
+                    opacity: 0.8
+                  }
+                }}
+              >
+                HAVE AN ACCOUNT? <span style={{ color: 'rgba(216, 246, 81, 1)' }}> LOG IN</span>
+              </Button>
+              <Button
+                type="submit"
+                variant="contained"
+                fullWidth
+                disabled={state.loading}
+                sx={{ flex: 1, color: 'black', borderRadius: '1px', p: 2, fontSize: '1rem', bgcolor: 'rgba(216, 246, 81, 1)' }}
+              >
+                {state.loading ? 'CREATING...' : 'CREATE'}
+              </Button>
+            </Box>
+          </StyledForm>
+        </Box>
+      </StyledContainer>
+    </ThemeProvider>
   );
 }
 
