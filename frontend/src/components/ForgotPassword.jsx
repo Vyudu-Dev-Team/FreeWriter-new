@@ -1,36 +1,65 @@
 import React, { useState } from 'react';
 import {
   Box,
-  Card,
-  CardHeader,
-  CardContent,
-  CardActions,
+  Container,
   TextField,
-  Button,
   Typography,
-  Link,
-  Divider,
-  Alert,
+  Link as MuiLink,
+  Button,
+  styled,
 } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
 
-function ForgotPasswordComponent() {
+// Custom styled components to achieve pixel art style
+const PixelTypography = styled(Typography)({
+  fontFamily: '"Pixelsplitter", monospace',
+  textTransform: 'uppercase',
+});
 
+const PixelButton = styled(Button)({
+  fontFamily: '"Pixelsplitter", monospace',
+  textTransform: 'uppercase',
+  padding: '16px 24px',
+  borderRadius: 0,
+  '&:hover': {
+    transform: 'scale(1.02)',
+  },
+});
+
+const PixelTextField = styled(TextField)({
+  '& .MuiOutlinedInput-root': {
+    borderRadius: 0,
+    backgroundColor: 'white',
+    '& fieldset': {
+      borderColor: 'black',
+      borderWidth: 2,
+    },
+  },
+  '& .MuiOutlinedInput-input': {
+    fontFamily: '"Pixelsplitter", monospace',
+    fontSize: '16px',
+    padding: '16px',
+  },
+  '& .MuiInputLabel-root': {
+    fontFamily: '"Pixelsplitter", monospace',
+    fontSize: '14px',
+  },
+});
+
+function ForgotPasswordComponent() {
   const [email, setEmail] = useState('');
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { sendPasswordResetEmail } = useAppContext(); // Assuming you have this in context
+  const { sendPasswordResetEmail } = useAppContext();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setEmail(e.target.value);
     if (errors.email) {
-      setErrors(prev => ({
-        ...prev,
-        email: ''
-      }));
+      setErrors((prev) => ({ ...prev, email: '' }));
     }
   };
 
@@ -61,166 +90,96 @@ function ForgotPasswordComponent() {
   };
 
   return (
-    <Box sx={{
-      display: 'flex',
-      minHeight: '100vh',
-      alignItems: 'center',
-      justifyContent: 'center',
-      bgcolor: 'grey.50',
-      py: 4
-    }}>
-      <Card sx={{
-        width: '100%',
-        maxWidth: 400,
-        boxShadow: '0 8px 32px rgba(0,0,0,0.08)',
-        borderRadius: 2,
-        border: '1px solid',
-        borderColor: 'grey.100'
-      }}>
-        <form onSubmit={handleSubmit}>
-          <CardHeader
-            title={
-              <Typography
-                variant="h5"
-                align="center"
-                color="primary"
-                gutterBottom
-                sx={{
-                  fontWeight: 700,
-                  fontSize: { xs: '1.5rem', sm: '1.75rem' }
-                }}
-              >
-                Forgot Password
-              </Typography>
-            }
-            subheader={
-              <Typography
-                variant="body2"
-                align="center"
-                color="text.secondary"
-                sx={{
-                  mb: 1.5,
-                  fontSize: '0.875rem',
-                  lineHeight: 1.5
-                }}
-              >
-                Enter your email to reset your password
-              </Typography>
-            }
-            sx={{ pb: 0, pt: 2 }}
-          />
-          <CardContent sx={{
+    <Box sx={{ bgcolor: 'black', minHeight: '100vh', display: 'flex', flexDirection: 'column', py: 4 }}>
+      <Container maxWidth="sm">
+        <MuiLink
+          href="#"
+          onClick={() => navigate(-1)}
+          sx={{
             display: 'flex',
-            flexDirection: 'column',
-            gap: 2,
-            px: 3,
-            py: 2
-          }}>
-            {successMessage && (
-              <Alert
-                severity="success"
-                sx={{ borderRadius: 1 }}
-                onClose={() => setSuccessMessage('')}
-              >
-                {successMessage}
-              </Alert>
-            )}
+            alignItems: 'center',
+            gap: 1,
+            color: 'white',
+            textDecoration: 'none',
+            mb: 6,
+            '&:hover': { textDecoration: 'underline' },
+          }}
+        >
+          <ArrowBackIcon />
+          <PixelTypography>Go Back</PixelTypography>
+        </MuiLink>
 
-            {errors.email && (
-              <Alert
-                severity="error"
-                sx={{ borderRadius: 1 }}
-                onClose={() => setErrors({ email: '' })}
-              >
-                {errors.email}
-              </Alert>
-            )}
+        <PixelTypography
+          variant="h1"
+          sx={{
+            fontSize: '3rem',
+            textAlign: 'center',
+            color: 'white',
+            mb: 6,
+          }}
+        >
+          Forgot Password
+        </PixelTypography>
 
-            <TextField
-              name="email"
-              label="Email"
-              type="email"
-              variant="outlined"
+        <form onSubmit={handleSubmit}>
+          <Box sx={{ mb: 4 }}>
+            <PixelTypography component="label" sx={{ display: 'block', color: 'white', mb: 1 }}>
+              Email:
+            </PixelTypography>
+            <PixelTextField
               fullWidth
-              required
               value={email}
               onChange={handleChange}
+              type="email"
+              required
+              placeholder="Enter your email"
               error={!!errors.email}
               helperText={errors.email}
-              sx={{
-                '& .MuiOutlinedInput-root': {
-                  borderRadius: 1.5,
-                  backgroundColor: 'grey.50',
-                  transition: 'all 0.2s ease-in-out',
-                  '&:hover fieldset': {
-                    borderColor: 'primary.main',
-                    borderWidth: '2px',
-                  },
-                  '&.Mui-focused fieldset': {
-                    borderWidth: '2px',
-                  }
-                },
-                '& .MuiInputLabel-root': {
-                  '&.Mui-focused': {
-                    color: 'primary.main',
-                  }
-                },
-                '& .MuiInputBase-input': {
-                  padding: '12px 14px',
-                }
-              }}
+              sx={{ mb: 4 }}
             />
-          </CardContent>
+          </Box>
 
-          <CardActions sx={{
-            flexDirection: 'column',
-            alignItems: 'stretch',
-            px: 3,
-            pb: 3
-          }}>
-            <Button
+          <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column' }}>
+            <PixelButton
               type="submit"
               variant="contained"
-              fullWidth
-              disabled={isLoading}
               sx={{
-                mb: 2,
-                height: 42,
-                borderRadius: 1.5,
-                textTransform: 'none',
-                fontSize: '1rem',
-                fontWeight: 600,
-                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-                '&:hover': {
-                  boxShadow: '0 6px 16px rgba(0,0,0,0.2)',
-                }
+                bgcolor: '#6b46c1',
+                '&:hover': { bgcolor: '#553c9a' },
+              }}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Sending...' : 'Reset Password'}
+            </PixelButton>
+            <PixelButton
+              onClick={() => navigate('/login')}
+              variant="contained"
+              sx={{
+                bgcolor: '#d9f99d',
+                color: 'black',
+                '&:hover': { bgcolor: '#bef264' },
               }}
             >
-              {isLoading ? 'Sending...' : 'Send Reset Link'}
-            </Button>
-
-            <Divider sx={{
-              width: '100%',
-              mb: 2,
-              '&::before, &::after': {
-                borderColor: 'grey.200',
-              },
-            }} />
-
-            <Typography variant="body1" align="center">
-              Remembered your password?{' '}
-              <Link
-                href="/login"
-                underline="hover"
-                color="primary"
-                sx={{ fontWeight: 500 }}
-              >
-                Sign In
-              </Link>
-            </Typography>
-          </CardActions>
+              Back to Login
+            </PixelButton>
+          </Box>
         </form>
-      </Card>
+
+        <Box sx={{ mt: 4, textAlign: 'center' }}>
+          <MuiLink
+            href="#"
+            sx={{
+              color: 'white',
+              textDecoration: 'none',
+              fontFamily: '"Pixelsplitter", monospace',
+              fontSize: '0.875rem',
+              '&:hover': { textDecoration: 'underline' },
+            }}
+          >
+            Need help? Contact Support
+          </MuiLink>
+        </Box>
+      </Container>
     </Box>
   );
 }
