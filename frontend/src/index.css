@@ -28,6 +28,7 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  font-family: 'PixelSplitter', sans-serif;
 }
 
 h1 {
@@ -65,4 +66,11 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+@font-face {
+  font-family: 'PixelSplitter';
+  src: url('/assets/fonts/PixelSplitter-Bold.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }

@@ -1,10 +1,22 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env.VITE_API_URL || "/api"
 });
 
-export const getStories = () => api.get('/stories');
-export const createStory = (storyData) => api.post('/stories', storyData);
+export const setAuthToken = (token) => {
+  if (token) {
+    api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  } else {
+    delete api.defaults.headers.common['Authorization'];
+  }
+};
 
-// Add other API calls as needed
+export const userAPI = {
+  getCurrentUser: () => api.get('/users/me'),
+  updateProfile: (profileData) => api.put('/users/profile', profileData),
+  login: (email, password) => api.post('/users/login', { email, password }),
+  register: (username, email, password) => api.post('/users/register', { username, email, password })
+};
+
+export default api;
