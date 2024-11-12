@@ -72,7 +72,7 @@ export const sendVerificationEmail = async (user, verificationToken) => {
 };
 
 export const sendPasswordResetEmail = async (user, resetToken) => {
-  const resetURL = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+  const resetURL = `${process.env.FRONTEND_URL}/resetPassword/${resetToken}`;
 
   const html = `
     <div style="max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;">
@@ -97,5 +97,6 @@ export const sendPasswordResetEmail = async (user, resetToken) => {
     html
   });
 };
+
 
 export default sendEmail;
