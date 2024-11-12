@@ -56,6 +56,8 @@ app.use(limiter);
 // API Routes
 app.use('/api/users', userRoutes);
 app.use('/api/stories', storyRoutes);
+app.use('/api/profile', profileRoutes);
+
 
 // Error handling middleware
 app.use(notFound);
