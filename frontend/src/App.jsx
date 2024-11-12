@@ -19,7 +19,6 @@ import FeedbackForm from './components/FeedbackForm';
 import Onboarding from './components/Onboarding';
 import { AppProvider } from './contexts/AppContext';
 import ProfilePage from './components/profileSetup';
-import ForgotPassword from './components/ForgotPassword';
 
 
 function App() {
