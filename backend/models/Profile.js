@@ -1,25 +1,29 @@
-// backend/models/Profile.js
-// This model will store user profile data such as goals and preferences. It will have a reference to the User model to establish a one-to-one relationship between the two models.
-
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const profileSchema = new mongoose.Schema({
-  userId: {
+  user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,
   },
-  goals: {
-    type: [String], // Array of goals for flexibility
-    default: [],
+  avatar: {
+    type: String,
+    default: 'default-avatar.png',
   },
-  preferences: {
-    type: Map,
-    of: String, // Map to store key-value pairs of preferences
-    default: {},
+  bio: {
+    type: String,
+    maxlength: 500,
   },
-}, {
-  timestamps: true,
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
-module.exports = mongoose.model('Profile', profileSchema);
+const Profile = mongoose.model('Profile', profileSchema);
+
+export default Profile;
