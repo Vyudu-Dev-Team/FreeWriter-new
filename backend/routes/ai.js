@@ -1,8 +1,9 @@
 import express from 'express';
 import auth from '../middleware/auth.js';
-import { generatePrompt, generateFeedback, processUserInput, generateCardArtwork } from '../services/aiService.js';
-import User from '../models/User.js';
 import logger from '../middleware/errorHandler.js';
+import { generatePrompt, generateFeedback, processUserInput, generateCardArtwork } from '../services/aiService.js';
+import { saveAndProcessInput } from '../controllers/aiController.js';
+import User from '../models/User.js';
 
 const router = express.Router();
 
@@ -23,6 +24,18 @@ router.post('/prompt', auth, async (req, res, next) => {
   }
 });
 
-// Implement similar error handling for other routes...
+// @route   POST api/ai/process-input
+// @desc    Store and process user input for prompt generation
+// @access  Private
+router.post('/process-input', auth, async (req, res, next) => {
+  try {
+    await saveAndProcessInput(req, res);
+  } catch (err) {
+    logger.error(`Error processing user input: ${err.message}`);
+    next(err);
+  }
+});
+
+// Additional routes can be included here, similar to error handling for generateFeedback and generateCardArtwork
 
 export default router;
