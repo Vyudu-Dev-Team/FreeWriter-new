@@ -1,4 +1,5 @@
 import React from 'react';
+import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -33,6 +34,8 @@ function App() {
             <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            // forgot password
+            {/* <Route path="/forgot-password" element={<ForgotPassword />} /> */}
             <Route path="/onboarding" element={<PrivateRoute><Onboarding /></PrivateRoute>} />
             <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
             <Route path="/story-map/:storyId" element={<PrivateRoute><StoryMap /></PrivateRoute>} />

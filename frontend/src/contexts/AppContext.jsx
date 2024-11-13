@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
-import axios from 'axios';
+import { userAPI, setAuthToken } from '../services/api';
 
 const AppContext = createContext();
 
@@ -42,7 +42,7 @@ export function AppProvider({ children }) {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      setAuthToken(token);
       fetchUser();
     }
   }, []);
@@ -50,14 +50,14 @@ export function AppProvider({ children }) {
   const fetchUser = async () => {
     try {
       dispatch({ type: 'SET_LOADING', payload: true });
-      const res = await axios.get('/api/users/me');
+      const res = await userAPI.getCurrentUser();
       dispatch({ type: 'SET_USER', payload: res.data });
       dispatch({ type: 'SET_ERROR', payload: null });
     } catch (error) {
       console.error('Error fetching user:', error);
       dispatch({ type: 'SET_ERROR', payload: 'Failed to fetch user data' });
       localStorage.removeItem('token');
-      delete axios.defaults.headers.common['Authorization'];
+      setAuthToken(null);
     } finally {
       dispatch({ type: 'SET_LOADING', payload: false });
     }
@@ -66,9 +66,9 @@ export function AppProvider({ children }) {
   const login = async (email, password) => {
     try {
       dispatch({ type: 'SET_LOADING', payload: true });
-      const res = await axios.post('/api/users/login', { email, password });
+      const res = await userAPI.login(email, password);
       localStorage.setItem('token', res.data.token);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`;
+      setAuthToken(res.data.token);
       await fetchUser();
       dispatch({ type: 'SET_ERROR', payload: null });
       return true;
@@ -80,17 +80,12 @@ export function AppProvider({ children }) {
     }
   };
 
-  const register = async (username, email, password, writingMode) => {
+  const register = async (username, email, password) => {
     try {
       dispatch({ type: 'SET_LOADING', payload: true });
-      const res = await axios.post('/api/users/register', {
-        username,
-        email,
-        password,
-        writingMode
-      });
+      const res = await userAPI.register(username, email, password);
       localStorage.setItem('token', res.data.token);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`;
+      setAuthToken(res.data.token);
       await fetchUser();
       dispatch({ type: 'SET_ERROR', payload: null });
       return true;
@@ -104,15 +99,31 @@ export function AppProvider({ children }) {
 
   const logout = () => {
     localStorage.removeItem('token');
-    delete axios.defaults.headers.common['Authorization'];
+    setAuthToken(null);
     dispatch({ type: 'LOGOUT' });
   };
+  const saveProfile = async (profileData) => {
+    try {
+      dispatch({ type: 'SET_LOADING', payload: true });
+      const res = await userAPI.updateProfile(profileData);
+      dispatch({ type: 'SET_USER', payload: res.data });
+      dispatch({ type: 'SET_ERROR', payload: null });
+      return true;
+    } catch (error) {
+      dispatch({ type: 'SET_ERROR', payload: error.response?.data?.message || 'Failed to update profile' });
+      return false;
+    } finally {
+      dispatch({ type: 'SET_LOADING', payload: false });
+    }
+  };
+
 
   const value = {
     state,
     dispatch,
     login,
     register,
+    saveProfile,
     logout
   };
 
