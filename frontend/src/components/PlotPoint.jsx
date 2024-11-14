@@ -11,6 +11,7 @@ import {
   Avatar,
 } from '@mui/material';
 import { Icons } from '../utils/icon';
+import { useNavigate } from 'react-router-dom';
 
 const PlotCard = ({ title, text, onClick, storyTitle }) => {
   const isSelected = storyTitle === title;
@@ -62,6 +63,7 @@ const PlotCard = ({ title, text, onClick, storyTitle }) => {
 };
 
 const PlotPoints = () => {
+  const navigate = useNavigate();
   const loremIpsum = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam maximus tortor erat, et pellentesque mi hendrerit eu.`;
   const [open, setOpen] = useState(false);
   const [storyTitle, setStoryTitle] = useState();
@@ -131,8 +133,8 @@ const PlotPoints = () => {
         {/* Card Done Button */}
         <Box sx={{ display: 'flex', justifyContent: 'center', pt: 6, gap: 4 }}>
           <Button
+            onClick={() => navigate('/story-map')}
             variant="outlined"
-            onClick={() => setOpen(true)}
             sx={{
               color: 'black',
               px: 4,
@@ -243,10 +245,12 @@ const PlotPoints = () => {
 
       {/* Character Avatar */}
       <Box
+        onClick={() => setOpen(true)}
         component="img"
         src="/assets/images/round-vigil.svg"
         alt="Round Vigil"
         sx={{
+          cursor: 'pointer',
           position: 'fixed',
           bottom: 20,
           right: 20,

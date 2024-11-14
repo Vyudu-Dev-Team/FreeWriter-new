@@ -13,9 +13,6 @@ import {
   TextField,
   useMediaQuery,
   IconButton,
-  Stepper,
-  Step,
-  StepLabel,
   RadioGroup,
   Radio,
   FormControlLabel,
@@ -26,27 +23,8 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { Icons } from '../utils/icon';
+import PlotPoints from './PlotPoint';
 
-const WritingModeStep = ({ writingMode, setWritingMode }) => (
-  <Box>
-    <Typography variant="h5" gutterBottom sx={{ fontWeight: 600, fontSize: '1.25rem', mb: 2 }}>
-      Choose Your Writing Mode
-    </Typography>
-    <FormControl component="fieldset">
-      <RadioGroup value={writingMode} onChange={(e) => setWritingMode(e.target.value)} sx={{ gap: 1 }}>
-        {['freeform', 'guided', 'structured'].map((mode) => (
-          <FormControlLabel
-            key={mode}
-            value={mode}
-            control={<Radio />}
-            label={mode.charAt(0).toUpperCase() + mode.slice(1)}
-            sx={{ '& .MuiFormControlLabel-label': { fontSize: '0.9375rem', color: 'text.primary' } }}
-          />
-        ))}
-      </RadioGroup>
-    </FormControl>
-  </Box>
-);
 
 const CreateStoryStep = ({ storyTitle, storyDescription, setStoryTitle, setStoryDescription }) => (
   <Box>
@@ -95,24 +73,23 @@ const CreateStoryStep = ({ storyTitle, storyDescription, setStoryTitle, setStory
 
 export default function Onboarding() {
   const [activeStep, setActiveStep] = useState(0);
-  const [writingMode, setWritingMode] = useState('');
   const [storyTitle, setStoryTitle] = useState('');
   const [storyDescription, setStoryDescription] = useState('');
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const navigate = useNavigate();
 
-  const steps = ['Welcome', 'Choose Writing Mode', 'Create First Story'];
+  
 
   const handleNext = () => setActiveStep((prev) => prev + 1);
   const handleBack = () => setActiveStep((prev) => prev - 1);
 
-  const getStepContent = (step) => {
-    switch (step) {
+  const getStepContent = () => {
+    switch (activeStep) {
       case 0:
-        return <StoryDevelopment />;
+        return <StoryDevelopment handleNext={handleNext} />;
       case 1:
-        return <WritingModeStep writingMode={writingMode} setWritingMode={setWritingMode} />;
+        return <PlotPoints />;
       case 2:
         return <CreateStoryStep
           storyTitle={storyTitle}
@@ -138,40 +115,7 @@ export default function Onboarding() {
       }}>
       
 
-        <Box sx={{ mb: 4 }}>{getStepContent(activeStep)}</Box>
-
-        <Box display="flex" justifyContent="space-between">
-          <Button
-            disabled={activeStep === 0}
-            onClick={handleBack}
-            sx={{ 
-              textTransform: 'none',
-              fontSize: '0.9375rem',
-              fontWeight: 500,
-              color: 'text.secondary',
-              borderRadius: 1.5,
-              px: 3,
-              py: 1
-            }}
-          >
-            Back
-          </Button>
-          <Button
-            variant="contained"
-            onClick={handleNext}
-            disabled={(activeStep === 1 && !writingMode) || (activeStep === 2 && !storyTitle)}
-            sx={{ 
-              textTransform: 'none',
-              fontSize: '0.9375rem',
-              fontWeight: 500,
-              borderRadius: 1.5,
-              px: 3,
-              py: 1
-            }}
-          >
-            {activeStep === steps.length - 1 ? 'Start Writing' : 'Next'}
-          </Button>
-        </Box>
+        <Box sx={{ mb: 4 }}>{getStepContent()}</Box>
       </Box>
     </Box>
   );
@@ -204,7 +148,7 @@ const StoryCard = ({ title, icon: Icon }) => (
        
       }}
     >
-      <Icon sx={{ fontSize: 64, }} />
+      <Icon sx={{ fontSize: 84, }} />
       <Typography
         sx={{
           textAlign: 'center',
@@ -216,12 +160,12 @@ const StoryCard = ({ title, icon: Icon }) => (
       >
         {title}
       </Typography>
-      <QuestionMarkIcon sx={{ fontSize: 32, color: 'black', bgcolor: 'white', borderRadius: 50, p: 1 }} />
+      <QuestionMarkIcon sx={{ fontSize: 32, color: 'black', bgcolor: 'white', borderRadius: 50, p: 1, mt: 4 }} />
     </CardContent>
   </Card>
 );
 
-const StoryDevelopment = () => {
+const StoryDevelopment = ({handleNext}) => {
   return (
     <Box
       sx={{
@@ -283,11 +227,11 @@ const StoryDevelopment = () => {
         >
           <StoryCard
             title='THE HERO"S JOURNEY'
-            icon={Icons.MountainRefreshIcon}
+            icon={Icons.HeroJourneyIcon}
           />
           <StoryCard
             title="THE THREE-ACT STRUCTURE"
-            icon={TimerIcon}
+            icon={Icons.ThreeActIcon}
           />
         </Box>
 
@@ -301,11 +245,12 @@ const StoryDevelopment = () => {
             },
           }}
         >
-          <RefreshIcon sx={{ fontSize: 32 }} />
+          <Icons.RefreshIcon sx={{ fontSize: 32 }} />
         </IconButton>
 
         {/* Continue Button */}
         <Button
+        onClick={()=>handleNext()}
           variant="contained"
           sx={{
             bgcolor: 'white',

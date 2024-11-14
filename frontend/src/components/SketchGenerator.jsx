@@ -1,83 +1,4 @@
-// import React, { useState } from 'react';
-// import { Box, TextField, Button, Typography, Rating, Card, CardMedia } from '@mui/material';
-// import axios from 'axios';
-
-// const SketchGenerator = () => {
-//   const [description, setDescription] = useState('');
-//   const [sketchUrl, setSketchUrl] = useState('');
-//   const [rating, setRating] = useState(0);
-//   const [feedback, setFeedback] = useState('');
-
-//   const handleGenerate = async () => {
-//     try {
-//       const response = await axios.post('/api/sketches/generate', { description });
-//       setSketchUrl(response.data.sketchUrl);
-//     } catch (error) {
-//       console.error('Error generating sketch:', error);
-//     }
-//   };
-
-//   const handleImprove = async () => {
-//     try {
-//       const response = await axios.post('/api/sketches/improve', { sketchUrl, feedback });
-//       setSketchUrl(response.data.improvedSketchUrl);
-//     } catch (error) {
-//       console.error('Error improving sketch:', error);
-//     }
-//   };
-
-//   return (
-//     <Box>
-//       <Typography variant="h6" gutterBottom>Sketch Generator</Typography>
-//       <TextField
-//         fullWidth
-//         label="Describe your sketch"
-//         value={description}
-//         onChange={(e) => setDescription(e.target.value)}
-//         margin="normal"
-//       />
-//       <Button variant="contained" onClick={handleGenerate}>Generate Sketch</Button>
-      
-//       {sketchUrl ? (
-//         <Card sx={{ mt: 2 }}>
-//           <CardMedia
-//             component="img"
-//             height="256"
-//             image={sketchUrl}
-//             alt="Generated Sketch"
-//           />
-//           <Box sx={{ p: 2 }}>
-//             <Typography component="legend">Rate this sketch:</Typography>
-//             <Rating
-//               name="sketch-rating"
-//               value={rating}
-//               onChange={(event, newValue) => {
-//                 setRating(newValue);
-//               }}
-//             />
-//             <TextField
-//               fullWidth
-//               label="Feedback for improvement"
-//               value={feedback}
-//               onChange={(e) => setFeedback(e.target.value)}
-//               margin="normal"
-//             />
-//             <Button variant="outlined" onClick={handleImprove}>Improve Sketch</Button>
-//           </Box>
-//         </Card>
-//       ) : (
-//         <Box sx={{ mt: 2, p: 2, bgcolor: '#f5f5f5', borderRadius: 1 }}>
-//           <Typography variant="body2" color="text.secondary">Your generated sketch will appear here</Typography>
-//         </Box>
-//       )}
-//     </Box>
-//   );
-// };
-
-// export default SketchGenerator;
-
-
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import { Paper, TextField, Box, Button, Typography, Icon } from '@mui/material';
 import { Icons } from '../utils/icon';
@@ -133,7 +54,7 @@ const RuledLines = styled('div')({
   }
 });
 
-function Onboarding() {
+function SketchGenerator() {
   const [content, setContent] = useState('');
   const textFieldRef = useRef(null);
   const [activeSection, setActiveSection] = useState('goals');
@@ -332,7 +253,7 @@ function Onboarding() {
                       </Box>
                     ))}
                   </Box>
-                  <Droppable droppableId="draggable-items " direction="horizontal">
+                  <Droppable droppableId="draggable-items" direction="horizontal">
                     {(gridProvided) => (
                       <Box
                         ref={gridProvided.innerRef}
@@ -408,7 +329,7 @@ function Onboarding() {
   );
 }
 
-export default Onboarding;
+export default SketchGenerator;
 
 
 
