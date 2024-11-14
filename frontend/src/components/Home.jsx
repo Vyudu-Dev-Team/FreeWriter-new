@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Container, Typography, Button, Box, Card, CardContent, Grid } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 
 function Home() {
+const [ status, setStatus ] = useState()
   return (
     <Container maxWidth="lg" sx={{ mt: 4, textAlign: 'center' }}>
       <Box sx={{ mb: 4 }}>

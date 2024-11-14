@@ -59,12 +59,12 @@ const theme = createTheme({
           backgroundColor: 'white',
           '& .MuiInputBase-root': {
             backgroundColor: 'white',
-            fontFamily: 'PixelSplitter, "Courier New", Courier, monospace',
+            fontFamily: 'Quicksand, "Courier New", Courier, monospace',
           },
           '& .MuiInputBase-input': {
             color: 'black',
             backgroundColor: 'white',
-            fontFamily: 'PixelSplitter, "Courier New", Courier, monospace',
+            fontFamily: 'Quicksand, "Courier New", Courier, monospace',
           },
           '& .MuiOutlinedInput-root': {
             '& fieldset': {
