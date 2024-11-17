@@ -7,6 +7,7 @@ import rateLimit from 'express-rate-limit';
 import { errorHandler, notFound } from './middleware/errorMiddleware.js';
 import userRoutes from './routes/users.js';
 import storyRoutes from './routes/stories.js';
+import aiRoutes from './routes/aiRoutes.js';
 import morgan from 'morgan';
 import mongoSanitize from 'express-mongo-sanitize';
 import xss from 'xss-clean';
@@ -56,6 +57,7 @@ app.use(limiter);
 // API Routes
 app.use('/api/users', userRoutes);
 app.use('/api/stories', storyRoutes);
+app.use('/api/ai', aiRoutes);
 
 // Error handling middleware
 app.use(notFound);
