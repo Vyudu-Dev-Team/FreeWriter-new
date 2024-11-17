@@ -18,7 +18,7 @@ import {
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useNavigate } from 'react-router-dom';
-import { useAppContext } from '../contexts/AppContext';
+import { useAppContext } from '../../contexts/AppContext';
 import { ArrowBack } from '@mui/icons-material';
 import { styled } from '@mui/system';
 import { createTheme, ThemeProvider } from '@mui/material';

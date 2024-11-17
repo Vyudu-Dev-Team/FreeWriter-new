@@ -3,8 +3,8 @@ import { useParams } from 'react-router-dom';
 import { Container, Grid, Paper, Box, Typography, CircularProgress } from '@mui/material';
 import axios from 'axios';
 import TextEditor from './TextEditor';
-import AIAssistant from './AIAssistant';
-import ProgressTracker from './ProgressTracker';
+import AIAssistant from '../AIAssistant';
+import ProgressTracker from '../ProgressTracker';
 
 const WritingWorkspace = () => {
   const { storyId } = useParams();
