@@ -4,20 +4,27 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import theme from './theme';
-import Navbar from './components/Navbar';
-import Home from './components/Home';
-import Login from './components/Login';
+
+import Navbar from './components/commonComponents/Navbar';
+import Login from './components/commonComponents/Login';
+import Onboarding from './components/Onboarding';
 import Register from './components/Register';
+
+import Home from './components/Home';
+
+import BadgeDisplay from './components/BadgeDisplay';
 import Dashboard from './components/Dashboard';
-import StoryMap from './components/StoryMap';
+import StoryMap from './components/story-mapping/StoryMap';
 import DeckManager from './components/DeckManager';
-import WritingWorkspace from './components/WritingWorkspace';
+
+import WritingWorkspace from './components/writing-environment/WritingWorkspace';
+import SketchGenerator from './components/writing-environment/SketchGenerator';
+
 import PrivateRoute from './components/PrivateRoute';
 // import NotificationCenter from './components/NotificationCenter';
-import BadgeDisplay from './components/BadgeDisplay';
-import SketchGenerator from './components/SketchGenerator';
+
 import FeedbackForm from './components/FeedbackForm';
-import Onboarding from './components/Onboarding';
+
 import { AppProvider } from './contexts/AppContext';
 import ProfilePage from './components/profileSetup';
 
