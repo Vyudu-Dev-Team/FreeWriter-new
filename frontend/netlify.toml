@@ -1,0 +1,7 @@
+[build]
+  command = "npm run build" # ou o comando principal para o monorepo
+  publish = "frontend/dist" # caminho para o front-end gerado
+  functions = "backend/functions" # onde estão as funções do back-end
+
+[[plugins]]
+  package = "@netlify/plugin-monorepo" # Plugin para gerenciar monorepos

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Container, Typography, Button, Box, Card, CardContent, Grid } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
+import { apiTest } from '../services/api';
 
 function Home() {
   return (
@@ -45,6 +46,8 @@ function Home() {
           </Card>
         </Grid>
       </Grid>
+
+      <button onClick={apiTest}>Test API</button>
     </Container>
   );
 }
