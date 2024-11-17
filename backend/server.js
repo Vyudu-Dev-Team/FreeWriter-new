@@ -13,6 +13,8 @@ import mongoSanitize from 'express-mongo-sanitize';
 import xss from 'xss-clean';
 import hpp from 'hpp';
 import connectDB from './config/database.js';
+import profileRoutes from './routes/profile.js'; // Updated to use import
+
 
 // Load environment variables
 dotenv.config();
@@ -58,6 +60,9 @@ app.use(limiter);
 app.use('/api/users', userRoutes);
 app.use('/api/stories', storyRoutes);
 app.use('/api/ai', aiRoutes);
+app.use('/api/profile', profileRoutes);
+
+
 
 // Error handling middleware
 app.use(notFound);
