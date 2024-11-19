@@ -99,6 +99,7 @@ function StartScreen2() {
 }
 
 function StartScreen( {setStartScreen} ) {
+  const navigate = useNavigate()
   return (
     <ThemeProvider theme={theme}>
     <Box
@@ -125,7 +126,9 @@ function StartScreen( {setStartScreen} ) {
         FREE<span style={{ color: '#fff' }}>WRITER</span>
       </Typography>
       <Button
-        onClick={() => setStartScreen(false)}
+        onClick={() => navigate('/home')
+          //setStartScreen(false)
+          }
         variant="text"
         sx={{
           color: 'white',
