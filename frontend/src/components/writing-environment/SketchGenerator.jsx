@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import { Paper, TextField, Box, Button, Typography, Icon } from '@mui/material';
-import { Icons } from '../utils/icon';
+import { Icons } from '../../utils/icon';
 
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 

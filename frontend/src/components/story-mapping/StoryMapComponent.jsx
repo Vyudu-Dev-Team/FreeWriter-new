@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { Icons } from '../utils/icon';
+import { Icons } from '../../utils/icon';
 
 const StoryCard = ({ text }) => (
     <Paper
