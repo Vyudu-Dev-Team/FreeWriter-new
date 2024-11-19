@@ -31,7 +31,7 @@ import {
 import { Link as RouterLink } from "react-router-dom";
 import { useAppContext } from "../contexts/AppContext";
 import axios from "axios";
-import { motion } from "framer-motion";
+// import { motion } from "framer-motion";
 
 function Dashboard() {
   const { state, dispatch } = useAppContext();

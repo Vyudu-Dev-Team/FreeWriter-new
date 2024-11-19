@@ -19,4 +19,8 @@ export const userAPI = {
   register: (username, email, password) => api.post('/users/register', { username, email, password })
 };
 
+export function apiTest() {
+  return api.get('/hello');
+}
+
 export default api;

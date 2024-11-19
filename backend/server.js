@@ -7,8 +7,14 @@ import rateLimit from 'express-rate-limit';
 import { errorHandler, notFound } from './middleware/errorMiddleware.js';
 import userRoutes from './routes/users.js';
 import storyRoutes from './routes/stories.js';
+import aiRoutes from './routes/aiRoutes.js';
+import morgan from 'morgan';
+import mongoSanitize from 'express-mongo-sanitize';
+import xss from 'xss-clean';
+import hpp from 'hpp';
+import connectDB from './config/database.js';
 import profileRoutes from './routes/profile.js'; // Updated to use import
-import aiRoutes from './routes/ai.js';
+
 
 // Load environment variables
 dotenv.config();
@@ -53,8 +59,8 @@ app.use(limiter);
 // API Routes
 app.use('/api/users', userRoutes);
 app.use('/api/stories', storyRoutes);
-app.use('/api/profile', profileRoutes);
 app.use('/api/ai', aiRoutes);
+app.use('/api/profile', profileRoutes);
 
 
 
