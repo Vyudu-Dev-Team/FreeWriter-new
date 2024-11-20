@@ -16,7 +16,7 @@ export const userAPI = {
   getCurrentUser: () => api.get('/users/me'),
   updateProfile: (profileData) => api.put('/users/profile', profileData),
   login: (email, password) => api.post('/users/login', { email, password }),
-  register: (username, email, password) => api.post('/users/register', { username, email, password })
+  register: (username, email, password, writingMode) => api.post('/users/register', { username, email, password, writingMode })
 };
 
 export function apiTest() {
