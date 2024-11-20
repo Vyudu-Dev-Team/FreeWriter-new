@@ -18,6 +18,7 @@ import Dashboard from './components/Dashboard';
 import StoryMapComponent from './components/story-mapping/StoryMapComponent';
 import StoryMap from './components/story-mapping/StoryMap';
 import DeckManager from './components/DeckManager';
+import PromptPage from './components/PromptPage';
 
 import WritingWorkspace from './components/writing-environment/WritingWorkspace';
 import SketchGenerator from './components/writing-environment/SketchGenerator';
@@ -48,6 +49,7 @@ function App() {
             <Route path="/onboarding" element={<PrivateRoute><Onboarding /></PrivateRoute>} />
             <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
             <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+            <Route path="/prompt" element={<PrivateRoute><PromptPage /></PrivateRoute>} />
             <Route path="/story-map" element={<PrivateRoute><StoryMapComponent /></PrivateRoute>} />
             <Route path="/story-map/:storyId" element={<PrivateRoute><StoryMap /></PrivateRoute>} />
             <Route path="/deck" element={<PrivateRoute><DeckManager /></PrivateRoute>} />
