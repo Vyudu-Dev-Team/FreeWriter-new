@@ -63,7 +63,7 @@ export function AppProvider({ children }) {
     }
   };
 
-  const login = async (email, password) => {
+  const login = async ({ email, password }) => {
     try {
       dispatch({ type: 'SET_LOADING', payload: true });
       const res = await userAPI.login(email, password);
@@ -80,10 +80,10 @@ export function AppProvider({ children }) {
     }
   };
 
-  const register = async (username, email, password) => {
+  const register = async (data) => {
     try {
       dispatch({ type: 'SET_LOADING', payload: true });
-      const res = await userAPI.register(username, email, password);
+      const res = await userAPI.register(...data);
       localStorage.setItem('token', res.data.token);
       setAuthToken(res.data.token);
       await fetchUser();
