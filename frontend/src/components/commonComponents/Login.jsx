@@ -80,7 +80,6 @@ const theme = createTheme({
   },
 });
 
-// Add styled components
 const StyledContainer = styled(Container)({
   minHeight: '100vh',
   width: '100vw',
