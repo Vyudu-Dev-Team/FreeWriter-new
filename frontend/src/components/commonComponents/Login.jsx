@@ -1,15 +1,10 @@
 import React, { useState} from 'react';
 import {
   Box,
-  Card,
-  CardHeader,
-  CardContent,
-  CardActions,
   TextField,
   Button,
   Typography,
   Link,
-  Divider,
   Alert,
   IconButton,
   InputAdornment,
@@ -52,12 +47,14 @@ const theme = createTheme({
           backgroundColor: 'white',
           '& .MuiInputBase-root': {
             backgroundColor: 'white',
-            fontFamily: 'PixelSplitter, "Courier New", Courier, monospace',
+            fontFamily: 'Quicksand, "Courier New", Courier, monospace',
+            
           },
           '& .MuiInputBase-input': {
             color: 'black',
             backgroundColor: 'white',
-            fontFamily: 'PixelSplitter, "Courier New", Courier, monospace',
+            fontFamily: 'Quicksand, "Courier New", Courier, monospace',
+            fontWeight: 'bold'
           },
           '& .MuiOutlinedInput-root': {
             '& fieldset': {
@@ -288,6 +285,9 @@ function LoginComponent() {
                   endAdornment: (
                     <InputAdornment position="end">
                       <IconButton
+                        sx={{
+                          color: 'black'
+                        }}
                         aria-label="toggle password visibility"
                         onClick={handleClickShowPassword}
                         onMouseDown={(e) => e.preventDefault()}
@@ -308,7 +308,7 @@ function LoginComponent() {
                     backgroundColor: 'black',
                     color: 'white',
                     margin: 0,
-                    padding: '4px 8px'
+                    padding: '4px px'
                   }
                 }}
               />

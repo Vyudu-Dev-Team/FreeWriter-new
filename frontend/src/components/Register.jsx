@@ -59,12 +59,12 @@ const theme = createTheme({
           backgroundColor: 'white',
           '& .MuiInputBase-root': {
             backgroundColor: 'white',
-            fontFamily: 'PixelSplitter, "Courier New", Courier, monospace',
+            fontFamily: 'Quicksand, "Courier New", Courier, monospace',
           },
           '& .MuiInputBase-input': {
             color: 'black',
             backgroundColor: 'white',
-            fontFamily: 'PixelSplitter, "Courier New", Courier, monospace',
+            fontFamily: 'Quicksand, "Courier New", Courier, monospace',
           },
           '& .MuiOutlinedInput-root': {
             '& fieldset': {
@@ -102,6 +102,7 @@ function RegisterComponent() {
     username: '',
     email: '',
     password: '',
+    storyMode: 'pantser'
   });
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
@@ -176,7 +177,8 @@ function RegisterComponent() {
       const success = await register({
         username: formData.username.trim(),
         email: formData.email.trim().toLowerCase(),
-        password: formData.password
+        password: formData.password,
+        storyMode: formData.storyMode
       });
 
       if (success) {
@@ -394,6 +396,59 @@ function RegisterComponent() {
               />
             </Box>
 
+            <Box>
+              <Typography
+                variant="caption"
+                component="label"
+                htmlFor="storyMode"
+                sx={{ display: 'block', textAlign: 'left', mb: 1, fontSize: '1rem' }}
+              >
+                STORY MODE:
+              </Typography>
+              <TextField
+                select
+                fullWidth
+                id="storyMode"
+                name="storyMode"
+                value={formData.storyMode}
+                onChange={handleChange}
+                SelectProps={{
+                  native: true,
+                }}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: 'rgba(0, 0, 0, 0.23)',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: 'rgba(0, 0, 0, 0.87)',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: 'rgba(73, 11, 244, 0.8)',
+                    },
+                  },
+                  '& .MuiInputBase-input': {
+                    fontSize: '1rem',
+                  },
+                  '& select option': {
+                    backgroundColor: 'black',
+                    color: 'white',
+                    fontSize: '1rem',
+                    fontFamily: 'PixelSplitter, "Courier New", Courier, monospace',
+                    padding: '12px',
+                  },
+                  '& select': {
+                    '&:focus': {
+                      backgroundColor: 'white',
+                    }
+                  }
+                }}
+              >
+                <option value="pantser" style={{ padding: '12px' }}>PANTSER</option>
+                <option value="plotter" style={{ padding: '12px' }}>PLOTTER</option>
+              </TextField>
+            </Box>
+
             <Box sx={{ display: 'flex', gap: 4, my: 4 }}>
               <Button
                 variant="contained"
@@ -437,3 +492,4 @@ function RegisterComponent() {
 }
 
 export default RegisterComponent;
+
