@@ -1,0 +1,19 @@
+[build]
+  functions = "functions"
+  command = "npm run build"
+
+[[redirects]]
+   from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+
+[[headers]]
+  for = "/*"
+    [headers.values]
+    Access-Control-Allow-Origin = "http://localhost:5173, https://freewriter-develop-branch.netlify.app"
+    Access-Control-Allow-Methods = "GET, POST, PUT, DELETE, OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type, Authorization"
+
+[functions]
+  node_bundler = "esbuild"
+  external_node_modules = ["crypto-browserify"]

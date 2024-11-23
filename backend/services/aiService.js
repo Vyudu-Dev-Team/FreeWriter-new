@@ -1,11 +1,6 @@
 import OpenAI from 'openai';
 import AppError from '../utils/appError.js';
 
-// Initialize the OpenAI client
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY, // Set your OpenAI API key
-});
-
 /**
  * Generate a story prompt based on user preferences
  * @param {Object} params - Parameters for prompt generation
