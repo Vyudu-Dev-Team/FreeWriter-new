@@ -1,8 +1,9 @@
 // functions/routeHandlers.js
 import User from "../models/User.js";
 import Story from "../models/story.js";
+import Profile from '../models/Profile.js';
 import crypto from "crypto";
-import { verifyToken, generateToken } from "../utils/jwt.js";
+import { verifyToken, generateToken, verifyEmailToken } from "../utils/jwt.js";
 import {
   sendVerificationEmail,
   sendPasswordResetEmail,
@@ -18,7 +19,10 @@ import AppError from "../utils/appError.js";
 export const handleUserRoutes = async (event) => {
   const { httpMethod, path } = event;
   const route = path.replace("/users", "");
-
+  const createResponse = (statusCode, message) => ({
+    statusCode,
+    body: JSON.stringify({ message }),
+  });
   switch (`${httpMethod} ${route}`) {
     case "POST /register":
       return register(JSON.parse(event.body));
@@ -33,11 +37,10 @@ export const handleUserRoutes = async (event) => {
     case "POST /reset-password":
       return resetPassword(JSON.parse(event.body));
     case "GET /verify-email":
-      return verifyEmail(event);
     case "POST /verify-email":
       return verifyEmail(event);
     case "POST /resend-verification":
-      return resendVerification(JSON.parse(event.body));
+      response = await resendVerification(JSON.parse(event.body));
     case "GET /preferences":
       return getUserPreferences(event);
     case "PUT /preferences":
@@ -111,21 +114,18 @@ const login = async (userData) => {
 };
 
 const getUserProfile = async (event) => {
-  // Extract the token from the Authorization header
-  const token = event.headers.authorization?.split(" ")[1]; // Get the token part after "Bearer"
-
-  if (!token) {
-    throw new AppError("No token provided", 401);
-  }
-
   try {
-    // Verify the token and get the user ID
+    const token = event.headers.authorization?.split(" ")[1];
+    if (!token) {
+      throw new AppError("No token found. Please log in.", 401);
+    }
+
     const decoded = await verifyToken(token);
-    const userId = decoded.userId;
+    if (!decoded || !decoded.userId) {
+      throw new AppError("Invalid token", 401);
+    }
 
-    // Find the user by ID
-    const user = await User.findById(userId);
-
+    const user = await User.findById(decoded.userId).select("-password");
     if (!user) {
       throw new AppError("User not found", 404);
     }
@@ -137,162 +137,334 @@ const getUserProfile = async (event) => {
           id: user._id,
           username: user.username,
           email: user.email,
+          isEmailVerified: user.isEmailVerified,
           writingMode: user.writingMode,
+          // Add any other fields you want to return
         },
       }),
     };
   } catch (error) {
-    throw new AppError(error.message, 401);
+    console.error("Error fetching user profile:", error);
+    throw new AppError(
+      error.message || "Failed to fetch user profile",
+      error.statusCode || 500
+    );
   }
 };
 
+// Updated version of the updateUserProfile function in routeHandlers.js
 const updateUserProfile = async (event) => {
-  const userId = await verifyToken(event);
-  const updates = JSON.parse(event.body);
+  try {
+    // Extract token from Authorization header
+    const token = event.headers?.authorization?.split(" ")[1];
+    if (!token) {
+      return {
+        statusCode: 401,
+        body: JSON.stringify({ message: "Authentication token is required" }),
+      };
+    }
 
-  const user = await User.findByIdAndUpdate(userId, updates, {
-    new: true,
-    runValidators: true,
-  });
+    // Verify token and get decoded user data
+    const decoded = await verifyToken(token);
+    if (!decoded || !decoded.userId) {
+      return {
+        statusCode: 401,
+        body: JSON.stringify({ message: "Invalid authentication token" }),
+      };
+    }
 
-  if (!user) {
-    throw new AppError("User not found", 404);
+    // Parse request body
+    const updates = JSON.parse(event.body);
+    const { username, bio, writingMode, goals } = updates;
+
+    // Find and update user
+    const user = await User.findById(decoded.userId);
+    if (!user) {
+      return {
+        statusCode: 404,
+        body: JSON.stringify({ message: "User not found" }),
+      };
+    }
+
+    // Check for username uniqueness if username is being updated
+    if (username && username !== user.username) {
+      const existingUser = await User.findOne({ username });
+      if (existingUser) {
+        return {
+          statusCode: 400,
+          body: JSON.stringify({ message: "Username already exists" }),
+        };
+      }
+      user.username = username;
+    }
+
+    // Update other fields
+    if (writingMode) user.writingMode = writingMode;
+    if (goals) user.goals = goals;
+
+    // Save user changes
+    await user.save();
+
+    // Update profile if bio is provided
+    if (bio) {
+      await Profile.findOneAndUpdate(
+        { user: decoded.userId },
+        { bio },
+        { new: true, upsert: true, runValidators: true }
+      );
+    }
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        message: "Profile updated successfully",
+        user: {
+          id: user._id,
+          username: user.username,
+          writingMode: user.writingMode,
+          goals: user.goals,
+        },
+      }),
+    };
+  } catch (error) {
+    console.error("Update profile error:", error);
+    return {
+      statusCode: error.statusCode || 500,
+      body: JSON.stringify({
+        message:
+          error.message || "An error occurred while updating the profile",
+      }),
+    };
   }
-
-  return {
-    statusCode: 200,
-    body: {
-      user: {
-        id: user._id,
-        username: user.username,
-        email: user.email,
-        writingMode: user.writingMode,
-      },
-    },
-  };
 };
 
 const forgotPassword = async ({ email }) => {
+  if (!email) {
+    throw new AppError("Email is required", 400);
+  }
+
   const user = await User.findOne({ email });
 
   if (!user) {
     throw new AppError("No user found with that email address", 404);
   }
 
-  const resetToken = generateToken({ userId: user._id }, "1h");
-  await sendPasswordResetEmail(user.email, resetToken);
+  try {
+    // Generate a reset token
+    const resetToken = generateToken({ userId: user._id }, "10m"); // Token expires in 10 minutes
 
-  return {
-    statusCode: 200,
-    body: { message: "Password reset email sent" },
-  };
+    // Send the email
+    await sendPasswordResetEmail(user, resetToken);
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: "Password reset email sent" }),
+    };
+  } catch (error) {
+    console.error("Error in forgotPassword:", error);
+    throw new AppError(
+      error.message || "Failed to send password reset email",
+      500
+    );
+  }
 };
 
-const resetPassword = async ({ token, newPassword }) => {
-  const { userId } = await verifyToken(token);
-  const user = await User.findById(userId);
+const resetPassword = async (event) => {
+  try {
+    console.log("Incoming event:", event);
 
-  if (!user) {
-    throw new AppError("Invalid or expired token", 400);
+    // Access token and newPassword directly from the event
+    const { token, newPassword } = event;
+
+    console.log("Extracted token:", token);
+    console.log("Extracted newPassword:", newPassword);
+
+    if (!token || !newPassword) {
+      throw new AppError("Token and new password are required", 400);
+    }
+
+    // Verify the token (now it will work even if token is in the body)
+    const decoded = await verifyToken(event); // Pass event to verifyToken
+    if (!decoded || !decoded.userId) {
+      throw new AppError("Invalid or expired token", 400);
+    }
+
+    // Find the user by ID
+    const user = await User.findById(decoded.userId);
+    if (!user) {
+      throw new AppError("User not found", 404);
+    }
+
+    // Update the user's password
+    user.password = newPassword;
+    await user.save();
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: "Password reset successful" }),
+    };
+  } catch (error) {
+    console.error("Reset password error:", error);
+    return {
+      statusCode: error.statusCode || 500,
+      body: JSON.stringify({
+        message: error.message || "Password reset failed",
+      }),
+    };
   }
-
-  user.password = newPassword;
-  await user.save();
-
-  return {
-    statusCode: 200,
-    body: { message: "Password reset successful" },
-  };
 };
 
 const verifyEmail = async (event) => {
-  const { token } = JSON.parse(event.body);
-
-  if (!token) {
-    throw new AppError("Verification token is required", 400);
-  }
-
-  let hashedToken;
   try {
-    hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+    const { token } = JSON.parse(event.body);
+
+    if (!token) {
+      throw new AppError("Verification token is required", 400);
+    }
+
+    // Use the new verifyEmailToken function instead of verifyToken
+    const decoded = await verifyEmailToken(token);
+
+    if (!decoded.userId) {
+      throw new AppError("Invalid token format", 400);
+    }
+
+    const user = await User.findById(decoded.userId);
+
+    if (!user) {
+      throw new AppError("User not found", 404);
+    }
+
+    if (user.isEmailVerified) {
+      return {
+        statusCode: 200,
+        body: JSON.stringify({
+          message: "Email already verified",
+          token: token,
+        }),
+      };
+    }
+
+    user.isEmailVerified = true;
+    await user.save();
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        message: "Email verified successfully",
+        token: token,
+      }),
+    };
   } catch (error) {
-    console.error("Error hashing token:", error);
-    throw new AppError("Error processing verification token", 500);
+    console.error("Verification error:", error);
+    throw new AppError(
+      error.message || "Error verifying email",
+      error.statusCode || 400
+    );
   }
-
-  const user = await User.findOne({
-    emailVerificationToken: hashedToken,
-    emailVerificationExpires: { $gt: Date.now() },
-  });
-
-  if (!user) {
-    throw new AppError("Token is invalid or has expired", 400);
-  }
-
-  user.isEmailVerified = true;
-  user.emailVerificationToken = undefined;
-  user.emailVerificationExpires = undefined;
-  await user.save();
-
-  const jwtToken = generateToken({ userId: user._id });
-
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: "Email verified successfully",
-      token: jwtToken,
-    }),
-  };
 };
 
+/**
+ * Resends the email verification token to a user
+ * @param {Object} params - The request parameters
+ * @param {string} params.email - The email address of the user
+ * @returns {Promise<Object>} Response object with status code and message
+ */
 const resendVerification = async ({ email }) => {
-  const user = await User.findOne({ email });
+  try {
+    // Validate email presence
+    if (!email) {
+      return createResponse(400, "Email is required");
+    }
 
-  if (!user) {
-    throw new AppError("No user found with that email address", 404);
+    // Find user and validate verification status
+    const user = await User.findOne({ email });
+    if (!user) {
+      return createResponse(404, "No user found with that email address");
+    }
+
+    if (user.isEmailVerified) {
+      return createResponse(400, "Email is already verified");
+    }
+
+    // Generate and send new verification token
+    const verificationToken = generateToken({ userId: user._id }, "1d");
+
+    try {
+      await sendVerificationEmail(user, verificationToken);
+      return createResponse(
+        200,
+        "Verification email resent successfully. Please check your email."
+      );
+    } catch (error) {
+      console.error("Error sending verification email:", error);
+      return createResponse(
+        500,
+        "Failed to send verification email. Please try again later."
+      );
+    }
+  } catch (error) {
+    console.error("Resend verification error:", error);
+    return createResponse(
+      500,
+      error.message || "An error occurred while resending verification email"
+    );
   }
-
-  if (user.isVerified) {
-    throw new AppError("Email is already verified", 400);
-  }
-
-  const verificationToken = generateToken({ userId: user._id }, "1d");
-  await sendVerificationEmail(user.email, verificationToken);
-
-  return {
-    statusCode: 200,
-    body: { message: "Verification email resent" },
-  };
 };
 
 const getUserPreferences = async (event) => {
-  const userId = await verifyToken(event);
-  const preferences = await getPreferences(userId);
+  try {
+    const userId = await verifyToken(event);
+    const preferences = await getPreferences(userId);
 
-  return {
-    statusCode: 200,
-    body: { preferences },
-  };
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ preferences }), // Ensure this is a valid JSON string
+    };
+  } catch (error) {
+    console.error("Get preferences error:", error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ message: error.message || "An error occurred" }),
+    };
+  }
 };
 
 const updateUserPreferences = async (event) => {
-  const userId = await verifyToken(event);
-  const newPreferences = JSON.parse(event.body);
-  const updatedPreferences = await updatePreferences(userId, newPreferences);
+  try {
+    const userId = await verifyToken(event); // Assuming this retrieves the user ID
+    const { preferences } = JSON.parse(event.body); // Ensure this is a valid JSON string
 
-  return {
-    statusCode: 200,
-    body: { preferences: updatedPreferences },
-  };
+    // Log the preferences to ensure they are in the expected format
+    console.log("Updating preferences:", preferences);
+
+    // Update preferences in the database
+    const updatedPreferences = await updatePreferences(userId, preferences);
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ preferences: updatedPreferences }), // Ensure this is a valid JSON string
+    };
+  } catch (error) {
+    console.error("Update preferences error:", error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ message: error.message || "An error occurred" }),
+    };
+  }
 };
-
 const resetUserPreferences = async (event) => {
   const userId = await verifyToken(event);
-  const resetPreferences = await resetPreferences(userId);
+
+  if (!userId) {
+    throw new AppError("User ID is invalid", 400); // Handle invalid user ID
+  }
+
+  const preferences = await resetPreferences(userId); // Use a different variable name
 
   return {
     statusCode: 200,
-    body: { preferences: resetPreferences },
+    body: JSON.stringify({ preferences }), // Ensure the response is JSON stringified
   };
 };
 

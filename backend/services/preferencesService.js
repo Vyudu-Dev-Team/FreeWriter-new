@@ -1,16 +1,16 @@
 // services/preferencesService.js
-import User from '../models/User.js';
-import AppError from '../utils/appError.js';
+import User from "../models/User.js";
+import AppError from "../utils/appError.js";
 
 /**
  * Preference categories
  * @enum {string}
  */
 const PreferenceCategory = {
-  INTERFACE: 'interface',
-  WRITING: 'writing',
-  NOTIFICATIONS: 'notifications',
-  PRIVACY: 'privacy',
+  INTERFACE: "interface",
+  WRITING: "writing",
+  NOTIFICATIONS: "notifications",
+  PRIVACY: "privacy",
 };
 
 /**
@@ -19,9 +19,9 @@ const PreferenceCategory = {
  */
 const DEFAULT_PREFERENCES = {
   [PreferenceCategory.INTERFACE]: {
-    theme: 'light',
+    theme: "light",
     fontSize: 16,
-    fontFamily: 'Arial',
+    fontFamily: "Arial",
   },
   [PreferenceCategory.WRITING]: {
     autoSave: true,
@@ -46,7 +46,7 @@ const DEFAULT_PREFERENCES = {
 export const getPreferences = async (userId) => {
   const user = await User.findById(userId);
   if (!user) {
-    throw new AppError('User not found', 404);
+    throw new AppError("User not found", 404);
   }
 
   // Merge user preferences with default preferences
@@ -65,7 +65,7 @@ export const getPreferences = async (userId) => {
 export const updatePreferences = async (userId, newPreferences) => {
   const user = await User.findById(userId);
   if (!user) {
-    throw new AppError('User not found', 404);
+    throw new AppError("User not found", 404);
   }
 
   // Validate and sanitize new preferences
@@ -90,13 +90,14 @@ export const updatePreferences = async (userId, newPreferences) => {
 export const resetPreferences = async (userId) => {
   const user = await User.findById(userId);
   if (!user) {
-    throw new AppError('User not found', 404);
+    throw new AppError("User not found", 404);
   }
 
-  user.preferences = {};
+  // Reset preferences to default values
+  user.preferences = DEFAULT_PREFERENCES; // Set to default preferences
   await user.save();
 
-  return DEFAULT_PREFERENCES;
+  return DEFAULT_PREFERENCES; // Return the default preferences
 };
 
 /**
@@ -111,8 +112,14 @@ const validateAndSanitizePreferences = (preferences) => {
     if (PreferenceCategory[category.toUpperCase()]) {
       validatedPreferences[category] = {};
       for (const [key, value] of Object.entries(values)) {
-        if (DEFAULT_PREFERENCES[category] && DEFAULT_PREFERENCES[category].hasOwnProperty(key)) {
-          validatedPreferences[category][key] = sanitizePreferenceValue(value, typeof DEFAULT_PREFERENCES[category][key]);
+        if (
+          DEFAULT_PREFERENCES[category] &&
+          DEFAULT_PREFERENCES[category].hasOwnProperty(key)
+        ) {
+          validatedPreferences[category][key] = sanitizePreferenceValue(
+            value,
+            typeof DEFAULT_PREFERENCES[category][key]
+          );
         }
       }
     }
@@ -129,11 +136,11 @@ const validateAndSanitizePreferences = (preferences) => {
  */
 const sanitizePreferenceValue = (value, expectedType) => {
   switch (expectedType) {
-    case 'boolean':
+    case "boolean":
       return Boolean(value);
-    case 'number':
+    case "number":
       return Number(value) || 0;
-    case 'string':
+    case "string":
       return String(value).slice(0, 255); // Limit string length
     default:
       return value;
