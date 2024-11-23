@@ -86,12 +86,19 @@ app.post("/users/login", async (req, res) => {
   }
 });
 
-app.post("/users/verify-email", async (req, res) => {
+app.all("/users/verify-email", async (req, res) => {
   try {
+    let token;
+    if (req.method === "GET") {
+      token = req.query.token;
+    } else {
+      token = req.body.token;
+    }
+
     const response = await handleUserRoutes({
-      httpMethod: "POST",
+      httpMethod: req.method,
       path: "/verify-email",
-      body: JSON.stringify(req.body),
+      body: JSON.stringify({ token }),
       headers: req.headers,
       queryStringParameters: req.query,
     });
@@ -167,17 +174,28 @@ app.post("/users/reset-password", async (req, res) => {
 
 app.post("/users/resend-verification", async (req, res) => {
   try {
+    console.log("Handling resend verification request:", req.body);
+
     const response = await handleUserRoutes({
       httpMethod: "POST",
-      path: "/resend-verification",
+      path: "resend-verification",
       body: JSON.stringify(req.body),
       headers: req.headers,
       queryStringParameters: req.query,
     });
-    res.status(response.statusCode).json(JSON.parse(response.body));
+
+    // Parse the response body if it's a string
+    const responseBody =
+      typeof response.body === "string"
+        ? JSON.parse(response.body)
+        : response.body;
+
+    res.status(response.statusCode).json(responseBody);
   } catch (error) {
     console.error("Resend verification error:", error);
-    res.status(error.statusCode || 500).json({ message: error.message });
+    res.status(error.statusCode || 500).json({
+      message: error.message || "Error resending verification email",
+    });
   }
 });
 

@@ -48,7 +48,7 @@ const userSchema = new mongoose.Schema({
   },
   isEmailVerified: {
     type: Boolean,
-    default: true, // Default to false until verified
+    default: false, // Default to false until verified
   },
 }, 
 {
