@@ -4,7 +4,7 @@
   publish = "/dist" # caminho para o front-end gerado
 
 [functions]
-    directory = "../backend/api"
+    directory = "../backend/functions"
 
 [[headers]]
   # Define which paths this specific [[headers]] block will cover.
