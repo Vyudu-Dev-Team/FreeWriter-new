@@ -10,6 +10,7 @@ import Login from './components/commonComponents/Login';
 import ForgotPassword from './components/ForgotPassword';
 import Onboarding from './components/Onboarding';
 import Register from './components/Register';
+import EmailVerification from './components/EmailVerification';
 
 import Home from './components/Home';
 
@@ -45,6 +46,7 @@ function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/verify-email/:token" element={<EmailVerification />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/onboarding" element={<PrivateRoute><Onboarding /></PrivateRoute>} />
             <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />

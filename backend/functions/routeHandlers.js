@@ -24,6 +24,8 @@ export const handleUserRoutes = async (event) => {
     body: JSON.stringify({ message }),
   });
   switch (`${httpMethod} ${route}`) {
+    case "GET /current-user":
+      return getCurrentUser(event);
     case "POST /register":
       return register(JSON.parse(event.body));
     case "POST /login":
@@ -49,6 +51,48 @@ export const handleUserRoutes = async (event) => {
       return resetUserPreferences(event);
     default:
       return { statusCode: 404, body: { message: "Not Found" } };
+  }
+};
+
+const getCurrentUser = async (event) => {
+  try {
+    const token = event.headers.authorization?.split(" ")[1];
+    if (!token) {
+      return {
+        statusCode: 401,
+        body: JSON.stringify({ message: "No token provided" }),
+      };
+    }
+
+    const decoded = await verifyToken(token);
+    const user = await User.findById(decoded.userId).select("-password");
+
+    if (!user) {
+      return {
+        statusCode: 404,
+        body: JSON.stringify({ message: "User not found" }),
+      };
+    }
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        user: {
+          id: user._id,
+          username: user.username,
+          email: user.email,
+          isEmailVerified: user.isEmailVerified,
+          writingMode: user.writingMode,
+          goals: user.goals,
+        },
+      }),
+    };
+  } catch (error) {
+    console.error("Get current user error:", error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ message: "Error fetching current user" }),
+    };
   }
 };
 

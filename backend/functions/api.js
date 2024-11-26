@@ -7,6 +7,7 @@ import {
   handleStoryRoutes,
   handleAIRoutes,
 } from "./routeHandlers.js";
+import { getCurrentUser } from "./currentUser.js";
 import connectDB from "../config/database.js";
 
 const app = express();
@@ -85,6 +86,9 @@ app.post("/users/login", async (req, res) => {
     res.status(error.statusCode || 500).json({ message: error.message });
   }
 });
+
+// Current user route
+app.get("/users/current-user", getCurrentUser);
 
 app.all("/users/verify-email", async (req, res) => {
   try {
@@ -280,6 +284,57 @@ app.use("/ai", async (req, res) => {
   }
 });
 
+app.post("/ai/generate-prompt", async (req, res) => {
+  try {
+    const response = await handleAIRoutes({
+      httpMethod: "POST",
+      path: "/generate-prompt",
+      body: JSON.stringify(req.body),
+      headers: req.headers,
+      queryStringParameters: req.query,
+    });
+    
+    res.status(response.statusCode).json(response.body);
+  } catch (error) {
+    console.error("Generate prompt error:", error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.post("/ai/generate-guidance", async (req, res) => {
+  try {
+    const response = await handleAIRoutes({
+      httpMethod: "POST", 
+      path: "/generate-guidance",
+      body: JSON.stringify(req.body),
+      headers: req.headers,
+      queryStringParameters: req.query,
+    });
+    
+    res.status(response.statusCode).json(response.body);
+  } catch (error) {
+    console.error("Generate guidance error:", error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.post("/ai/submit-feedback", async (req, res) => {
+  try {
+    const response = await handleAIRoutes({
+      httpMethod: "POST",
+      path: "/submit-feedback", 
+      body: JSON.stringify(req.body),
+      headers: req.headers,
+      queryStringParameters: req.query,
+    });
+    
+    res.status(response.statusCode).json(response.body);
+  } catch (error) {
+    console.error("Submit feedback error:", error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // 404 handler
 app.use((req, res) => {
   console.log("404 Not Found:", {
@@ -291,3 +346,5 @@ app.use((req, res) => {
 });
 
 export const handler = serverless(app);
+
+
