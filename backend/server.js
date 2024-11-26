@@ -21,9 +21,6 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-// Load environment variables
-dotenv.config();
-
 // Comprehensive CORS configuration
 // const ALLOWED_ORIGINS = [
 //   'http://localhost:5173', 
