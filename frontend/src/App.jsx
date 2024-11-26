@@ -5,7 +5,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import theme from './theme';
 
-// import Navbar from './components/commonComponents/Navbar';
+import Navbar from './components/commonComponents/Navbar';
 import Login from './components/commonComponents/Login';
 import ForgotPassword from './components/ForgotPassword';
 import Onboarding from './components/Onboarding';
@@ -39,7 +39,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Router>
-          {/* <Navbar /> */}
+          <Navbar />
           <Routes>
             <Route path="/" element={<TitleScreen />} />
             <Route path="/home" element={<Home />} />
@@ -48,11 +48,11 @@ function App() {
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/onboarding" element={<PrivateRoute><Onboarding /></PrivateRoute>} />
             <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
-            <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/prompt" element={<PrivateRoute><PromptPage /></PrivateRoute>} />
             <Route path="/story-map" element={<PrivateRoute><StoryMapComponent /></PrivateRoute>} />
             <Route path="/story-map/:storyId" element={<PrivateRoute><StoryMap /></PrivateRoute>} />
-            <Route path="/deck" element={<PrivateRoute><DeckManager /></PrivateRoute>} />
+            <Route path="/deck" element={<DeckManager />} />
             <Route path="/write/:storyId" element={<PrivateRoute><WritingWorkspace /></PrivateRoute>} />
             {/* <Route path="/notifications" element={<PrivateRoute><NotificationCenter /></PrivateRoute>} /> */}
             <Route path="/badges" element={<PrivateRoute><BadgeDisplay /></PrivateRoute>} />

@@ -12,7 +12,6 @@ export default function FreewriterTutorial({ handleSkipTutorial, setShowIntro })
         display: 'flex',
         position: 'relative',
         overflow: 'hidden',
-        backgroundImage: 'url(/path/to/background-pattern.png)',
         backgroundSize: 'cover',
       }}
     >

@@ -5,7 +5,8 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/api': 'http://localhost:5000'
+      '/api': 'https://freewriter-develop-branch.netlify.app/.netlify/functions/api'
     }
   }
 })
+

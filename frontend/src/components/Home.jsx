@@ -21,7 +21,7 @@ function Home() {
 
   return (
     <>
-      {tutorialCompleted ? (
+      
         <Container maxWidth="lg" sx={{ mt: 4, textAlign: 'center' }}>
           <Box sx={{ mb: 4 }}>
             <img src="/assets/images/logo.svg" alt="freeWriter Logo" style={{ width: '100px', height: '100px' }} />
@@ -66,9 +66,6 @@ function Home() {
 
           <button onClick={apiTest}>Test API</button>
         </Container>
-      ) : (
-        <Tutorials handleSkipTutorial={handleSkipTutorial} />
-      )}
     </>
   );
 }
