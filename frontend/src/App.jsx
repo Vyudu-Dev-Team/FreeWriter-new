@@ -48,13 +48,14 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/verify-email/:token" element={<EmailVerification />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
+
             <Route path="/onboarding" element={<PrivateRoute><Onboarding /></PrivateRoute>} />
             <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
             <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
             <Route path="/prompt" element={<PrivateRoute><PromptPage /></PrivateRoute>} />
             <Route path="/story-map" element={<PrivateRoute><StoryMapComponent /></PrivateRoute>} />
             <Route path="/story-map/:storyId" element={<PrivateRoute><StoryMap /></PrivateRoute>} />
-            <Route path="/deck" element={<PrivateRoute><DeckManager /></PrivateRoute>} />
+            <Route path="/deck" element={<DeckManager />} />
             <Route path="/write/:storyId" element={<PrivateRoute><WritingWorkspace /></PrivateRoute>} />
             {/* <Route path="/notifications" element={<PrivateRoute><NotificationCenter /></PrivateRoute>} /> */}
             <Route path="/badges" element={<PrivateRoute><BadgeDisplay /></PrivateRoute>} />

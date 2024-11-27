@@ -5,7 +5,11 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/api': 'https://freewriter-develop-branch.netlify.app/.netlify/functions/api'
+      '/.netlify/functions/api': {
+        target: 'http://localhost:8888',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/\.netlify\/functions\/api/, '')
+      }
     }
   }
 })
