@@ -1,5 +1,5 @@
 [build]
-  command = "npm run build:frontend"
+  command = "npm run build"
   publish = "frontend/dist"
 
 [functions]
@@ -7,9 +7,37 @@
   node_bundler = "esbuild"
   external_node_modules = ["crypto-browserify"]
 
+# Redireciona todas as chamadas de API para a função api
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/api/:splat"
+  status = 200
+
+# Redireciona chamadas específicas para a mesma função
+[[redirects]]
+  from = "/auth/*"
+  to = "/.netlify/functions/api/auth/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/users/*"
+  to = "/.netlify/functions/api/users/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/stories/*"
+  to = "/.netlify/functions/api/stories/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/ai/*"
+  to = "/.netlify/functions/api/ai/:splat"
+  status = 200
+
+# Redireciona todas as outras rotas para o frontend
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
   status = 200
 
 [[headers]]
