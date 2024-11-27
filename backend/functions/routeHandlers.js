@@ -15,6 +15,9 @@ import {
 } from "../services/preferencesService.js";
 import bcrypt from "bcryptjs";
 import AppError from "../utils/appError.js";
+import OpenAI from 'openai';
+
+const openai = new OpenAI(process.env.OPENAI_API_KEY);
 
 export const handleUserRoutes = async (event) => {
   const { httpMethod, path } = event;
@@ -517,14 +520,52 @@ export const handleAIRoutes = async (event) => {
   const route = path.replace("/ai", "");
 
   switch (`${httpMethod} ${route}`) {
+    case "POST /prompt":
+      return handlePromptInteraction(JSON.parse(event.body));
     case "POST /generate-prompt":
       return generatePrompt(JSON.parse(event.body));
     case "POST /generate-guidance":
       return generateGuidance(JSON.parse(event.body));
     case "POST /submit-feedback":
       return submitFeedback(JSON.parse(event.body));
+    case "POST /dashboard-analysis":
+      return dashboardAnalysis(JSON.parse(event.body));
     default:
       return { statusCode: 404, body: { message: "Not Found" } };
+  }
+};
+
+const handlePromptInteraction = async (data) => {
+  try {
+    const { input } = data;
+    
+    const completion = await openai.chat.completions.create({
+      messages: [
+        { 
+          role: "system", 
+          content: "You are a helpful writing assistant, focused on helping writers develop their stories and improve their writing skills." 
+        },
+        { role: "user", content: input }
+      ],
+      model: "gpt-3.5-turbo",
+    });
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        response: completion.choices[0].message.content,
+        success: true
+      })
+    };
+  } catch (error) {
+    console.error('AI Prompt Interaction error:', error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ 
+        message: 'Error processing AI interaction',
+        success: false 
+      })
+    };
   }
 };
 
@@ -656,6 +697,49 @@ const submitFeedback = async (data) => {
       body: {
         message: error.message || "An error occurred while submitting feedback",
       },
+    };
+  }
+};
+
+const dashboardAnalysis = async (data) => {
+  try {
+    const { userData } = data;
+    
+    // Prepare the prompt for the AI
+    const prompt = `As a writing assistant, analyze the following user data and provide insights about their writing journey:
+    - Recent writing activity
+    - Writing patterns
+    - Areas of improvement
+    - Suggestions for growth
+
+    User Data: ${JSON.stringify(userData)}`;
+    
+    const completion = await openai.chat.completions.create({
+      messages: [
+        { 
+          role: "system", 
+          content: "You are a specialized writing coach focused on helping writers improve their craft through data analysis and personalized feedback." 
+        },
+        { role: "user", content: prompt }
+      ],
+      model: "gpt-3.5-turbo",
+    });
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        analysis: completion.choices[0].message.content,
+        success: true
+      })
+    };
+  } catch (error) {
+    console.error('Dashboard AI Analysis error:', error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ 
+        message: 'Error processing dashboard analysis',
+        success: false 
+      })
     };
   }
 };

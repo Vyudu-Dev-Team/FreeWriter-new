@@ -1,7 +1,14 @@
 import axios from "axios";
 
+const baseURL = import.meta.env.DEV 
+  ? 'http://localhost:8888/.netlify/functions/api'
+  : '/.netlify/functions/api';
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "/.netlify/functions/api",
+  baseURL,
+  headers: {
+    'Content-Type': 'application/json'
+  }
 });
 
 // Add request interceptor
@@ -64,9 +71,10 @@ export const storyAPI = {
 };
 
 export const aiAPI = {
-  // Add methods for AI-related API calls
-  // Example:
-  // generatePrompt: (data) => api.post('/ai/generate-prompt', data),
+  generatePrompt: (data) => api.post('/ai/generate-prompt', data),
+  generateGuidance: (data) => api.post('/ai/generate-guidance', data),
+  submitFeedback: (data) => api.post('/ai/submit-feedback', data),
+  dashboardAnalysis: (data) => api.post('/ai/dashboard-analysis', data)
 };
 
 export function apiTest() {

@@ -335,6 +335,24 @@ app.post("/ai/submit-feedback", async (req, res) => {
   }
 });
 
+app.post('/ai/dashboard-analysis', async (req, res) => {
+  console.log('Received dashboard analysis request');
+  try {
+    const response = await handleAIRoutes({
+      path: '/ai/dashboard-analysis',
+      httpMethod: 'POST',
+      body: JSON.stringify(req.body)
+    });
+    res.status(response.statusCode).json(JSON.parse(response.body));
+  } catch (error) {
+    console.error('Dashboard analysis error:', error);
+    res.status(500).json({ 
+      message: 'Internal server error processing dashboard analysis',
+      success: false 
+    });
+  }
+});
+
 // 404 handler
 app.use((req, res) => {
   console.log("404 Not Found:", {
