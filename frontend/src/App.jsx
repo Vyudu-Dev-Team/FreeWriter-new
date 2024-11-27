@@ -5,7 +5,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import theme from './theme';
 
-// import Navbar from './components/commonComponents/Navbar';
+import Navbar from './components/commonComponents/Navbar';
 import Login from './components/commonComponents/Login';
 import ForgotPassword from './components/ForgotPassword';
 import Onboarding from './components/Onboarding';
@@ -40,7 +40,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Router>
-          {/* <Navbar /> */}
+          <Navbar />
           <Routes>
             <Route path="/" element={<TitleScreen />} />
             <Route path="/home" element={<Home />} />

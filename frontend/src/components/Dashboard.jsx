@@ -31,9 +31,9 @@ import {
 import { Link as RouterLink } from "react-router-dom";
 import { useAppContext } from "../contexts/AppContext";
 import axios from "axios";
-// import { motion } from "framer-motion";
+import Tutorials from './Tutorials';
 
-function Dashboard() {
+function DashboardComponent() {
   const { state, dispatch } = useAppContext();
   const { stories, loading, error } = state;
 
@@ -302,4 +302,24 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default function Dashboard(){
+  const [tutorialCompleted, setTutorialCompleted] = useState('true');
+  
+
+  useEffect(() => {
+    const completed = localStorage.getItem('tutorialsCompleted');
+    setTutorialCompleted(completed === 'true');
+  }, []);
+
+  const handleSkipTutorial = () => {
+    localStorage.setItem('tutorialsCompleted', 'true');
+    setTutorialCompleted(true);
+  };
+  return(
+    tutorialCompleted ? ( 
+      <DashboardComponent />
+    ) : ( 
+      <Tutorials handleSkipTutorial={handleSkipTutorial} />
+    )
+  )
+}
