@@ -14,7 +14,7 @@
     "analyze-ai": "node services/aiAnalysisService.js",
     "analyze-feedback": "node services/aiFeedbackService.js",
     "update-tests": "node scripts/updateTestCases.js",
-    "build": "netlify-lambda build ."
+    "build": "echo 'No build step needed for backend functions'"
   },
   "dependencies": {
     "@langchain/google-genai": "^0.0.6",
