@@ -6,9 +6,12 @@ import {
   handleUserRoutes,
   handleStoryRoutes,
   handleAIRoutes,
+  handleDeckRoutes,
+  handleCardRoutes
 } from "./routeHandlers.js";
 import { getCurrentUser } from "./currentUser.js";
 import connectDB from "../config/database.js";
+import logger from '../utils/logger.js';
 
 const app = express();
 
@@ -26,7 +29,7 @@ app.use(express.json());
 // Debug middleware with fixed path handling
 app.use((req, res, next) => {
   req.url = req.originalUrl.replace(/\/?\.netlify\/functions\/api\/?/, "/");
-  console.log("Processed Request:", {
+  logger.info("Processed Request:", {
     method: req.method,
     originalUrl: req.originalUrl,
     cleanPath: req.url,
@@ -41,14 +44,14 @@ app.use(async (req, res, next) => {
     await connectDB();
     next();
   } catch (error) {
-    console.error("Database connection error:", error);
+    logger.error("Database connection error:", error);
     res.status(500).json({ message: "Database connection failed" });
   }
 });
 
 // User routes
 app.post("/users/register", async (req, res) => {
-  console.log("Hit register route");
+  logger.info("Hit register route");
   try {
     const response = await handleUserRoutes({
       httpMethod: "POST",
@@ -59,7 +62,7 @@ app.post("/users/register", async (req, res) => {
     });
     res.status(response.statusCode).json(response.body);
   } catch (error) {
-    console.error("Register error:", error);
+    logger.error("Register error:", error);
     res.status(500).json({ message: error.message });
   }
 });
@@ -82,7 +85,7 @@ app.post("/users/login", async (req, res) => {
 
     res.status(response.statusCode).json(responseBody);
   } catch (error) {
-    console.error("Login error:", error);
+    logger.error("Login error:", error);
     res.status(error.statusCode || 500).json({ message: error.message });
   }
 });
@@ -108,7 +111,7 @@ app.all("/users/verify-email", async (req, res) => {
     });
     res.status(response.statusCode).json(JSON.parse(response.body));
   } catch (error) {
-    console.error("Verification error:", error);
+    logger.error("Verification error:", error);
     res.status(500).json({ message: error.message });
   }
 });
@@ -123,7 +126,7 @@ app.get("/users/profile", async (req, res) => {
     });
     res.status(response.statusCode).json(JSON.parse(response.body));
   } catch (error) {
-    console.error("Get profile error:", error);
+    logger.error("Get profile error:", error);
     res.status(error.statusCode || 500).json({ message: error.message });
   }
 });
@@ -139,7 +142,7 @@ app.put("/users/profile", async (req, res) => {
     });
     res.status(response.statusCode).json(JSON.parse(response.body));
   } catch (error) {
-    console.error("Update profile error:", error);
+    logger.error("Update profile error:", error);
     res.status(error.statusCode || 500).json({ message: error.message });
   }
 });
@@ -155,7 +158,7 @@ app.post("/users/forgot-password", async (req, res) => {
     });
     res.status(response.statusCode).json(JSON.parse(response.body));
   } catch (error) {
-    console.error("Forgot password error:", error);
+    logger.error("Forgot password error:", error);
     res.status(error.statusCode || 500).json({ message: error.message });
   }
 });
@@ -171,14 +174,14 @@ app.post("/users/reset-password", async (req, res) => {
     });
     res.status(response.statusCode).json(JSON.parse(response.body));
   } catch (error) {
-    console.error("Reset password error:", error);
+    logger.error("Reset password error:", error);
     res.status(error.statusCode || 500).json({ message: error.message });
   }
 });
 
 app.post("/users/resend-verification", async (req, res) => {
   try {
-    console.log("Handling resend verification request:", req.body);
+    logger.log("Handling resend verification request:", req.body);
 
     const response = await handleUserRoutes({
       httpMethod: "POST",
@@ -196,7 +199,7 @@ app.post("/users/resend-verification", async (req, res) => {
 
     res.status(response.statusCode).json(responseBody);
   } catch (error) {
-    console.error("Resend verification error:", error);
+    logger.error("Resend verification error:", error);
     res.status(error.statusCode || 500).json({
       message: error.message || "Error resending verification email",
     });
@@ -213,7 +216,7 @@ app.get("/users/preferences", async (req, res) => {
     });
     res.status(response.statusCode).json(JSON.parse(response.body));
   } catch (error) {
-    console.error("Get preferences error:", error);
+    logger.error("Get preferences error:", error);
     res.status(error.statusCode || 500).json({ message: error.message });
   }
 });
@@ -229,7 +232,7 @@ app.put("/users/preferences", async (req, res) => {
     });
     res.status(response.statusCode).json(JSON.parse(response.body));
   } catch (error) {
-    console.error("Update preferences error:", error);
+    logger.error("Update preferences error:", error);
     res.status(error.statusCode || 500).json({ message: error.message });
   }
 });
@@ -245,7 +248,7 @@ app.post("/users/reset-preferences", async (req, res) => {
     });
     res.status(response.statusCode).json(JSON.parse(response.body));
   } catch (error) {
-    console.error("Reset preferences error:", error);
+    logger.error("Reset preferences error:", error);
     res.status(error.statusCode || 500).json({ message: error.message });
   }
 });
@@ -262,7 +265,7 @@ app.use("/stories", async (req, res) => {
     });
     res.status(response.statusCode).json(response.body);
   } catch (error) {
-    console.error("Story route error:", error);
+    logger.error("Story route error:", error);
     res.status(500).json({ message: error.message });
   }
 });
@@ -279,7 +282,7 @@ app.use("/ai", async (req, res) => {
     });
     res.status(response.statusCode).json(response.body);
   } catch (error) {
-    console.error("AI route error:", error);
+    logger.error("AI route error:", error);
     res.status(500).json({ message: error.message });
   }
 });
@@ -296,7 +299,7 @@ app.post("/ai/generate-prompt", async (req, res) => {
     
     res.status(response.statusCode).json(response.body);
   } catch (error) {
-    console.error("Generate prompt error:", error);
+    logger.error("Generate prompt error:", error);
     res.status(500).json({ message: error.message });
   }
 });
@@ -313,7 +316,7 @@ app.post("/ai/generate-guidance", async (req, res) => {
     
     res.status(response.statusCode).json(response.body);
   } catch (error) {
-    console.error("Generate guidance error:", error);
+    logger.error("Generate guidance error:", error);
     res.status(500).json({ message: error.message });
   }
 });
@@ -330,13 +333,13 @@ app.post("/ai/submit-feedback", async (req, res) => {
     
     res.status(response.statusCode).json(response.body);
   } catch (error) {
-    console.error("Submit feedback error:", error);
+    logger.error("Submit feedback error:", error);
     res.status(500).json({ message: error.message });
   }
 });
 
 app.post('/ai/dashboard-analysis', async (req, res) => {
-  console.log('Received dashboard analysis request');
+  logger.log('Received dashboard analysis request');
   try {
     const response = await handleAIRoutes({
       path: '/ai/dashboard-analysis',
@@ -345,7 +348,7 @@ app.post('/ai/dashboard-analysis', async (req, res) => {
     });
     res.status(response.statusCode).json(JSON.parse(response.body));
   } catch (error) {
-    console.error('Dashboard analysis error:', error);
+    logger.error('Dashboard analysis error:', error);
     res.status(500).json({ 
       message: 'Internal server error processing dashboard analysis',
       success: false 
@@ -353,9 +356,41 @@ app.post('/ai/dashboard-analysis', async (req, res) => {
   }
 });
 
+app.use("/decks", async (req, res) => {
+  try {
+    const response = await handleDeckRoutes({
+      httpMethod: req.method,
+      path: req.path.replace(/^\/decks/, ""),
+      body: JSON.stringify(req.body),
+      headers: req.headers,
+      queryStringParameters: req.query,
+    });
+    res.status(response.statusCode).json(JSON.parse(response.body));
+  } catch (error) {
+    logger.error("Deck route error:", error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.use("/cards", async (req, res) => {
+  try {
+    const response = await handleCardRoutes({
+      httpMethod: req.method,
+      path: req.path.replace(/^\/cards/, ""),
+      body: JSON.stringify(req.body),
+      headers: req.headers,
+      queryStringParameters: req.query,
+    });
+    res.status(response.statusCode).json(JSON.parse(response.body));
+  } catch (error) {
+    logger.error("Card route error:", error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // 404 handler
 app.use((req, res) => {
-  console.log("404 Not Found:", {
+  logger.warn("404 Not Found:", {
     method: req.method,
     originalUrl: req.originalUrl,
     path: req.url,

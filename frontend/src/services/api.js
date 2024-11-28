@@ -59,6 +59,9 @@ export const userAPI = {
   updatePreferences: (preferences) =>
     api.put("/users/preferences", preferences),
   resetPreferences: () => api.post("/users/reset-preferences"),
+  getDecks: () => api.get("/decks"),
+  createDeck: (deckData) => api.post("/decks", deckData),
+  createCard: (deckId, cardData) => api.post(`/decks/${deckId}/cards`, cardData),
 };
 
 export const storyAPI = {
@@ -77,8 +80,14 @@ export const aiAPI = {
   dashboardAnalysis: (data) => api.post('/ai/dashboard-analysis', data)
 };
 
-export function apiTest() {
-  return api.get("/hello");
-}
+export const apiTest = async () => {
+  try {
+    const response = await api.get('/test');
+    alert("API Connection Successful!");
+  } catch (error) {
+    console.error("API Test Failed:", error);
+    alert("API Connection Failed");
+  }
+};
 
 export default api;
