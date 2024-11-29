@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios"; // Axios for API calls
+import axios from "axios";
 import {
     Box,
     Container,
@@ -10,7 +10,6 @@ import {
     Paper,
     Radio,
     RadioGroup,
-    FormControlLabel,
     Link,
 } from "@mui/material";
 import { Star, Cached, HelpOutline, Settings } from "@mui/icons-material";
@@ -39,7 +38,7 @@ const StyledContainer = styled(Container)({
     minHeight: "100vh",
     width: "100vw",
     maxWidth: "100% !important",
-    backgroundImage: 'url("/assets/images/white-paper.jpg")',
+    backgroundImage: 'url("/assets/images/bg-grid.svg")',
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center",
@@ -69,23 +68,40 @@ const PromptCard = styled(Paper)(({ theme, selected }) => ({
     },
 }));
 
-const CategoryButton = styled(Button)(({ theme, color }) => ({
-    padding: "1.5rem",
-    fontSize: "1.25rem",
+const CategoryCard = styled(Paper)(({ theme, color }) => ({
+    position: "relative",
+    padding: "1rem",
+    textAlign: "center",
     fontWeight: "bold",
-    borderRadius: "16px",
+    fontSize: "1.2rem",
+    fontFamily: 'PixelSplitter, "Courier New", monospace',
     backgroundColor: color === "primary" ? theme.palette.primary.main : theme.palette.secondary.main,
     color: color === "primary" ? theme.palette.common.white : theme.palette.common.black,
+    borderRadius: "16px 16px 0 0",
+    border: `3px solid ${theme.palette.common.black}`,
+    margin: "0 auto",
+    width: "250px",
+    height: "140px",
+    cursor: "pointer",
     "&:hover": {
         opacity: 0.9,
     },
 }));
 
-const GridContainer = styled(Grid)({
-    backgroundColor: "#000",
-    borderRadius: "16px",
-    padding: "2rem",
-});
+const FixedBottomWrapper = styled(Box)(({ theme }) => ({
+    overflow: "hidden",
+    position: "fixed",
+    bottom: 0,
+    width: "100%",
+    backgroundColor: theme.palette.common.black,
+    paddingTop: "3rem",
+    paddingBottom: 0,
+    borderRadius: "16px 16px 0 0",
+    display: "flex",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    zIndex: 10,
+}));
 
 function PromptPage() {
     const [selectedPrompt, setSelectedPrompt] = useState(0);
@@ -157,26 +173,68 @@ function PromptPage() {
                     value={selectedPrompt}
                     onChange={(e) => setSelectedPrompt(Number(e.target.value))}
                 >
-                    <Grid container spacing={3} maxWidth="md" mb={4}>
-                        {prompts.map((prompt, index) => (
-                            <Grid item xs={12} sm={12} key={index}>
-                                <PromptCard selected={selectedPrompt === index} onClick={() => setSelectedPrompt(index)}>
-                                    <Radio
-                                        value={index}
-                                        checked={selectedPrompt === index}
-                                        style={{ display: "none" }}
-                                    />
-                                    <Typography variant="body1" style={{ flex: 1 }}>
-                                        {prompt}
-                                    </Typography>
-                                    <Star
-                                        style={{
-                                            color: selectedPrompt === index ? "white" : "black",
-                                        }}
-                                    />
-                                </PromptCard>
-                            </Grid>
-                        ))}
+                    <Grid container spacing={3} maxWidth="md" justifyContent="center" mb={4}>
+                        <Grid item xs={12} sm={8}>
+                            <PromptCard
+                                selected={selectedPrompt === 0}
+                                onClick={() => setSelectedPrompt(0)}
+                            >
+                                <Radio
+                                    value={0}
+                                    checked={selectedPrompt === 0}
+                                    style={{ display: "none" }}
+                                />
+                                <Typography variant="body1" style={{ flex: 1 }}>
+                                    {prompts[0]}
+                                </Typography>
+                                <Star
+                                    style={{
+                                        color: selectedPrompt === 0 ? "white" : "black",
+                                    }}
+                                />
+                            </PromptCard>
+                        </Grid>
+
+                        <Grid item xs={12} sm={6}>
+                            <PromptCard
+                                selected={selectedPrompt === 1}
+                                onClick={() => setSelectedPrompt(1)}
+                            >
+                                <Radio
+                                    value={1}
+                                    checked={selectedPrompt === 1}
+                                    style={{ display: "none" }}
+                                />
+                                <Typography variant="body1" style={{ flex: 1 }}>
+                                    {prompts[1]}
+                                </Typography>
+                                <Star
+                                    style={{
+                                        color: selectedPrompt === 1 ? "white" : "black",
+                                    }}
+                                />
+                            </PromptCard>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <PromptCard
+                                selected={selectedPrompt === 2}
+                                onClick={() => setSelectedPrompt(2)}
+                            >
+                                <Radio
+                                    value={2}
+                                    checked={selectedPrompt === 2}
+                                    style={{ display: "none" }}
+                                />
+                                <Typography variant="body1" style={{ flex: 1 }}>
+                                    {prompts[2]}
+                                </Typography>
+                                <Star
+                                    style={{
+                                        color: selectedPrompt === 2 ? "white" : "black",
+                                    }}
+                                />
+                            </PromptCard>
+                        </Grid>
                     </Grid>
                 </RadioGroup>
 
@@ -186,33 +244,29 @@ function PromptPage() {
                         variant="contained"
                         color="primary"
                         size="large"
-                        style={{ borderRadius: "16px" }}
+                        style={{ borderRadius: 0 }}
                     >
                         CHOOSE THIS PROMPT
                     </Button>
                     <IconButton color="inherit" size="large" style={{ color: "#000" }} onClick={handleRefresh}>
-                        <Cached />
+                        <Cached fontSize="large"/>
                     </IconButton>
                 </Box>
 
                 {/* Category Buttons */}
-                <GridContainer container spacing={2} maxWidth="lg" style={{ justifyContent: "center" }}>
-                    <Grid item xs={12} sm={3}>
-                        <CategoryButton color="primary" fullWidth>
-                            CHARACTER
-                        </CategoryButton>
+                <FixedBottomWrapper>
+                    <Grid container spacing={2} justifyContent="center">
+                        <Grid item>
+                            <CategoryCard color="primary">CHARACTER</CategoryCard>
+                        </Grid>
+                        <Grid item>
+                            <CategoryCard color="secondary">WORLD</CategoryCard>
+                        </Grid>
+                        <Grid item>
+                            <CategoryCard color="primary">CONFLICT</CategoryCard>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={12} sm={3}>
-                        <CategoryButton color="secondary" fullWidth>
-                            WORLD
-                        </CategoryButton>
-                    </Grid>
-                    <Grid item xs={12} sm={3}>
-                        <CategoryButton color="primary" fullWidth>
-                            CONFLICT
-                        </CategoryButton>
-                    </Grid>
-                </GridContainer>
+                </FixedBottomWrapper>
             </StyledContainer>
         </ThemeProvider>
     );
