@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/.netlify/functions/api': {
-        target: 'http://localhost:8888',
+        target: 'https://freewriter-develop-branch.netlify.app',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/\.netlify\/functions\/api/, '')
       }
