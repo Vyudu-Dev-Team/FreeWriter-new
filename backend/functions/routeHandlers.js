@@ -1,23 +1,30 @@
 // functions/routeHandlers.js
-import User from "../models/User.js";
-import Story from "../models/story.js";
-import Profile from '../models/Profile.js';
-import crypto from "crypto";
-import { verifyToken, generateToken, verifyEmailToken } from "../utils/jwt.js";
-import {
+const User = require("../models/User.js");
+const Story = require("../models/story.js");
+const Profile = require('../models/Profile.js');
+const crypto = require("crypto");
+const { verifyToken, generateToken, verifyEmailToken } = require("../utils/jwt.js");
+const {
   sendVerificationEmail,
   sendPasswordResetEmail,
-} from "../utils/sendEmail.js";
-import {
+} = require("../utils/sendEmail.js");
+const {
   updatePreferences,
   getPreferences,
   resetPreferences,
-} from "../services/preferencesService.js";
-import bcrypt from "bcryptjs";
-import AppError from "../utils/appError.js";
-import OpenAI from 'openai';
+} = require("../services/preferencesService.js");
+const bcrypt = require("bcryptjs");
+const AppError = require("../utils/appError.js");
+const OpenAI = require('openai');
 
-const openai = new OpenAI(process.env.OPENAI_API_KEY);
+const getOpenAIInstance = () => {
+  if (!process.env.OPENAI_API_KEY) {
+    throw new Error('OPENAI_API_KEY não está configurada');
+  }
+  return new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY
+  });
+};
 
 export const handleUserRoutes = async (event) => {
   const { httpMethod, path } = event;
@@ -537,6 +544,7 @@ export const handleAIRoutes = async (event) => {
 
 const handlePromptInteraction = async (data) => {
   try {
+    const openai = getOpenAIInstance();
     const { input } = data;
     
     const completion = await openai.chat.completions.create({
@@ -746,4 +754,10 @@ const dashboardAnalysis = async (data) => {
 
 export const handleStoryRoutes = async (event) => {
   // Implement story-related routes here
+};
+
+module.exports = {
+  handleUserRoutes,
+  handleStoryRoutes,
+  handleAIRoutes
 };

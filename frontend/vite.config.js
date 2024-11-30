@@ -8,7 +8,8 @@ export default defineConfig({
       '/.netlify/functions/api': {
         target: 'https://freewriter-develop-branch.netlify.app',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/\.netlify\/functions\/api/, '')
+        secure: false,
+        ws: true
       }
     }
   }
