@@ -4,7 +4,7 @@ import { Box, Typography, IconButton, TextField, Paper, Button } from '@mui/mate
 import SettingsIcon from '@mui/icons-material/Settings';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import axios from 'axios';
-import { useAppContext } from '../context/AppContext';
+import { useAppContext } from '../contexts/AppContext';
 
 const BackContent = ({title, content}) =>{
 	return (
@@ -140,8 +140,8 @@ const FlipCard = ({ title, color, icon: Icon, back, onClick, isSelected  }) => {
     );
 };
 
-const EditInterface = ({ title, setFeedbackData }) => {
-	const { fetchContent, saveContent } = useAppContext();
+const EditInterface = ({ title, setFeedback }) => {
+	const { fetchContent, saveContent, fetchFeedback } = useAppContext();
 	const [content, setContent] = useState();
 	const [loading, setLoading] = useState(true);
 
@@ -165,6 +165,8 @@ const EditInterface = ({ title, setFeedbackData }) => {
 		try {
 			await saveContent(title, content);
 			alert('Content saved successfully!');
+      const response = await fetchFeedback(title)
+      response && setFeedback({title: title, text: response.data.feedback})
 		} catch (error) {
 			console.error("Error saving content:", error);
 		}
@@ -172,12 +174,6 @@ const EditInterface = ({ title, setFeedbackData }) => {
 
 	const handleContentChange = async (newContent) => {
 		setContent(newContent);
-		try {
-			const response = await axios.post('/api/ai-feedback', { content: newContent });
-			setFeedbackData(response.data.feedback);
-		} catch (error) {
-			console.error("Error fetching AI feedback:", error);
-		}
 	};
 
 	return (
@@ -219,13 +215,6 @@ const EditInterface = ({ title, setFeedbackData }) => {
 };
 
 const AIFeedback = ({ feedbackToRender }) => {
-  // const defaultFeedback = [
-  //   { id: 1, title: 'define more their visual', color: 'rgba(216, 246, 81, 1)', text: 'letxet gysghjjh huuweh hu7d 787yudgh87 8yugd8 nj' },
-  //   { id: 2, title: 'define more their visual', color: 'rgba(216, 246, 81, 1)', text: 'letxet gysghjjh huuweh hu7d 787yudgh87 8yugd8 nj' },
-  //   { id: 3, title: 'good strength', color: 'rgba(73, 11, 244, 1)', text: 'letxet gysghjjh huuweh hu7d 787yudgh87 8yugd8 nj' },
-  // ];
-
-  // const feedbackToRender =  defaultFeedback;
 
   return (
     <Paper elevation={3} sx={{ p: 4, height: '100%', bgcolor: '#fff' }}>
@@ -268,10 +257,33 @@ const AIFeedback = ({ feedbackToRender }) => {
 };
 
 export default function FreewriterCards() {
+  const defaultCards = [
+    { title: "CHARACTER", color: "#490BF4", icon: Icons.CharacterIcon, back: [
+			{title: "CHARACTER NAME", content: 'A brave warrior known for their unmatched skills.'},
+			{title: "GOAL", content: 'To unite the fractured kingdoms through diplomacy.'},
+			{title: "STRENGTH", content: 'Exceptional combat skills and strategic thinking.'},
+			{title: "WEAKNESS", content: 'A tendency to trust too easily.'}
+	 ] },
+    { title: "WORLD", color: "#D8F651", icon: Icons.WorldIcon, back: [
+			{title: "WORLD", content: 'A richly detailed setting that influences the narrative and character development. The world is filled with diverse cultures, landscapes, and histories that shape the characters’ experiences and conflicts. From the towering mountains to the vast oceans, every element of this world plays a crucial role in the unfolding story, providing a backdrop that is as dynamic and engaging as the characters themselves.'}
+	 ]  },
+    { title: "CONFLICT", color: "rgba(102, 0, 210, 1)", icon: Icons.ConflictIcon, back: [
+			{title: "INCIDING INCIDENT", content: 'The event that triggers the main conflict.'},
+			{title: "CONFLICT", content: 'The central struggle between opposing forces.'},
+			{title: "RESOLUTION", content: 'The outcome of the conflict, providing closure.'}
+	 ] }
+  ];
+
+  const defaultFeedback = [
+  { id: 1, title: 'Clarify character motivations', grade: 'fair', text: 'Consider providing more background on the character’s motivations to enhance depth.' },
+  { id: 2, title: 'Expand on world-building', grade: 'bad', text: 'The world description lacks detail. Include more elements that define the setting and its culture.' },
+  { id: 3, title: 'Strengthen conflict resolution', grade: 'good', text: 'The resolution is well thought out, but consider adding more emotional stakes to engage the reader.' },
+  ];
+
 	const { fetchCards, fetchFeedback } = useAppContext();
 	const [selectedCard, setSelectedCard] = useState(null);
-	const [cards, setCards] = useState([]);
-	const [feedbackData, setFeedbackData] = useState([]);
+	const [cards, setCards] = useState(defaultCards);
+	const [feedbackData, setFeedbackData] = useState(defaultFeedback);
 
 	useEffect(() => {
 		const loadCards = async () => {
@@ -286,13 +298,19 @@ export default function FreewriterCards() {
 		const loadFeedback = async () => {
 			if (selectedCard) {
 				const response = await fetchFeedback(selectedCard);
-				setFeedbackData(response.data.feedback || defaultFeedback);
+				setFeedback({title: selectedCard, text: response.data.feedback});
 			}
 		};
 
 		loadFeedback();
 	}, [selectedCard]);
 
+  const setFeedback = (data) => {
+    const newFeedback = defaultFeedback.map((item)=>(
+      item.title === data.title ? {...item, text: data.text} : item
+    ))
+    setFeedbackData(newFeedback)
+  }
 	return (
 		<Box
 			sx={{
@@ -391,7 +409,7 @@ export default function FreewriterCards() {
 								<Icons.BackArrowIcon sx={{color: '#fff'}} />
 							</IconButton>
 						</Box>
-						<EditInterface title={selectedCard} setFeedbackData={setFeedbackData} />
+						<EditInterface title={selectedCard} setFeedback={setFeedback} />
 					</Box>
 				)}
 

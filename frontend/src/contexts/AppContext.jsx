@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, useEffect } from "react";
-import { userAPI, setAuthToken } from "../services/api";
+import { userAPI, setAuthToken, aiAPI } from "../services/api";
 
 const AppContext = createContext();
 
@@ -209,6 +209,39 @@ export function AppProvider({ children }) {
     }
   };
 
+  const fetchContent = async (title) => {
+    try {
+      const res = await api.get(`/cards/${title}/content`);
+      return res.data;
+    } catch (error) {
+      dispatch({
+        type: "SET_ERROR",
+        payload: error.response?.data?.message || "Failed to fetch content",
+      });
+      return null; // Return null or handle as needed
+    }
+  };
+
+  const saveContent = async (title, content) => {
+    try {
+      const res = await api.put(`/cards/${title}/content`, { content });
+      return res.data;
+    } catch (error) {
+      dispatch({
+        type: "SET_ERROR",
+        payload: error.response?.data?.message || "Failed to save content",
+      });
+      return null; // Return null or handle as needed
+    }
+  };
+
+  const fetchFeedback = async (title, content, storyId) => {
+    // TODO: random story id for testing  
+    storyId = "123";
+    const res = await aiAPI.submitFeedback({title,content,storyId});
+    return res.data;
+  };
+
   const value = {
     state,
     dispatch,
@@ -217,7 +250,10 @@ export function AppProvider({ children }) {
     saveProfile,
     logout,
     verifyEmail,
-    resendVerification
+    resendVerification,
+    fetchContent,
+    saveContent,
+    fetchFeedback,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

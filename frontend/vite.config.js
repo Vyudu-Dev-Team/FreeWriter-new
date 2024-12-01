@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/.netlify/functions/api': {
-        target: 'https://freewriter-develop-branch.netlify.app',
+        target: 'http://localhost:8888',
         changeOrigin: true,
         secure: false,
         ws: true
@@ -14,4 +14,3 @@ export default defineConfig({
     }
   }
 })
-
