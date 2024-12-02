@@ -70,6 +70,10 @@ export const storyAPI = {
   // updateStory: (storyId, storyData) => api.put(`/stories/${storyId}`, storyData),
   // deleteStory: (storyId) => api.delete(`/stories/${storyId}`),
 };
+export const deckAPI = {
+  saveCardContent: (data) => api.put(`/card/${data.title}`, data),
+  getCardContent: (data) => api.get(`/card/${data.title}`, data),
+};
 
 export const aiAPI = {
   generatePrompt: (data) => api.post('/ai/generate-prompt', data),

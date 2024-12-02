@@ -140,7 +140,7 @@ const FlipCard = ({ title, color, icon: Icon, back, onClick, isSelected  }) => {
     );
 };
 
-const EditInterface = ({ title, setFeedback }) => {
+const EditInterface = ({ title, setFeedback, setSelectedCard }) => {
 	const { fetchContent, saveContent, fetchFeedback } = useAppContext();
 	const [content, setContent] = useState();
 	const [loading, setLoading] = useState(true);
@@ -150,7 +150,10 @@ const EditInterface = ({ title, setFeedback }) => {
 			setLoading(true);
 			try {
 				const response = await fetchContent(title);
-				setContent(response.data.content);
+				setContent(response.content);
+				const newFeedback = await fetchFeedback(title, response.content);
+				newFeedback && setFeedback({title: title, text: newFeedback.text})
+				setSelectedCard(null)
 			} catch (error) {
 				console.error("Error fetching content:", error);
 			} finally {
@@ -257,7 +260,7 @@ const AIFeedback = ({ feedbackToRender }) => {
 };
 
 export default function FreewriterCards() {
-  const defaultCards = [
+  cards = [
     { title: "CHARACTER", color: "#490BF4", icon: Icons.CharacterIcon, back: [
 			{title: "CHARACTER NAME", content: 'A brave warrior known for their unmatched skills.'},
 			{title: "GOAL", content: 'To unite the fractured kingdoms through diplomacy.'},
@@ -280,19 +283,9 @@ export default function FreewriterCards() {
   { id: 3, title: 'Strengthen conflict resolution', grade: 'good', text: 'The resolution is well thought out, but consider adding more emotional stakes to engage the reader.' },
   ];
 
-	const { fetchCards, fetchFeedback } = useAppContext();
+	const { fetchFeedback } = useAppContext();
 	const [selectedCard, setSelectedCard] = useState(null);
-	const [cards, setCards] = useState(defaultCards);
 	const [feedbackData, setFeedbackData] = useState(defaultFeedback);
-
-	useEffect(() => {
-		const loadCards = async () => {
-			const response = await fetchCards();
-			setCards(response.data.cards);
-		};
-
-		loadCards();
-	}, []);
 
 	useEffect(() => {
 		const loadFeedback = async () => {
@@ -409,7 +402,7 @@ export default function FreewriterCards() {
 								<Icons.BackArrowIcon sx={{color: '#fff'}} />
 							</IconButton>
 						</Box>
-						<EditInterface title={selectedCard} setFeedback={setFeedback} />
+						<EditInterface title={selectedCard} setFeedback={setFeedback} setSelectedCard={setSelectedCard} />
 					</Box>
 				)}
 
