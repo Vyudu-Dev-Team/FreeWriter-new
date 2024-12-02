@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, useEffect } from "react";
-import { userAPI, setAuthToken } from "../services/api";
+import { userAPI, setAuthToken, aiAPI, deckAPI } from "../services/api";
 
 const AppContext = createContext();
 
@@ -209,6 +209,53 @@ export function AppProvider({ children }) {
     }
   };
 
+  const fetchContent = async (title) => {
+    // TODO: random story id for testing  
+    let storyId = "123";
+    try {
+      // fetching character, conflict, and world card content by querrying with their title and storyid
+      const res = await deckAPI.getCardContent(title, storyId)
+      return res.data;
+    } catch (error) {
+      dispatch({
+        type: "SET_ERROR",
+        payload: error.response?.data?.message || "Failed to fetch content",
+      });
+      return null; // Return null or handle as needed
+    }
+  };
+
+  const saveContent = async (title, content) => {
+    // TODO: random story id for testing  
+    let storyId = "123";
+    try {
+      const res = await deckAPI.saveCardContent({ content, storyId, title });
+      return res.data;
+    } catch (error) {
+      dispatch({
+        type: "SET_ERROR",
+        payload: error.response?.data?.message || "Failed to save content",
+      });
+      return null; // Return null or handle as needed
+    }
+  };
+
+  const fetchFeedback = async (cardTitle) => {
+    // TODO: random story id for testing  
+    let storyId = "123";
+
+    try {
+      const res = await aiAPI.submitFeedback({cardTitle, storyId});
+      return res.data;
+    } catch (error) {
+      dispatch({
+        type: "SET_ERROR",
+        payload: error.response?.data?.message || "Failed to save content",
+      });
+      return null; // Return null or handle as needed
+    }
+  };
+
   const value = {
     state,
     dispatch,
@@ -217,7 +264,10 @@ export function AppProvider({ children }) {
     saveProfile,
     logout,
     verifyEmail,
-    resendVerification
+    resendVerification,
+    fetchContent,
+    saveContent,
+    fetchFeedback,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

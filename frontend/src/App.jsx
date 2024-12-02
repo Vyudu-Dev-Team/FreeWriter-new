@@ -51,8 +51,8 @@ function App() {
 
             <Route path="/onboarding" element={<PrivateRoute><Onboarding /></PrivateRoute>} />
             <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
-            <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-            <Route path="/prompt" element={<PrivateRoute><PromptPage /></PrivateRoute>} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/prompt" element={<PromptPage />} />
             <Route path="/story-map" element={<PrivateRoute><StoryMapComponent /></PrivateRoute>} />
             <Route path="/story-map/:storyId" element={<PrivateRoute><StoryMap /></PrivateRoute>} />
             <Route path="/deck" element={<DeckManager />} />

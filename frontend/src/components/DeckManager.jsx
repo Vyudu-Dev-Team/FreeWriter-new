@@ -7,61 +7,61 @@ import FreewriterCards from './CreateCard';
 
 
 function DeckManager() {
-  const [cards, setCards] = useState([]);
-  const [openDialog, setOpenDialog] = useState(false);
-  const [selectedCard, setSelectedCard] = useState(null);
-  const [editedCard, setEditedCard] = useState({ name: '', description: '', customFields: {} });
+  // const [cards, setCards] = useState([]);
+  // const [openDialog, setOpenDialog] = useState(false);
+  // const [selectedCard, setSelectedCard] = useState(null);
+  // const [editedCard, setEditedCard] = useState({ name: '', description: '', customFields: {} });
 
-  useEffect(() => {
-    fetchCards();
-  }, []);
+  // useEffect(() => {
+  //   fetchCards();
+  // }, []);
 
-  const fetchCards = async () => {
-    try {
-      const res = await axios.get('/api/cards');
-      setCards(res.data);
-    } catch (err) {
-      console.error(err);
-      // TODO: Handle error
-    }
-  };
+  // const fetchCards = async () => {
+  //   try {
+  //     const res = await axios.get('/api/cards');
+  //     setCards(res.data);
+  //   } catch (err) {
+  //     console.error(err);
+  //     // TODO: Handle error
+  //   }
+  // };
 
-  const handleOpenDialog = (card) => {
-    setSelectedCard(card);
-    setEditedCard({
-      name: card.name,
-      description: card.description,
-      customFields: card.customFields || {}
-    });
-    setOpenDialog(true);
-  };
+  // const handleOpenDialog = (card) => {
+  //   setSelectedCard(card);
+  //   setEditedCard({
+  //     name: card.name,
+  //     description: card.description,
+  //     customFields: card.customFields || {}
+  //   });
+  //   setOpenDialog(true);
+  // };
 
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-    setSelectedCard(null);
-    setEditedCard({ name: '', description: '', customFields: {} });
-  };
+  // const handleCloseDialog = () => {
+  //   setOpenDialog(false);
+  //   setSelectedCard(null);
+  //   setEditedCard({ name: '', description: '', customFields: {} });
+  // };
 
-  const handleSaveCard = async () => {
-    try {
-      const res = await axios.put(`/api/cards/${selectedCard._id}`, editedCard);
-      setCards(cards.map(card => card._id === selectedCard._id ? res.data : card));
-      handleCloseDialog();
-    } catch (err) {
-      console.error(err);
-      // TODO: Handle error
-    }
-  };
+  // const handleSaveCard = async () => {
+  //   try {
+  //     const res = await axios.put(`/api/cards/${selectedCard._id}`, editedCard);
+  //     setCards(cards.map(card => card._id === selectedCard._id ? res.data : card));
+  //     handleCloseDialog();
+  //   } catch (err) {
+  //     console.error(err);
+  //     // TODO: Handle error
+  //   }
+  // };
 
-  const handleDeleteCard = async (cardId) => {
-    try {
-      await axios.delete(`/api/cards/${cardId}`);
-      setCards(cards.filter(card => card._id !== cardId));
-    } catch (err) {
-      console.error(err);
-      // TODO: Handle error
-    }
-  };
+  // const handleDeleteCard = async (cardId) => {
+  //   try {
+  //     await axios.delete(`/api/cards/${cardId}`);
+  //     setCards(cards.filter(card => card._id !== cardId));
+  //   } catch (err) {
+  //     console.error(err);
+  //     // TODO: Handle error
+  //   }
+  // };
 
   return (
     // <Container maxWidth="lg" sx={{ mt: 4 }}>
