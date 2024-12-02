@@ -3,11 +3,11 @@ import axios from "axios";
 const baseURL = import.meta.env.DEV 
   ? 'http://localhost:8888/.netlify/functions/api'
   : '/.netlify/functions/api';
-
+// const baseURL ='https://freewriter-develop-branch.netlify.app/.netlify/functions/api';
 const api = axios.create({
   baseURL,
   headers: {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
   },
   withCredentials: true
 });

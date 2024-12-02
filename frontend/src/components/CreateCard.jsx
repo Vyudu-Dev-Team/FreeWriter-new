@@ -260,7 +260,7 @@ const AIFeedback = ({ feedbackToRender }) => {
 };
 
 export default function FreewriterCards() {
-  cards = [
+  const cards = [
     { title: "CHARACTER", color: "#490BF4", icon: Icons.CharacterIcon, back: [
 			{title: "CHARACTER NAME", content: 'A brave warrior known for their unmatched skills.'},
 			{title: "GOAL", content: 'To unite the fractured kingdoms through diplomacy.'},
