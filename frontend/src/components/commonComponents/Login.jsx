@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState } from "react";
 import {
   Box,
   TextField,
@@ -9,24 +9,24 @@ import {
   IconButton,
   InputAdornment,
   Container,
-} from '@mui/material';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { useNavigate } from 'react-router-dom';
-import { useAppContext } from '../../contexts/AppContext';
-import { ArrowBack } from '@mui/icons-material';
-import { styled } from '@mui/system';
-import { createTheme, ThemeProvider } from '@mui/material';
+} from "@mui/material";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { useNavigate } from "react-router-dom";
+import { useAppContext } from "../../contexts/AppContext";
+import { ArrowBack } from "@mui/icons-material";
+import { styled } from "@mui/system";
+import { createTheme, ThemeProvider } from "@mui/material";
 
 // Add the custom theme
 const theme = createTheme({
   palette: {
-    mode: 'dark',
+    mode: "dark",
     primary: {
-      main: '#b8ff57',
+      main: "#b8ff57",
     },
     secondary: {
-      main: '#6c5ce7',
+      main: "#6c5ce7",
     },
   },
   typography: {
@@ -36,7 +36,7 @@ const theme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          textTransform: 'uppercase',
+          textTransform: "uppercase",
           fontFamily: 'PixelSplitter, "Courier New", Courier, monospace',
         },
       },
@@ -44,27 +44,26 @@ const theme = createTheme({
     MuiTextField: {
       styleOverrides: {
         root: {
-          backgroundColor: 'white',
-          '& .MuiInputBase-root': {
-            backgroundColor: 'white',
+          backgroundColor: "white",
+          "& .MuiInputBase-root": {
+            backgroundColor: "white",
             fontFamily: 'Quicksand, "Courier New", Courier, monospace',
-            
           },
-          '& .MuiInputBase-input': {
-            color: 'black',
-            backgroundColor: 'white',
+          "& .MuiInputBase-input": {
+            color: "black",
+            backgroundColor: "white",
             fontFamily: 'Quicksand, "Courier New", Courier, monospace',
-            fontWeight: 'bold'
+            fontWeight: "bold",
           },
-          '& .MuiOutlinedInput-root': {
-            '& fieldset': {
-              borderColor: 'transparent',
+          "& .MuiOutlinedInput-root": {
+            "& fieldset": {
+              borderColor: "transparent",
             },
-            '&:hover fieldset': {
-              borderColor: 'transparent',
+            "&:hover fieldset": {
+              borderColor: "transparent",
             },
-            '&.Mui-focused fieldset': {
-              borderColor: 'transparent',
+            "&.Mui-focused fieldset": {
+              borderColor: "transparent",
             },
           },
         },
@@ -80,50 +79,52 @@ const theme = createTheme({
   },
 });
 
-// Add styled components
 const StyledContainer = styled(Container)({
-  minHeight: '100vh',
-  width: '100vw',
-  maxWidth: '100% !important',
+  minHeight: "100vh",
+  width: "100vw",
+  maxWidth: "100% !important",
   margin: 0,
-  padding: '2rem',
-  display: 'flex',
-  flexDirection: 'column',
-  backgroundColor: 'black',
-  color: 'white',
-  position: 'relative'
+  padding: "2rem",
+  display: "flex",
+  flexDirection: "column",
+  backgroundColor: "black",
+  color: "white",
+  position: "relative",
 });
 
-const StyledForm = styled('form')({
-  width: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '24px'
+const StyledForm = styled("form")({
+  width: "100%",
+  display: "flex",
+  flexDirection: "column",
+  gap: "24px",
 });
 
 function LoginComponent() {
-
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { login, state: { error: serverError }, dispatch } = useAppContext();
+  const {
+    login,
+    state: { error: serverError },
+    dispatch,
+  } = useAppContext();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
 
     if (errors[name]) {
-      setErrors(prev => ({
+      setErrors((prev) => ({
         ...prev,
-        [name]: ''
+        [name]: "",
       }));
     }
   };
@@ -132,15 +133,15 @@ function LoginComponent() {
     const newErrors = {};
 
     if (!formData.email) {
-      newErrors.email = 'Email is required';
+      newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email';
+      newErrors.email = "Please enter a valid email";
     }
 
     if (!formData.password) {
-      newErrors.password = 'Password is required';
+      newErrors.password = "Password is required";
     } else if (formData.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
+      newErrors.password = "Password must be at least 6 characters";
     }
 
     setErrors(newErrors);
@@ -149,24 +150,24 @@ function LoginComponent() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch({ type: 'SET_ERROR', payload: null });
+    dispatch({ type: "SET_ERROR", payload: null });
 
     if (!validateForm()) return;
 
     try {
       setIsLoading(true);
-      const success = await login(formData.email, formData.password);
+      const success = await login({
+        email: formData.email,
+        password: formData.password,
+      }); // FIXED
 
       if (success) {
-        navigate('/dashboard');
+        navigate("/dashboard");
       }
-    
     } finally {
       setIsLoading(false);
     }
   };
-
-  
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -178,48 +179,50 @@ function LoginComponent() {
         <Link
           href="#"
           color="inherit"
-          sx={{ 
-            position: 'absolute',
-            top: '2rem',
-            left: '2rem',
-            display: 'flex', 
-            alignItems: 'center', 
-            textDecoration: 'none',
-            '&:hover': { textDecoration: 'underline' }
+          sx={{
+            position: "absolute",
+            top: "2rem",
+            left: "2rem",
+            display: "flex",
+            alignItems: "center",
+            textDecoration: "none",
+            "&:hover": { textDecoration: "underline" },
           }}
         >
           <ArrowBack sx={{ mr: 1 }} />
           GO BACK
         </Link>
 
-        <Box sx={{ 
-          width: '100%',
-          maxWidth: '500px',
-          margin: 'auto',
-          mt: '4rem'
-        }}>
-          <Typography 
-            variant="h4" 
-            component="h1" 
-            align="center" 
-            gutterBottom 
-            sx={{ mb: 4, letterSpacing: 4, fontSize: '50px' }}
+        <Box
+          sx={{
+            width: "100%",
+            maxWidth: "500px",
+            margin: "auto",
+            mt: "4rem",
+          }}
+        >
+          <Typography
+            variant="h4"
+            component="h1"
+            align="center"
+            gutterBottom
+            sx={{ mb: 4, letterSpacing: 4, fontSize: "50px" }}
           >
             LOG IN
           </Typography>
 
           <StyledForm onSubmit={handleSubmit} autoComplete="off">
             {serverError && (
-              <Alert 
-                severity="error" 
-                onClose={() => dispatch({ type: 'SET_ERROR', payload: null })}
-                sx={{ 
+              <Alert
+                severity="error"
+                onClose={() => dispatch({ type: "SET_ERROR", payload: null })}
+                sx={{
                   mb: 2,
-                  backgroundColor: 'rgba(211, 47, 47, 0.1)',
-                  color: '#ff3333',
-                  '& .MuiAlert-icon': {
-                    color: '#ff3333'
-                  }
+                  backgroundColor: "rgba(211, 47, 47, 0.1)",
+                  color: "#ff3333",
+                  "& .MuiAlert-icon": {
+                    color: "#ff3333",
+                  },
                 }}
               >
                 {serverError}
@@ -227,11 +230,16 @@ function LoginComponent() {
             )}
 
             <Box>
-              <Typography 
-                variant="caption" 
-                component="label" 
-                htmlFor="email" 
-                sx={{ display: 'block', textAlign: 'left', mb: 1, fontSize: '20px' }}
+              <Typography
+                variant="caption"
+                component="label"
+                htmlFor="email"
+                sx={{
+                  display: "block",
+                  textAlign: "left",
+                  mb: 1,
+                  fontSize: "20px",
+                }}
               >
                 EMAIL:
               </Typography>
@@ -245,28 +253,33 @@ function LoginComponent() {
                 helperText={errors.email}
                 placeholder="EMAIL"
                 autoComplete="off"
-                sx={{ 
-                  backgroundColor: 'white',
-                  color: 'black',
-                  '& .MuiInputBase-root': {
-                    height: '56px'
+                sx={{
+                  backgroundColor: "white",
+                  color: "black",
+                  "& .MuiInputBase-root": {
+                    height: "56px",
                   },
-                  '& .MuiFormHelperText-root': {
-                    backgroundColor: 'black',
-                    color: 'red',
+                  "& .MuiFormHelperText-root": {
+                    backgroundColor: "black",
+                    color: "red",
                     margin: 0,
-                    padding: '4px 8px'
-                  }
+                    padding: "4px 8px",
+                  },
                 }}
               />
             </Box>
 
             <Box>
-              <Typography 
-                variant="caption" 
-                component="label" 
-                htmlFor="password" 
-                sx={{ display: 'block', textAlign: 'left', mb: 1, fontSize: '20px' }}
+              <Typography
+                variant="caption"
+                component="label"
+                htmlFor="password"
+                sx={{
+                  display: "block",
+                  textAlign: "left",
+                  mb: 1,
+                  fontSize: "20px",
+                }}
               >
                 PASSWORD:
               </Typography>
@@ -278,7 +291,7 @@ function LoginComponent() {
                 onChange={handleChange}
                 error={!!errors.password}
                 helperText={errors.password}
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 placeholder="PASSWORD"
                 autoComplete="new-password"
                 InputProps={{
@@ -286,53 +299,57 @@ function LoginComponent() {
                     <InputAdornment position="end">
                       <IconButton
                         sx={{
-                          color: 'black'
+                          color: "black",
                         }}
                         aria-label="toggle password visibility"
                         onClick={handleClickShowPassword}
                         onMouseDown={(e) => e.preventDefault()}
                         edge="end"
                       >
-                        {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                        {showPassword ? (
+                          <VisibilityOffIcon />
+                        ) : (
+                          <VisibilityIcon />
+                        )}
                       </IconButton>
                     </InputAdornment>
                   ),
                 }}
-                sx={{ 
-                  backgroundColor: 'white',
-                  color: 'black',
-                  '& .MuiInputBase-root': {
-                    height: '56px'
+                sx={{
+                  backgroundColor: "white",
+                  color: "black",
+                  "& .MuiInputBase-root": {
+                    height: "56px",
                   },
-                  '& .MuiFormHelperText-root': {
-                    backgroundColor: 'black',
-                    color: 'white',
+                  "& .MuiFormHelperText-root": {
+                    backgroundColor: "black",
+                    color: "white",
                     margin: 0,
-                    padding: '4px px'
-                  }
+                    padding: "4px px",
+                  },
                 }}
               />
             </Box>
 
-            <Box sx={{ display: 'flex', gap: 4 }}>
+            <Box sx={{ display: "flex", gap: 4 }}>
               <Button
                 onClick={() => {
-                  dispatch({ type: 'SET_ERROR', payload: null });
-                  navigate('/register');
+                  dispatch({ type: "SET_ERROR", payload: null });
+                  navigate("/register");
                 }}
                 variant="contained"
                 fullWidth
-                sx={{ 
-                  flex: 2, 
-                  color: 'white', 
-                  borderRadius: '1px', 
-                  fontSize: '20px', 
-                  bgcolor: 'rgba(73, 11, 244, 1)',
+                sx={{
+                  flex: 2,
+                  color: "white",
+                  borderRadius: "1px",
+                  fontSize: "20px",
+                  bgcolor: "rgba(73, 11, 244, 1)",
                   opacity: 1,
-                  '&:hover': {
-                    bgcolor: 'rgba(73, 11, 244, 1)',
-                    opacity: 0.8
-                  }
+                  "&:hover": {
+                    bgcolor: "rgba(73, 11, 244, 1)",
+                    opacity: 0.8,
+                  },
                 }}
               >
                 CREATE AN ACCOUNT
@@ -342,24 +359,30 @@ function LoginComponent() {
                 variant="contained"
                 fullWidth
                 disabled={isLoading}
-                sx={{ flex: 1, color: 'black', borderRadius: '1px', fontSize: '20px', bgcolor: 'rgba(216, 246, 81, 1)' }}
+                sx={{
+                  flex: 1,
+                  color: "black",
+                  borderRadius: "1px",
+                  fontSize: "20px",
+                  bgcolor: "rgba(216, 246, 81, 1)",
+                }}
               >
-                {isLoading ? 'SIGNING IN...' : 'SIGN IN'}
+                {isLoading ? "SIGNING IN..." : "SIGN IN"}
               </Button>
             </Box>
 
-            <Typography 
-              align="center" 
-              sx={{ 
+            <Typography
+              align="center"
+              sx={{
                 mt: 4,
-                fontSize: '20px',
-                cursor: 'pointer',
-                textDecoration: 'underline',
-                '&:hover': {
-                  color: 'rgba(73, 11, 244, 0.9)'
-                }
+                fontSize: "20px",
+                cursor: "pointer",
+                textDecoration: "underline",
+                "&:hover": {
+                  color: "rgba(73, 11, 244, 0.9)",
+                },
               }}
-              onClick={() => navigate('/write')}
+              onClick={() => navigate("/write")}
             >
               Write a Story Without an Account
             </Typography>

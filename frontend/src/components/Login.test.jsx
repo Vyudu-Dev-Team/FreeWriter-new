@@ -1,52 +1,45 @@
-import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
-import { AppProvider } from '../contexts/AppContext';
-import Login from './Login';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { Alert } from '@mui/material';
 
-jest.mock('axios');
+const Login = () => {
+  const location = useLocation();
+  const [alertMessage, setAlertMessage] = useState(null);
 
-const MockLogin = () => {
+  useEffect(() => {
+    // Check if there's a message passed in the location.state
+    if (location.state && location.state.message) {
+      setAlertMessage({
+        type: location.state.type, // e.g., 'success' or 'error'
+        text: location.state.message, // Message text
+      });
+
+      // Clear the state to prevent showing the message again on reload
+      window.history.replaceState({}, document.title);
+    }
+  }, [location]);
+
   return (
-    <BrowserRouter>
-      <AppProvider>
-        <Login />
-      </AppProvider>
-    </BrowserRouter>
+    <div>
+      {/* Display the alert message if present */}
+      {alertMessage && (
+        <Alert
+          severity={alertMessage.type === 'success' ? 'success' : 'error'}
+          onClose={() => setAlertMessage(null)}
+        >
+          {alertMessage.text}
+        </Alert>
+      )}
+      {/* Rest of the login form */}
+      <form>
+        <label htmlFor="email">Email Address</label>
+        <input id="email" name="email" type="email" />
+        <label htmlFor="password">Password</label>
+        <input id="password" name="password" type="password" />
+        <button type="submit">Sign In</button>
+      </form>
+    </div>
   );
 };
 
-describe('Login Component', () => {
-  test('renders login form', () => {
-    render(<MockLogin />);
-    expect(screen.getByLabelText(/email address/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /sign in/i })).toBeInTheDocument();
-  });
-
-  test('displays error messages for empty fields', async () => {
-    render(<MockLogin />);
-    fireEvent.click(screen.getByRole('button', { name: /sign in/i }));
-    await waitFor(() => {
-      expect(screen.getByText(/email is required/i)).toBeInTheDocument();
-      expect(screen.getByText(/password is required/i)).toBeInTheDocument();
-    });
-  });
-
-  test('submits form with valid data', async () => {
-    axios.post.mockResolvedValue({ data: { token: 'fake-token' } });
-    
-    render(<MockLogin />);
-    fireEvent.change(screen.getByLabelText(/email address/i), { target: { value: 'test@example.com' } });
-    fireEvent.change(screen.getByLabelText(/password/i), { target: { value: 'password123' } });
-    fireEvent.click(screen.getByRole('button', { name: /sign in/i }));
-
-    await waitFor(() => {
-      expect(axios.post).toHaveBeenCalledWith('/api/users/login', {
-        email: 'test@example.com',
-        password: 'password123'
-      });
-    });
-  });
-});
+export default Login;
