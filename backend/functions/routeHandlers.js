@@ -1,15 +1,14 @@
-import User from "../models/User.js";
-import Story from "../models/story.js";
-import Card from "../models/Card.js";
-import Deck from "../models/Deck.js";
-import Profile from '../models/Profile.js';
-import crypto from "crypto";
-import { verifyToken, generateToken, verifyEmailToken } from "../utils/jwt.js";
-import {
+
+const User = require("../models/User.js");
+const Story = require("../models/story.js");
+const Profile = require('../models/Profile.js');
+const crypto = require("crypto");
+const { verifyToken, generateToken, verifyEmailToken } = require("../utils/jwt.js");
+const {
   sendVerificationEmail,
   sendPasswordResetEmail,
-} from "../utils/sendEmail.js";
-import {
+} = require("../utils/sendEmail.js");
+const {
   updatePreferences,
   getPreferences,
   resetPreferences,
@@ -27,6 +26,7 @@ import OpenAI from 'openai';
 import logger from '../utils/logger.js';
 
 const openai = new OpenAI(process.env.OPENAI_API_KEY);
+
 
 export const handleUserRoutes = async (event) => {
   const { httpMethod, path } = event;
@@ -540,6 +540,7 @@ export const handleAIRoutes = async (event) => {
 
 const handlePromptInteraction = async (data) => {
   try {
+    const openai = getOpenAIInstance();
     const { input } = data;
     
     const completion = await openai.chat.completions.create({
@@ -1008,4 +1009,10 @@ const integrateCardIntoStory = async (event) => {
 
 export const handleStoryRoutes = async (event) => {
   // Implement story-related routes here
+};
+
+module.exports = {
+  handleUserRoutes,
+  handleStoryRoutes,
+  handleAIRoutes
 };
