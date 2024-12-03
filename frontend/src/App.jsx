@@ -28,7 +28,7 @@ import PrivateRoute from './components/PrivateRoute';
 // import NotificationCenter from './components/NotificationCenter';
 
 import FeedbackForm from './components/FeedbackForm';
-
+import Tutorials from './components/Tutorials';
 import { AppProvider } from './contexts/AppContext';
 import ProfilePage from './components/profileSetup';
 import TitleScreen from './components/SplashScreen';
@@ -46,6 +46,7 @@ function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/tutorial" element={<Tutorials />} />
             <Route path="/verify-email/:token" element={<EmailVerification />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
 
