@@ -17,9 +17,9 @@ const EmailVerification = () => {
     const verifyEmail = async () => {
       try {
         dispatch({ type: 'SET_LOADING', payload: true });
-        
+
         const response = await userAPI.verifyEmail(token);
-        
+
         setVerificationStatus({
           loading: false,
           success: true,
