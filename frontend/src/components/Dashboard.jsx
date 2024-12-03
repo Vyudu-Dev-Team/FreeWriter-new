@@ -31,9 +31,11 @@ import {
 import { Link as RouterLink } from "react-router-dom";
 import { useAppContext } from "../contexts/AppContext";
 import axios from "axios";
-// import { motion } from "framer-motion";
+import Tutorials from './Tutorials';
+import api from '../services/api';
+import { motion } from 'framer-motion';
 
-function Dashboard() {
+function DashboardComponent() {
   const { state, dispatch } = useAppContext();
   const { stories, loading, error } = state;
 
@@ -47,6 +49,9 @@ function Dashboard() {
   const [inputError, setInputError] = useState(null);
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [isAiLoading, setIsAiLoading] = useState(false);
+  const [aiAnalysis, setAiAnalysis] = useState(null);
+  const [analysisLoading, setAnalysisLoading] = useState(false);
+  const [analysisError, setAnalysisError] = useState(null);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -83,21 +88,73 @@ function Dashboard() {
 
     try {
       setIsAiLoading(true);
-      const { data } = await axios.post("/api/ai/prompt", { input: userInput });
-      setAiResponse(data.response);
-      setChatHistory([
-        ...chatHistory,
-        { sender: "User", text: userInput, timestamp: new Date() },
-        { sender: "AI", text: data.response, timestamp: new Date() },
-      ]);
-      setUserInput("");
-      setInputError(null);
+      const response = await api.post("/ai/prompt", { input: userInput });
+      
+      // Garantindo que a resposta seja um objeto JavaScript válido
+      let responseData;
+      if (typeof response.data === 'string') {
+        responseData = JSON.parse(response.data);
+      } else {
+        responseData = response.data;
+      }
+
+      if (responseData.success) {
+        setAiResponse(responseData.response);
+        setChatHistory(prev => [...prev,
+          { sender: "User", text: userInput, timestamp: new Date() },
+          { sender: "AI", text: responseData.response, timestamp: new Date() }
+        ]);
+        setUserInput("");
+        setInputError(null);
+      } else {
+        throw new Error("Response was not successful");
+      }
     } catch (err) {
-      dispatch({ type: "SET_ERROR", payload: "Failed to get AI response" });
+      console.error("AI interaction error:", err);
+      setInputError("Failed to get AI response");
     } finally {
       setIsAiLoading(false);
     }
   };
+
+  const fetchAIAnalysis = async () => {
+    setAnalysisLoading(true);
+    setAnalysisError(null);
+    try {
+      // Prepare user data for analysis
+      const userData = {
+        recentActivity: {
+          storiesWritten: 10,
+          totalWords: 5000,
+          averageWordsPerDay: 500
+        },
+        writingPatterns: {
+          preferredGenres: ['fantasy', 'sci-fi'],
+          averageSessionDuration: '45 minutes'
+        },
+        goals: {
+          dailyWordCount: 1000,
+          weeklyStories: 2
+        }
+      };
+
+      const response = await api.post('/ai/dashboard-analysis', {
+        userData
+      });
+
+      if (response.data.success) {
+        setAiAnalysis(response.data.analysis);
+      }
+    } catch (error) {
+      setAnalysisError('Failed to load AI analysis');
+    } finally {
+      setAnalysisLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchAIAnalysis();
+  }, []); // Empty dependency array means this runs once on mount
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4, px: isMobile ? 2 : 3 }}>
@@ -298,8 +355,40 @@ function Dashboard() {
         onClose={() => setShowSnackbar(false)}
         message="Story created successfully!"
       />
+
+      {/* AI Analysis Section */}
+      <div className="ai-analysis-section">
+        <h2>Writing Analysis</h2>
+        {analysisLoading && <p>Loading analysis...</p>}
+        {analysisError && <p className="error">{analysisError}</p>}
+        {aiAnalysis && (
+          <div className="analysis-content">
+            <p>{aiAnalysis}</p>
+          </div>
+        )}
+      </div>
     </Container>
   );
 }
 
-export default Dashboard;
+export default function Dashboard(){
+  const [tutorialCompleted, setTutorialCompleted] = useState('true');
+  
+
+  useEffect(() => {
+    const completed = localStorage.getItem('tutorialsCompleted');
+    setTutorialCompleted(completed === 'true');
+  }, []);
+
+  const handleSkipTutorial = () => {
+    localStorage.setItem('tutorialsCompleted', 'true');
+    setTutorialCompleted(true);
+  };
+  return(
+    tutorialCompleted ? ( 
+      <DashboardComponent />
+    ) : ( 
+      <Tutorials handleSkipTutorial={handleSkipTutorial} />
+    )
+  )
+}

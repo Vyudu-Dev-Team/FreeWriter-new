@@ -26,9 +26,15 @@ const userSchema = new mongoose.Schema({
   },
   writingMode: {
     type: String,
-    enum: ['plotter', 'pantser'],
+    enum: ['plotter', 'pantser', 'creative'],
     default: 'plotter',
   },
+
+  decks: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Deck'
+  }],
+ 
   preferences: {
     type: Object,
     default: {},
@@ -37,6 +43,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ['daily_writing', 'finish_novel', 'improve_skills', 'publish_book', 'other'],
   }],
+  
   emailVerificationToken: String,
   emailVerificationExpires: Date,
   passwordResetToken: String,
@@ -102,6 +109,7 @@ userSchema.methods.createPasswordResetToken = function() {
 
   return resetToken;
 };
+
 
 const User = mongoose.model('User', userSchema);
 
