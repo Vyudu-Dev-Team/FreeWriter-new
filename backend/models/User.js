@@ -29,6 +29,12 @@ const userSchema = new mongoose.Schema({
     enum: ['plotter', 'pantser', 'creative'],
     default: 'plotter',
   },
+
+  decks: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Deck'
+  }],
+ 
   preferences: {
     type: Object,
     default: {},

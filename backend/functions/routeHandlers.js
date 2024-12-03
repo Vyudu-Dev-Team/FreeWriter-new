@@ -1,4 +1,4 @@
-// functions/routeHandlers.js
+
 const User = require("../models/User.js");
 const Story = require("../models/story.js");
 const Profile = require('../models/Profile.js');
@@ -12,19 +12,21 @@ const {
   updatePreferences,
   getPreferences,
   resetPreferences,
-} = require("../services/preferencesService.js");
-const bcrypt = require("bcryptjs");
-const AppError = require("../utils/appError.js");
-const OpenAI = require('openai');
+} from "../services/preferencesService.js";
+import {
+  validateCardType,
+  validateCustomization,
+  validateRarity,
+  validateDeckOperation,
+  validateStoryIntegration
+} from "../utils/validators.js";
+import bcrypt from "bcryptjs";
+import AppError from "../utils/appError.js";
+import OpenAI from 'openai';
+import logger from '../utils/logger.js';
 
-const getOpenAIInstance = () => {
-  if (!process.env.OPENAI_API_KEY) {
-    throw new Error('OPENAI_API_KEY não está configurada');
-  }
-  return new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY
-  });
-};
+const openai = new OpenAI(process.env.OPENAI_API_KEY);
+
 
 export const handleUserRoutes = async (event) => {
   const { httpMethod, path } = event;
@@ -98,7 +100,7 @@ const getCurrentUser = async (event) => {
       }),
     };
   } catch (error) {
-    console.error("Get current user error:", error);
+    logger.error("Get current user error:", error);
     return {
       statusCode: 500,
       body: JSON.stringify({ message: "Error fetching current user" }),
@@ -122,10 +124,11 @@ const register = async (userData) => {
   await user.save();
 
   const verificationToken = generateToken({ userId: user._id }, "1d");
-  console.log("Generated Verification Token:", verificationToken);
+  logger.info("Generated Verification Token:", verificationToken);
   try {
     await sendVerificationEmail(user, verificationToken);
   } catch (emailError) {
+    logger.error("Failed to send verification email:", emailError);
     throw new AppError("Failed to send verification email", 500);
   }
 
@@ -198,7 +201,7 @@ const getUserProfile = async (event) => {
       }),
     };
   } catch (error) {
-    console.error("Error fetching user profile:", error);
+    logger.error("Error fetching user profile:", error);
     throw new AppError(
       error.message || "Failed to fetch user profile",
       error.statusCode || 500
@@ -281,7 +284,7 @@ const updateUserProfile = async (event) => {
       }),
     };
   } catch (error) {
-    console.error("Update profile error:", error);
+    logger.error("Update profile error:", error);
     return {
       statusCode: error.statusCode || 500,
       body: JSON.stringify({
@@ -315,7 +318,7 @@ const forgotPassword = async ({ email }) => {
       body: JSON.stringify({ message: "Password reset email sent" }),
     };
   } catch (error) {
-    console.error("Error in forgotPassword:", error);
+    logger.error("Error in forgotPassword:", error);
     throw new AppError(
       error.message || "Failed to send password reset email",
       500
@@ -325,13 +328,9 @@ const forgotPassword = async ({ email }) => {
 
 const resetPassword = async (event) => {
   try {
-    console.log("Incoming event:", event);
 
     // Access token and newPassword directly from the event
     const { token, newPassword } = event;
-
-    console.log("Extracted token:", token);
-    console.log("Extracted newPassword:", newPassword);
 
     if (!token || !newPassword) {
       throw new AppError("Token and new password are required", 400);
@@ -358,7 +357,7 @@ const resetPassword = async (event) => {
       body: JSON.stringify({ message: "Password reset successful" }),
     };
   } catch (error) {
-    console.error("Reset password error:", error);
+    logger.error("Reset password error:", error);
     return {
       statusCode: error.statusCode || 500,
       body: JSON.stringify({
@@ -410,7 +409,7 @@ const verifyEmail = async (event) => {
       }),
     };
   } catch (error) {
-    console.error("Verification error:", error);
+    logger.error("Verification error:", error);
     throw new AppError(
       error.message || "Error verifying email",
       error.statusCode || 400
@@ -451,14 +450,14 @@ const resendVerification = async ({ email }) => {
         "Verification email resent successfully. Please check your email."
       );
     } catch (error) {
-      console.error("Error sending verification email:", error);
+      logger.error("Error sending verification email:", error);
       return createResponse(
         500,
         "Failed to send verification email. Please try again later."
       );
     }
   } catch (error) {
-    console.error("Resend verification error:", error);
+    logger.error("Resend verification error:", error);
     return createResponse(
       500,
       error.message || "An error occurred while resending verification email"
@@ -476,7 +475,7 @@ const getUserPreferences = async (event) => {
       body: JSON.stringify({ preferences }), // Ensure this is a valid JSON string
     };
   } catch (error) {
-    console.error("Get preferences error:", error);
+    logger.error("Get preferences error:", error);
     return {
       statusCode: 500,
       body: JSON.stringify({ message: error.message || "An error occurred" }),
@@ -489,9 +488,6 @@ const updateUserPreferences = async (event) => {
     const userId = await verifyToken(event); // Assuming this retrieves the user ID
     const { preferences } = JSON.parse(event.body); // Ensure this is a valid JSON string
 
-    // Log the preferences to ensure they are in the expected format
-    console.log("Updating preferences:", preferences);
-
     // Update preferences in the database
     const updatedPreferences = await updatePreferences(userId, preferences);
 
@@ -500,7 +496,7 @@ const updateUserPreferences = async (event) => {
       body: JSON.stringify({ preferences: updatedPreferences }), // Ensure this is a valid JSON string
     };
   } catch (error) {
-    console.error("Update preferences error:", error);
+    logger.error("Update preferences error:", error);
     return {
       statusCode: 500,
       body: JSON.stringify({ message: error.message || "An error occurred" }),
@@ -558,6 +554,7 @@ const handlePromptInteraction = async (data) => {
       model: "gpt-3.5-turbo",
     });
 
+    logger.info('AI Prompt Interaction completed successfully');
     return {
       statusCode: 200,
       body: JSON.stringify({
@@ -566,7 +563,7 @@ const handlePromptInteraction = async (data) => {
       })
     };
   } catch (error) {
-    console.error('AI Prompt Interaction error:', error);
+    logger.error('AI Prompt Interaction error:', error);
     return {
       statusCode: 500,
       body: JSON.stringify({ 
@@ -616,7 +613,7 @@ const generatePrompt = async (data) => {
       },
     };
   } catch (error) {
-    console.error("Error generating prompt:", error);
+    logger.error("Error generating prompt:", error);
     return {
       statusCode: error.statusCode || 500,
       body: {
@@ -666,7 +663,7 @@ const generateGuidance = async (data) => {
       },
     };
   } catch (error) {
-    console.error("Error generating guidance:", error);
+    logger.error("Error generating guidance:", error);
     return {
       statusCode: error.statusCode || 500,
       body: {
@@ -699,7 +696,7 @@ const submitFeedback = async (data) => {
       body: { message: "Feedback submitted successfully" },
     };
   } catch (error) {
-    console.error("Error submitting feedback:", error);
+    logger.error("Error submitting feedback:", error);
     return {
       statusCode: error.statusCode || 500,
       body: {
@@ -741,13 +738,271 @@ const dashboardAnalysis = async (data) => {
       })
     };
   } catch (error) {
-    console.error('Dashboard AI Analysis error:', error);
+    logger.error('Dashboard AI Analysis error:', error);
     return {
       statusCode: 500,
       body: JSON.stringify({ 
         message: 'Error processing dashboard analysis',
         success: false 
       })
+    };
+  }
+};
+
+export const handleDeckRoutes = async (event) => {
+  const { httpMethod, path } = event;
+  const route = path.replace("/decks", "");
+
+  switch (`${httpMethod} ${route}`) {
+    case "GET /":
+      return getUserDecks(event);
+    case "POST /":
+      return createDeck(JSON.parse(event.body));
+    case "GET /:id":
+      return getDeck(event);
+    case "PUT /:id":
+      return updateDeck(event);
+    case "DELETE /:id":
+      return deleteDeck(event);
+    default:
+      return { statusCode: 404, body: JSON.stringify({ message: "Not Found" }) };
+  }
+};
+
+export const handleCardRoutes = async (event) => {
+  const { httpMethod, path } = event;
+  const route = path.replace("/cards", "");
+
+  switch (`${httpMethod} ${route}`) {
+    case "POST /generate":
+      return generateCard(JSON.parse(event.body));
+    case "PUT /:id/customize":
+      return customizeCard(event);
+    case "PUT /:id/rarity":
+      return setCardRarity(event);
+    case "POST /:id/integrate":
+      return integrateCardIntoStory(event);
+    default:
+      return { statusCode: 404, body: JSON.stringify({ message: "Not Found" }) };
+  }
+};
+
+const getUserDecks = async (event) => {
+  try {
+    const userId = await verifyToken(event);
+    const decks = await Deck.find({ userId }).populate('cards');
+    return {
+      statusCode: 200,
+      body: JSON.stringify(decks)
+    };
+  } catch (error) {
+    logger.error("Get user decks error:", error);
+    return {
+      statusCode: error.statusCode || 500,
+      body: JSON.stringify({ message: error.message || "An error occurred while fetching decks" })
+    };
+  }
+};
+
+const createDeck = async (data) => {
+  try {
+    const { userId, name } = data;
+    const newDeck = new Deck({ userId, name });
+    await newDeck.save();
+    return {
+      statusCode: 201,
+      body: JSON.stringify(newDeck)
+    };
+  } catch (error) {
+    logger.error("Create deck error:", error);
+    return {
+      statusCode: error.statusCode || 500,
+      body: JSON.stringify({ message: error.message || "An error occurred while creating the deck" })
+    };
+  }
+};
+
+const getDeck = async (event) => {
+  try {
+    const userId = await verifyToken(event);
+    const deckId = event.path.split('/').pop();
+    validateDeckOperation(userId, deckId, 'view');
+    const deck = await Deck.findOne({ _id: deckId, userId }).populate('cards');
+    if (!deck) {
+      throw new AppError("Deck not found", 404);
+    }
+    return {
+      statusCode: 200,
+      body: JSON.stringify(deck)
+    };
+  } catch (error) {
+    logger.error("Get deck error:", error);
+    return {
+      statusCode: error.statusCode || 500,
+      body: JSON.stringify({ message: error.message || "An error occurred while fetching the deck" })
+    };
+  }
+};
+
+const updateDeck = async (event) => {
+  try {
+    const userId = await verifyToken(event);
+    const deckId = event.path.split('/').pop();
+    const updates = JSON.parse(event.body);
+    validateDeckOperation(userId, deckId, 'edit');
+    const deck = await Deck.findOneAndUpdate({ _id: deckId, userId }, updates, { new: true });
+    if (!deck) {
+      throw new AppError("Deck not found", 404);
+    }
+    return {
+      statusCode: 200,
+      body: JSON.stringify(deck)
+    };
+  } catch (error) {
+    logger.error("Update deck error:", error);
+    return {
+      statusCode: error.statusCode || 500,
+      body: JSON.stringify({ message: error.message || "An error occurred while updating the deck" })
+    };
+  }
+};
+
+const deleteDeck = async (event) => {
+  try {
+    const userId = await verifyToken(event);
+    const deckId = event.path.split('/').pop();
+    validateDeckOperation(userId, deckId, 'edit');
+    const deck = await Deck.findOneAndDelete({ _id: deckId, userId });
+    if (!deck) {
+      throw new AppError("Deck not found", 404);
+    }
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: "Deck deleted successfully" })
+    };
+  } catch (error) {
+    logger.error("Delete deck error:", error);
+    return {
+      statusCode: error.statusCode || 500,
+      body: JSON.stringify({ message: error.message || "An error occurred while deleting the deck" })
+    };
+  }
+};
+
+const generateCard = async (data) => {
+  try {
+    const { userId, cardType } = data;
+    validateCardType(cardType);
+    
+    const prompt = `Generate a ${cardType} card for a deck-building story game.`;
+    const response = await openai.createCompletion({
+      model: "text-davinci-002",
+      prompt: prompt,
+      max_tokens: 100,
+    });
+
+    const cardContent = response.data.choices[0].text.trim();
+    const newCard = new Card({
+      userId,
+      type: cardType,
+      content: cardContent
+    });
+    await newCard.save();
+
+    return {
+      statusCode: 201,
+      body: JSON.stringify(newCard)
+    };
+  } catch (error) {
+    logger.error("Generate card error:", error);
+    return {
+      statusCode: error.statusCode || 500,
+      body: JSON.stringify({ message: error.message || "An error occurred while generating the card" })
+    };
+  }
+};
+
+const customizeCard = async (event) => {
+  try {
+    const userId = await verifyToken(event);
+    const cardId = event.path.split('/').pop();
+    const { customization } = JSON.parse(event.body);
+    validateCustomization(customization);
+    const card = await Card.findOneAndUpdate(
+      { _id: cardId, userId },
+      { $set: { customization } },
+      { new: true }
+    );
+    if (!card) {
+      throw new AppError("Card not found", 404);
+    }
+    return {
+      statusCode: 200,
+      body: JSON.stringify(card)
+    };
+  } catch (error) {
+    logger.error("Customize card error:", error);
+    return {
+      statusCode: error.statusCode || 500,
+      body: JSON.stringify({ message: error.message || "An error occurred while customizing the card" })
+    };
+  }
+};
+
+const setCardRarity = async (event) => {
+  try {
+    const userId = await verifyToken(event);
+    const cardId = event.path.split('/').pop();
+    const { rarity } = JSON.parse(event.body);
+    validateRarity(rarity);
+    const card = await Card.findOneAndUpdate(
+      { _id: cardId, userId },
+      { $set: { rarity } },
+      { new: true }
+    );
+    if (!card) {
+      throw new AppError("Card not found", 404);
+    }
+    return {
+      statusCode: 200,
+      body: JSON.stringify(card)
+    };
+  } catch (error) {
+    logger.error("Set card rarity error:", error);
+    return {
+      statusCode: error.statusCode || 500,
+      body: JSON.stringify({ message: error.message || "An error occurred while setting card rarity" })
+    };
+  }
+};
+
+const integrateCardIntoStory = async (event) => {
+  try {
+    const userId = await verifyToken(event);
+    const cardId = event.path.split('/').pop();
+    const { storyId } = JSON.parse(event.body);
+    validateStoryIntegration(userId, storyId, cardId);
+    
+    const story = await Story.findOne({ _id: storyId, userId });
+    const card = await Card.findById(cardId);
+
+    if (!story || !card) {
+      throw new AppError("Story or card not found", 404);
+    }
+
+    story.content += `\n\n[Card Integration: ${card.content}]`;
+    story.integratedCards.push(cardId);
+    await story.save();
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify(story)
+    };
+  } catch (error) {
+    logger.error("Integrate card into story error:", error);
+    return {
+      statusCode: error.statusCode || 500,
+      body: JSON.stringify({ message: error.message || "An error occurred while integrating the card into the story" })
     };
   }
 };

@@ -1,6 +1,6 @@
 import request from 'supertest';
 import app from '../server.js';
-import Story from '../models/Story.js';
+import Story from '../models/story.js';
 import User from '../models/User.js';
 import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
