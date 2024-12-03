@@ -3,21 +3,13 @@ import { Container, Typography, Button, Box, Card, CardContent, Grid } from '@mu
 import { Link as RouterLink } from 'react-router-dom';
 import { apiTest } from '../services/api';
 import Tutorials from './Tutorials';
+import axios from 'axios';
 
 
 function Home() {
   const [tutorialCompleted, setTutorialCompleted] = useState(false);
   
 
-  useEffect(() => {
-    const completed = localStorage.getItem('tutorialsCompleted');
-    setTutorialCompleted(completed === 'true');
-  }, []);
-
-  const handleSkipTutorial = () => {
-    localStorage.setItem('tutorialsCompleted', 'true');
-    setTutorialCompleted(true);
-  };
 
   return (
     <>
@@ -64,7 +56,16 @@ function Home() {
             </Grid>
           </Grid>
 
-          <button onClick={apiTest}>Test API</button>
+          <button onClick={async () => {
+            const data = {
+              input: 'tell me a joke'
+            }
+            const response = await axios.post('http://localhost:8888/.netlify/functions/api/ai/prompt', data);
+            console.log(response.data.response);
+            const parsedResponse = JSON.parse(response.data);
+            response && (document.getElementById('response').innerHTML = parsedResponse.response);
+          }}>Test API</button>
+          <span id="response"></span>
         </Container>
     </>
   );

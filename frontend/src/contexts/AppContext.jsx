@@ -240,12 +240,14 @@ export function AppProvider({ children }) {
     }
   };
 
-  const fetchFeedback = async (cardTitle) => {
+  const fetchFeedback = async (cardTitle,content) => {
     // TODO: random story id for testing  
     let storyId = "123";
+    let prompt = `${cardTitle} is a title of a card to build a ${cardTitle} of a story. Analyse this input: ${content} as a discription of the ${cardTitle} and it is important to return a valid JSON with these property in this format type{title: ${cardTitle}, rating which might be good, bad or fair,comment which is a short comment which point out improvements of the ${cardTitle} in one sentence} with correct syntax only. dont return anything else`;
 
     try {
-      const res = await aiAPI.submitFeedback({cardTitle, storyId});
+      dispatch({ type: "SET_LOADING", payload: true });
+      const res = await aiAPI.generatePrompt({input: prompt});
       return res.data;
     } catch (error) {
       dispatch({
@@ -253,6 +255,8 @@ export function AppProvider({ children }) {
         payload: error.response?.data?.message || "Failed to save content",
       });
       return null; // Return null or handle as needed
+    } finally {
+      dispatch({ type: "SET_LOADING", payload: false });
     }
   };
 
