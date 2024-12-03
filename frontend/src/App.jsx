@@ -7,8 +7,10 @@ import theme from './theme';
 
 import Navbar from './components/commonComponents/Navbar';
 import Login from './components/commonComponents/Login';
+import ForgotPassword from './components/ForgotPassword';
 import Onboarding from './components/Onboarding';
 import Register from './components/Register';
+import EmailVerification from './components/EmailVerification';
 
 import Home from './components/Home';
 
@@ -17,6 +19,7 @@ import Dashboard from './components/Dashboard';
 import StoryMapComponent from './components/story-mapping/StoryMapComponent';
 import StoryMap from './components/story-mapping/StoryMap';
 import DeckManager from './components/DeckManager';
+import PromptPage from './components/PromptPage';
 
 import WritingWorkspace from './components/writing-environment/WritingWorkspace';
 import SketchGenerator from './components/writing-environment/SketchGenerator';
@@ -47,17 +50,15 @@ function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            // forgot password
-            {/* <Route path="/forgot-password" element={<ForgotPassword />} /> */}
+            <Route path="/verify-email/:token" element={<EmailVerification />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+
             <Route path="/onboarding" element={<PrivateRoute><Onboarding /></PrivateRoute>} />
             <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
             <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-            <Route path="/prompt" element={<PromptPage />} />
-            <Route path="/prompt/selected" element={<PromptSelectedPage />} />
             <Route path="/story-map" element={<PrivateRoute><StoryMapComponent /></PrivateRoute>} />
             <Route path="/story-map/:storyId" element={<PrivateRoute><StoryMap /></PrivateRoute>} />
             <Route path="/deck" element={<PrivateRoute><DeckManager /></PrivateRoute>} />
-            <Route path="/write" element={<StoryWritingView />} />
             <Route path="/write/:storyId" element={<PrivateRoute><WritingWorkspace /></PrivateRoute>} />
             {/* <Route path="/notifications" element={<PrivateRoute><NotificationCenter /></PrivateRoute>} /> */}
             <Route path="/badges" element={<PrivateRoute><BadgeDisplay /></PrivateRoute>} />

@@ -1,0 +1,26 @@
+{
+  "name": "freewriter",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "build": "npm run build:frontend",
+    "build:frontend": "cd frontend && npm install && npm run build",
+    "build:backend": "cd backend && npm install",
+    "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
+    "start:frontend": "npm run dev --workspace=frontend",
+    "start:backend": "dotenv -e ./backend/.env netlify dev",
+    "test": "npm run test:frontend && npm run test:backend",
+    "test:frontend": "npm run test --workspace=frontend",
+    "test:backend": "npm run test --workspace=backend",
+    "deploy": "netlify deploy --prod"
+  },
+  "devDependencies": {
+    "concurrently": "^6.2.0",
+    "netlify-cli": "^12.0.0",
+    "dotenv-cli": "^7.0.0"
+  }
+}
