@@ -29,6 +29,15 @@ const userSchema = new mongoose.Schema({
     enum: ['plotter', 'pantser', 'creative'],
     default: 'plotter',
   },
+  progression: {
+    genre: String,
+    writingStyle: String,
+    complexity: String,
+    targetAudience: String,
+    storyCompletionPercentage: { type: Number, default: 0 },
+  },
+  points: { type: Number, default: 0 },
+  badges: [String],
 
   decks: [{
     type: mongoose.Schema.Types.ObjectId,
