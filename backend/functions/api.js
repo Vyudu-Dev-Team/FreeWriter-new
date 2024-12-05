@@ -1,30 +1,41 @@
-import serverless from "serverless-http";
-import express from "express";
-import cors from "cors";
-import "./crypto-polyfill.js";
-import {
+const serverless = require("serverless-http");
+const express = require("express");
+const cors = require("cors");
+const dotenv = require("dotenv");
+const path = require("path");
+require("./crypto-polyfill.js");
+const {
   handleUserRoutes,
   handleAIRoutes,
+
   handleDeckRoutes,
   handleCardRoutes,
   handleStoryMappingRoutes,
   handleOutlineRoutes,
   handleWritingEnvironmentRoutes
-} from "./routeHandlers.js";
+} = require("./routeHandlers.js");
+
 import { getCurrentUser } from "./currentUser.js";
 import connectDB from "../config/database.js";
 import logger from '../utils/logger.js';
 
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
+
+
 const app = express();
 
-app.use(
-  cors({
-    origin: process.env.FRONTEND_URL || "*",
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
-  })
-);
+// Configuração única do CORS
+app.use(cors({
+  origin: true, // Permite todas as origens em desenvolvimento
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
+
+// Middleware para processar OPTIONS
+app.options('*', (req, res) => {
+  res.status(200).end();
+});
 
 app.use(express.json());
 
@@ -565,6 +576,6 @@ app.use((req, res) => {
   res.status(404).json({ message: "Route not found" });
 });
 
-export const handler = serverless(app);
+module.exports.handler = serverless(app);
 
 

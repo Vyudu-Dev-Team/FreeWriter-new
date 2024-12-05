@@ -1,28 +1,23 @@
-import User from "../models/User.js";
-import Story from "../models/story.js";
-import Card from "../models/Card.js";
-import Deck from "../models/Deck.js";
-import Profile from "../models/Profile.js";
-import StoryMap from "../models/StoryMap.js";
-import Outline from "../models/Outline.js";
-import WritingSession from "../models/WritingSession.js";
-import crypto from "crypto";
-import {
-  verifyToken,
-  generateToken,
-  verifyEmailToken,
-  verifyTokenFromEvent,
-} from "../utils/jwt.js";
-import {
+const User = require("../models/User.js");
+const Story = require("../models/story.js");
+const Card = require("../models/Card.js");
+const Deck = require("../models/Deck.js");
+const Profile = require("../models/Profile.js");
+const StoryMap = require("../models/StoryMap.js");
+const Outline = require("../models/Outline.js");
+const WritingSession = require("../models/WritingSession.js");
+const crypto = require("crypto");
+const { verifyToken, generateToken, verifyEmailToken } = require("../utils/jwt.js");
+const {
   sendVerificationEmail,
   sendPasswordResetEmail,
-} from "../utils/sendEmail.js";
-import {
+} = require("../utils/sendEmail.js");
+const {
   updatePreferences,
   getPreferences,
   resetPreferences,
-} from "../services/preferencesService.js";
-import {
+} = require("../services/preferencesService.js");
+const {
   validateCardType,
   validateCustomization,
   validateRarity,
@@ -32,20 +27,20 @@ import {
   validateOutline,
   validateWritingSession,
   validateAIFeedbackRequest,
-} from "../utils/validators.js";
-import bcrypt from "bcryptjs";
-import AppError from "../utils/appError.js";
-import OpenAI from "openai";
-import logger from "../utils/logger.js";
-import {
+} = require("../utils/validators.js");
+const bcrypt = require("bcryptjs");
+const AppError = require("../utils/appError.js");
+const OpenAI = require("openai");
+const logger = require("../utils/logger.js");
+const {
   generateAIFeedback,
   generateStoryPrompt,
-} from "../services/aiService.js";
-import { adjustAIParameters } from "../services/aiFeedbackService.js";
-import { ObjectId } from "mongodb";
-import { v4 as uuidv4 } from 'uuid';
-
+} = require("../services/aiService.js");
+const { adjustAIParameters } = require("../services/aiFeedbackService.js");
+const { ObjectId } = require("mongodb");
+const { v4: uuidv4 } = require('uuid');
 const openai = new OpenAI(process.env.OPENAI_API_KEY);
+
 
 export const handleUserRoutes = async (event) => {
   const { httpMethod, path } = event;
@@ -2741,4 +2736,10 @@ const handleError = (error) => {
       details: error.stack || error.toString(),
     }),
   };
+};
+
+module.exports = {
+  handleUserRoutes,
+  handleStoryRoutes,
+  handleAIRoutes
 };

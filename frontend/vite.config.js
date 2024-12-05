@@ -8,7 +8,8 @@ export default defineConfig({
       '/.netlify/functions/api': {
         target: 'http://localhost:8888',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/\.netlify\/functions\/api/, '')
+        secure: false,
+        ws: true
       }
     }
   }
