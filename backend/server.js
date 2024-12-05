@@ -2,7 +2,7 @@ import serverless from 'serverless-http';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { notFound, errorHandler } from './utils/errorHandler.js';
-import { handleUserRoutes, handleStoryRoutes, handleAIRoutes } from './functions/routeHandlers.js';
+import { handleUserRoutes, handleAIRoutes } from './functions/routeHandlers.js';
 import mongoose from 'mongoose';
 import helmet from 'helmet';
 import connectDB from './config/database.js';
@@ -21,12 +21,6 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-// Comprehensive CORS configuration
-// const ALLOWED_ORIGINS = [
-//   'http://localhost:5173', 
-//   'https://freewriter-develop-branch.netlify.app',
-//   'https://www.freewriter.app'
-// ];
 
 export const handler = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
@@ -67,8 +61,6 @@ export const handler = async (event, context) => {
     // Route Handling
     if (path.startsWith('/users')) {
       response = await handleUserRoutes(event);
-    } else if (path.startsWith('/stories')) {
-      response = await handleStoryRoutes(event);
     } else if (path.startsWith('/ai')) {
       response = await handleAIRoutes(event);
     } else {

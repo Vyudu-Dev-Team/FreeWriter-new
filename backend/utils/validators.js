@@ -1,5 +1,7 @@
 import AppError from './appError.js';
 import mongoose from 'mongoose';
+import Joi from 'joi';
+import { v4 as uuidv4 } from 'uuid';
 
 export const validateCardType = (cardType) => {
   const validTypes = ['character', 'plot', 'setting', 'theme'];
@@ -139,4 +141,94 @@ export const validateAIPrompt = (prompt) => {
   if (prompt.length < 10 || prompt.length > 500) {
     throw new AppError('AI prompt must be between 10 and 500 characters', 400);
   }
+};
+
+export const validateStoryMap = (data) => {
+  const schema = Joi.object({
+    title: Joi.string().required(),
+    description: Joi.string().optional(),  // Make description optional
+    elements: Joi.array().items(Joi.object({
+      type: Joi.string().valid('chapter', 'scene', 'character', 'plot', 'setting').required(),
+      title: Joi.string().required(),
+    })).required(),
+  });
+
+  return schema.validate(data);
+};
+
+export const validateOutline = (data) => {
+  // Recursive section schema
+  const createSectionSchema = () => Joi.object({
+    id: Joi.string().default(() => uuidv4()),
+    title: Joi.string().required(),
+    content: Joi.string().allow('').optional(),
+    children: Joi.array().items(Joi.link('...')).optional()
+  });
+
+  const schema = Joi.object({
+    title: Joi.string().required(),
+    type: Joi.string().valid('plotter', 'pantser').default('plotter'),
+    sections: Joi.array().items(createSectionSchema()).required(),
+  }).options({ 
+    allowUnknown: false,
+    abortEarly: false 
+  });
+
+  const { error, value } = schema.validate(data);
+  
+  if (error) {
+    throw new Error(`Validation Error: ${error.details.map(d => d.message).join(', ')}`);
+  }
+
+  // Ensure all sections have IDs
+  const processSection = (section) => ({
+    ...section,
+    id: section.id || uuidv4(),
+    children: section.children ? section.children.map(processSection) : []
+  });
+
+  return {
+    ...value,
+    sections: value.sections.map(processSection)
+  };
+};
+
+
+export const validateWritingSession = (data) => {
+  const schema = Joi.object({
+    title: Joi.string().required(),
+    content: Joi.string().allow('').optional(),
+    wordCount: Joi.number().integer().min(0).default(0),
+    duration: Joi.number().integer().min(0).optional(), // Keep for frontend flexibility
+    lastSaved: Joi.date().iso().default(() => new Date()),
+  }).options({ allowUnknown: false });
+
+  return schema.validate(data);
+};
+
+export const validateAIFeedbackRequest = (data) => {
+  const schema = Joi.object({
+    text: Joi.string().required(),
+    genre: Joi.string().required(),
+    style: Joi.string().required(),
+  });
+
+  return schema.validate(data);
+};
+
+
+export const validateDragAndDropOperation = (data) => {
+  const schema = Joi.object({
+    elementId: Joi.string().required(),
+    sourcePosition: Joi.object({
+      x: Joi.number().required(),
+      y: Joi.number().required(),
+    }).required(),
+    targetPosition: Joi.object({
+      x: Joi.number().required(),
+      y: Joi.number().required(),
+    }).required(),
+  });
+
+  return schema.validate(data);
 };
