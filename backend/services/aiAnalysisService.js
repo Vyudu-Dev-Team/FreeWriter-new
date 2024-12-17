@@ -1,12 +1,12 @@
 // services/aiAnalysisService.js
 
-import { generateStoryPrompt, generateStoryGuidance } from './aiService.js';
-import natural from 'natural';
-import genreKeywords from '../data/genreKeywords.js';
-import stylePatterns from '../data/stylePatterns.js';
-import inappropriateWords from '../data/inappropriateWords.js';
+const { generateStoryPrompt, generateStoryGuidance } = require( './aiService.js');
+const natural = require( 'natural');
+const genreKeywords = require( '../data/genreKeywords.js');
+const stylePatterns = require( '../data/stylePatterns.js');
+const inappropriateWords = require( '../data/inappropriateWords.js');
 
-export const analyzePromptQuality = async (params) => {
+const analyzePromptQuality = async (params) => {
   const prompt = await generateStoryPrompt(params);
   
   return {
@@ -19,7 +19,7 @@ export const analyzePromptQuality = async (params) => {
   };
 };
 
-export const analyzeGuidanceQuality = async (prompt) => {
+const analyzeGuidanceQuality = async (prompt) => {
   const guidance = await generateStoryGuidance({ prompt });
   
   return {
@@ -92,4 +92,9 @@ const isCoherent = (prevPoint, currentPoint) => {
   // Simple coherence check: look for common words or phrases
   const commonWords = prevPoint.split(' ').filter(word => currentPoint.includes(word));
   return commonWords.length > 0;
+};
+
+module.exports = {
+  analyzePromptQuality,
+  analyzeGuidanceQuality,
 };

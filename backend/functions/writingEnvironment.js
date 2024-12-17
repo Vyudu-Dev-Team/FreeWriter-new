@@ -1,10 +1,10 @@
-import { MongoClient } from "mongodb";
-import {
+const { MongoClient } = require( "mongodb");
+const {
   validateWritingSession,
   validateAIFeedbackRequest,
-} from "../utils/validators.js";
-import logger from "../utils/logger.js";
-import { generateAIFeedback } from "../services/aiService.js";
+} = require( "../utils/validators.js");
+const logger = require( "../utils/logger.js");
+const { generateAIFeedback } = require( "../services/aiService.js");
 
 const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri, {
@@ -18,7 +18,7 @@ const client = new MongoClient(uri, {
  * @param {Object} context - The context object from Netlify
  * @returns {Object} - The response object
  */
-export const handler = async (event, context) => {
+const handler = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
 
   try {
@@ -176,3 +176,7 @@ async function getAIFeedback(data) {
   }
 }
 v;
+
+module.exports = {
+  handler
+};

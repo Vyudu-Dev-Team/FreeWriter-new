@@ -1,7 +1,7 @@
 // functions/dragAndDrop.js
-import { MongoClient } from "mongodb";
-import { validateDragAndDropOperation } from "../utils/validators.js";
-import logger from "../utils/logger.js";
+const { MongoClient } = require( "mongodb");
+const { validateDragAndDropOperation } = require( "../utils/validators.js");
+const logger = require( "../utils/logger.js");
 
 const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri, {
@@ -15,7 +15,7 @@ const client = new MongoClient(uri, {
  * @param {Object} context - The context object from Netlify
  * @returns {Object} - The response object
  */
-export const handler = async (event, context) => {
+const handler = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
 
   try {
@@ -90,3 +90,7 @@ async function getDragAndDropOperations(queryParams, dragAndDropOperations) {
   const operations = await dragAndDropOperations.find(query).toArray();
   return { statusCode: 200, body: JSON.stringify(operations) };
 }
+
+module.exports = {
+  handler
+};

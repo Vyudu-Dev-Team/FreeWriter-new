@@ -1,8 +1,8 @@
-import connectDB from '../config/database.js';
-import Card from '../models/Card.js';
-import { generateCard } from '../services/cardGenerationService.js';
-import { errorHandler } from '../utils/errorHandler.js';
-import logger from '../utils/logger.js';
+const connectDB = require( '../config/database.js');
+const Card = require( '../models/Card.js');
+const { generateCard } = require( '../services/cardGenerationService.js');
+const { errorHandler } = require( '../utils/errorHandler.js');
+const logger = require( '../utils/logger.js');
 
 /**
  * Generates a new card and stores it in the database.
@@ -10,7 +10,7 @@ import logger from '../utils/logger.js';
  * @param {Object} context - The Netlify function context object.
  * @returns {Object} The generated card or an error response.
  */
-export const handler = async (event, context) => {
+const handler = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
 
   try {
@@ -35,4 +35,8 @@ export const handler = async (event, context) => {
     logger.error('Error in card generation', { error: error.message });
     return errorHandler(error);
   }
+};
+
+module.exports = {
+  handler
 };

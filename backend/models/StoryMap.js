@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require( 'mongoose');
 
 const elementSchema = new mongoose.Schema({
   id: { type: String, required: true },
@@ -32,4 +32,4 @@ const storyMapSchema = new mongoose.Schema({
 
 const StoryMap = mongoose.model('StoryMap', storyMapSchema);
 
-export default StoryMap;
+module.exports =   StoryMap;

@@ -1,16 +1,16 @@
-import AppError from './appError.js';
-import mongoose from 'mongoose';
-import Joi from 'joi';
-import { v4 as uuidv4 } from 'uuid';
+const AppError = require( './appError.js');
+const mongoose = require( 'mongoose');
+const Joi = require( 'joi');
+const { v4: uuidv4 } = require("uuid");
 
-export const validateCardType = (cardType) => {
+const validateCardType = (cardType) => {
   const validTypes = ['character', 'plot', 'setting', 'theme'];
   if (!validTypes.includes(cardType)) {
     throw new AppError(`Invalid card type. Must be one of: ${validTypes.join(', ')}`, 400);
   }
 };
 
-export const validateCustomization = (customization) => {
+const validateCustomization = (customization) => {
   if (typeof customization !== 'object' || customization === null) {
     throw new AppError('Customization must be a non-null object', 400);
   }
@@ -46,14 +46,14 @@ export const validateCustomization = (customization) => {
   }
 };
 
-export const validateRarity = (rarity) => {
+const validateRarity = (rarity) => {
   const validRarities = ['common', 'uncommon', 'rare', 'legendary'];
   if (!validRarities.includes(rarity)) {
     throw new AppError(`Invalid rarity. Must be one of: ${validRarities.join(', ')}`, 400);
   }
 };
 
-export const validateDeckOperation = (userId, deckId, operation) => {
+const validateDeckOperation = (userId, deckId, operation) => {
   if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
     throw new AppError('Invalid user ID', 400);
   }
@@ -66,7 +66,7 @@ export const validateDeckOperation = (userId, deckId, operation) => {
   }
 };
 
-export const validateStoryIntegration = (userId, storyId, cardId) => {
+const validateStoryIntegration = (userId, storyId, cardId) => {
   if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
     throw new AppError('Invalid user ID', 400);
   }
@@ -78,7 +78,7 @@ export const validateStoryIntegration = (userId, storyId, cardId) => {
   }
 };
 
-export const validateCardContent = (content) => {
+const validateCardContent = (content) => {
   if (typeof content !== 'string') {
     throw new AppError('Card content must be a string', 400);
   }
@@ -87,7 +87,7 @@ export const validateCardContent = (content) => {
   }
 };
 
-export const validateDeckName = (name) => {
+const validateDeckName = (name) => {
   if (typeof name !== 'string') {
     throw new AppError('Deck name must be a string', 400);
   }
@@ -96,7 +96,7 @@ export const validateDeckName = (name) => {
   }
 };
 
-export const validateDeckSize = (cards) => {
+const validateDeckSize = (cards) => {
   if (!Array.isArray(cards)) {
     throw new AppError('Cards must be an array', 400);
   }
@@ -105,7 +105,7 @@ export const validateDeckSize = (cards) => {
   }
 };
 
-export const validateCardBalance = (cards) => {
+const validateCardBalance = (cards) => {
   const typeCounts = cards.reduce((acc, card) => {
     acc[card.type] = (acc[card.type] || 0) + 1;
     return acc;
@@ -121,20 +121,20 @@ export const validateCardBalance = (cards) => {
   }
 };
 
-export const validateStoryProgress = (progress) => {
+const validateStoryProgress = (progress) => {
   if (typeof progress !== 'number' || progress < 0 || progress > 100) {
     throw new AppError('Story progress must be a number between 0 and 100', 400);
   }
 };
 
-export const validateCardInteraction = (interaction) => {
+const validateCardInteraction = (interaction) => {
   const validInteractions = ['draw', 'play', 'discard'];
   if (!validInteractions.includes(interaction)) {
     throw new AppError(`Invalid card interaction. Must be one of: ${validInteractions.join(', ')}`, 400);
   }
 };
 
-export const validateAIPrompt = (prompt) => {
+const validateAIPrompt = (prompt) => {
   if (typeof prompt !== 'string') {
     throw new AppError('AI prompt must be a string', 400);
   }
@@ -143,7 +143,7 @@ export const validateAIPrompt = (prompt) => {
   }
 };
 
-export const validateStoryMap = (data) => {
+const validateStoryMap = (data) => {
   const schema = Joi.object({
     title: Joi.string().required(),
     description: Joi.string().optional(),  // Make description optional
@@ -156,7 +156,7 @@ export const validateStoryMap = (data) => {
   return schema.validate(data);
 };
 
-export const validateOutline = (data) => {
+const validateOutline = (data) => {
   // Recursive section schema
   const createSectionSchema = () => Joi.object({
     id: Joi.string().default(() => uuidv4()),
@@ -194,7 +194,7 @@ export const validateOutline = (data) => {
 };
 
 
-export const validateWritingSession = (data) => {
+const validateWritingSession = (data) => {
   const schema = Joi.object({
     title: Joi.string().required(),
     content: Joi.string().allow('').optional(),
@@ -206,7 +206,7 @@ export const validateWritingSession = (data) => {
   return schema.validate(data);
 };
 
-export const validateAIFeedbackRequest = (data) => {
+const validateAIFeedbackRequest = (data) => {
   const schema = Joi.object({
     text: Joi.string().required(),
     genre: Joi.string().required(),
@@ -217,7 +217,7 @@ export const validateAIFeedbackRequest = (data) => {
 };
 
 
-export const validateDragAndDropOperation = (data) => {
+const validateDragAndDropOperation = (data) => {
   const schema = Joi.object({
     elementId: Joi.string().required(),
     sourcePosition: Joi.object({
@@ -231,4 +231,24 @@ export const validateDragAndDropOperation = (data) => {
   });
 
   return schema.validate(data);
+};
+
+module.exports = {
+  validateDragAndDropOperation,
+  validateAIFeedbackRequest,
+  validateWritingSession,
+  validateOutline,
+  validateStoryMap,
+  validateAIPrompt,
+  validateCardInteraction,
+  validateCardBalance,
+  validateDeckSize,
+  validateStoryProgress,
+  validateDeckName,
+  validateCardContent,
+  validateStoryIntegration,
+  validateDeckOperation,
+  validateRarity,
+  validateCustomization,
+  validateCardType,
 };

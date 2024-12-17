@@ -1,9 +1,9 @@
-import connectDB from '../config/database.js';
-import { resetPreferences } from '../services/preferencesService.js';
-import { verifyToken } from '../utils/jwt.js';
-import { errorHandler } from '../utils/errorHandler.js';
+const connectDB = require( '../config/database.js');
+const { resetPreferences } = require( '../services/preferencesService.js');
+const { verifyToken } = require( '../utils/jwt.js');
+const { errorHandler } = require( '../utils/errorHandler.js');
 
-export const handler = async (event, context) => {
+const handler = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
   
   try {
@@ -28,4 +28,8 @@ export const handler = async (event, context) => {
   } catch (error) {
     return errorHandler(error);
   }
+};
+
+module.exports = {
+  handler
 };

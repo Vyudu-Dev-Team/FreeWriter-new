@@ -1,5 +1,5 @@
-import OpenAI from "openai";
-import AppError from "../utils/appError.js";
+const OpenAI = require( "openai");
+const AppError = require( "../utils/appError.js");
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
@@ -14,7 +14,7 @@ const openai = new OpenAI({
  * @param {string} params.targetAudience - The target audience for the story
  * @returns {Promise<string>} The generated story prompt
  */
-export const generateStoryPrompt = async ({
+const generateStoryPrompt = async ({
   genre,
   writingStyle,
   complexity,
@@ -46,7 +46,7 @@ export const generateStoryPrompt = async ({
  * @param {string} params.prompt - The initial story prompt
  * @returns {Promise<Object>} Object containing character, plot, and setting suggestions
  */
-export const generateStoryGuidance = async ({ prompt }) => {
+const generateStoryGuidance = async ({ prompt }) => {
   try {
     const guidancePrompt = `Based on the following story prompt: "${prompt}"
     1. Suggest three main characters (name and brief description).
@@ -88,7 +88,7 @@ export const generateStoryGuidance = async ({ prompt }) => {
  * @param {string} style - The writing style
  * @returns {string} - The generated feedback
  */
-export async function generateAIFeedback(text, genre, style) {
+async function generateAIFeedback(text, genre, style) {
   try {
     const prompt = `As a writing assistant, provide feedback on the following ${genre} text written in ${style} style:
 
@@ -126,7 +126,7 @@ Limit your response to 300 words.`;
  * @param {string} userId - User ID for tracking progression and saving data
  * @returns {Promise<Object>} - The AI response after processing the new parameters
  */
-export const updateAIModel = async (newParameters, userId) => {
+const updateAIModel = async (newParameters, userId) => {
   try {
     // Fetch user data to understand current progress (you may customize this based on your data structure)
     const user = await UserModel.findById(userId);
@@ -174,4 +174,10 @@ export const updateAIModel = async (newParameters, userId) => {
     console.error("Error updating AI model:", error);
     throw new AppError("Failed to update AI model", 500);
   }
+};
+
+module.exports = {
+  generateStoryPrompt,
+  generateStoryGuidance,
+  updateAIModel,
 };

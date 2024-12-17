@@ -1,5 +1,5 @@
-import mongoose from 'mongoose';
-import { v4 as uuidv4 } from 'uuid';
+const mongoose = require( 'mongoose');
+const { v4 : uuidv4 } = require( 'uuid');
 
 // Declare the schema first
 const sectionSchema = new mongoose.Schema({
@@ -47,4 +47,4 @@ const outlineSchema = new mongoose.Schema({
 
 const Outline = mongoose.model('Outline', outlineSchema);
 
-export default Outline;
+module.exports =   Outline;

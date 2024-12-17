@@ -6,7 +6,6 @@ const Profile = require("../models/Profile.js");
 const StoryMap = require("../models/StoryMap.js");
 const Outline = require("../models/Outline.js");
 const WritingSession = require("../models/WritingSession.js");
-const crypto = require("crypto");
 const { verifyToken, generateToken, verifyEmailToken } = require("../utils/jwt.js");
 const {
   sendVerificationEmail,
@@ -28,21 +27,23 @@ const {
   validateWritingSession,
   validateAIFeedbackRequest,
 } = require("../utils/validators.js");
-const bcrypt = require("bcryptjs");
 const AppError = require("../utils/appError.js");
-const OpenAI = require("openai");
 const logger = require("../utils/logger.js");
 const {
   generateAIFeedback,
   generateStoryPrompt,
 } = require("../services/aiService.js");
 const { adjustAIParameters } = require("../services/aiFeedbackService.js");
+
+const crypto = require("crypto");
+const bcrypt = require("bcryptjs");
+const { v4: uuidv4 } = require("uuid");
 const { ObjectId } = require("mongodb");
-const { v4: uuidv4 } = require('uuid');
+const OpenAI = require("openai");
 const openai = new OpenAI(process.env.OPENAI_API_KEY);
 
 
-export const handleUserRoutes = async (event) => {
+const handleUserRoutes = async (event) => {
   const { httpMethod, path } = event;
   const route = path.replace("/users", "");
   const createResponse = (statusCode, message) => ({
@@ -80,7 +81,7 @@ export const handleUserRoutes = async (event) => {
   }
 };
 
-export const handleAIRoutes = async (event) => {
+const handleAIRoutes = async (event) => {
   const { httpMethod, path } = event;
   const route = path.replace("/ai", "");
 
@@ -103,26 +104,32 @@ export const handleAIRoutes = async (event) => {
   }
 };
 
-export const handleStoryRoutes = async (event) => {
+const handleStoryRoutes = async (event) => {
   const { httpMethod, path } = event;
-  const route = path.replace("/stories", "");
 
-  switch (`${httpMethod} ${route}`) {
-    case "POST /get-or-create":
+  // Extract outline ID from the path, ensuring it matches the MongoDB ObjectId format
+  const storyIdMatch = path.match(/\/([a-fA-F0-9]{24})$/);
+  const storyId = storyIdMatch ? storyIdMatch[1] : null;
+
+  switch (true) {
+    case httpMethod === "POST" && path === "/get-or-create":
       return getOrCreateStory(event);
-    case "POST /":
-      return createStory(JSON.parse(event.body));
-    case "GET /":
+    case httpMethod === "POST" && path === "/":
+      return createStory(event);
+
+    case httpMethod === "GET" && path === "/":
       return getStories(event);
-    case "GET /:id":
-      return getStory(event);
-    case "PUT /:id":
-      return updateStory(event);
-    case "DELETE /:id":
-      return deleteStory(event);
-    case "PUT /:id/content":
-      return updateStoryContent(event);
+
+    case httpMethod === "GET" && !!storyId:
+      return getStory(event, storyId);
+
+    case httpMethod === "PUT" && !!storyId:
+      return updateStory(event, storyId);
+
+    case httpMethod === "DELETE" && !!storyId:
+      return deleteStory(event, storyId);
     default:
+      console.log("No matching route found.");
       return {
         statusCode: 404,
         body: JSON.stringify({ message: "Not Found" }),
@@ -130,7 +137,7 @@ export const handleStoryRoutes = async (event) => {
   }
 };
 
-export const handleDeckRoutes = async (event) => {
+const handleDeckRoutes = async (event) => {
   const { httpMethod, path } = event;
 
   // Extract deck ID manually
@@ -150,75 +157,76 @@ export const handleDeckRoutes = async (event) => {
   };
 };
 
-export const handleCardRoutes = async (event) => {   
-  try {          
-    const { httpMethod, path, pathParameters } = event;          
-    const userResponse = await getCurrentUser(event);     
-    if (userResponse.statusCode !== 200) {       
-      return userResponse;     
-    }          
-    const userId = JSON.parse(userResponse.body).user.id;          
-    
-    // Extract cardId from pathParameters or path     
-    const cardId = pathParameters?.id || extractCardId(path);        
-    
-    switch (true) {       
+const handleCardRoutes = async (event) => {
+  try {
+    const { httpMethod, path, pathParameters } = event;
+    const userResponse = await getCurrentUser(event);
+    if (userResponse.statusCode !== 200) {
+      return userResponse;
+    }
+    const userId = JSON.parse(userResponse.body).user.id;
+
+    // Extract cardId from pathParameters or path
+    const cardId = pathParameters?.id || extractCardId(path);
+
+    switch (true) {
       case httpMethod === "POST" && path === "/generate":
         return generateCard(event, userId);
-              
+
       case httpMethod === "PUT" && path.includes("/customize"):
         return customizeCard(event, userId, cardId);
-              
+
       case httpMethod === "PUT" && path.includes("/rarity"):
         return setCardRarity(event, userId, cardId);
-              
+
       case httpMethod === "POST" && path.includes("/integrate"):
         return integrateCardIntoStory(event, userId, cardId);
-              
+
       case httpMethod === "GET" && cardId && cardId.length === 24:
         return getCard(event, userId, cardId);
-              
+
       case httpMethod === "DELETE" && cardId && cardId.length === 24:
         return deleteCard(event, userId, cardId);
-              
+
       default:
-        return {           
-          statusCode: 404,           
-          body: JSON.stringify({ message: "Not Found" }),         
-        };     
-    }   
-  } catch (error) {         
-    return {       
-      statusCode: 500,       
-      body: JSON.stringify({ message: "An error occurred processing the request" }),     
-    };   
-  } 
+        return {
+          statusCode: 404,
+          body: JSON.stringify({ message: "Not Found" }),
+        };
+    }
+  } catch (error) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        message: "An error occurred processing the request",
+      }),
+    };
+  }
 };
 
-export const handleOutlineRoutes = async (event) => {
+const handleOutlineRoutes = async (event) => {
   const { httpMethod, path } = event;
 
   // Extract outline ID from the path, ensuring it matches the MongoDB ObjectId format
   const outlineIdMatch = path.match(/\/([a-fA-F0-9]{24})$/);
   const outlineId = outlineIdMatch ? outlineIdMatch[1] : null;
 
-
   switch (true) {
     case httpMethod === "POST" && path === "/":
       return createOutline(event);
-    
+
     case httpMethod === "GET" && path === "/":
       return getAllOutlines(event);
-    
+
     case httpMethod === "GET" && !!outlineId:
       return getOutline(event, outlineId);
-    
+
     case httpMethod === "PUT" && !!outlineId:
       return updateOutline(event, outlineId);
-    
+
     case httpMethod === "DELETE" && !!outlineId:
       return deleteOutline(event, outlineId);
-    
+
     default:
       console.log("No matching route found.");
       return {
@@ -228,28 +236,23 @@ export const handleOutlineRoutes = async (event) => {
   }
 };
 
-export const handleStoryMappingRoutes = async (event) => {
+const handleStoryMappingRoutes = async (event) => {
   const { httpMethod, path } = event;
-  console.log("event:", event)
-
-  // Update regex to match the actual path structure
   const idMatch = path.match(/\/([a-fA-F0-9]{24})$/);
   const storyMapId = idMatch ? idMatch[1] : null;
-  console.log("storyMapId:", idMatch);
-  console.log("storyMapId:", storyMapId);
 
   switch (true) {
     case httpMethod === "POST" && path === "/story-mapping":
       return createStoryMap(JSON.parse(event.body));
 
     case httpMethod === "GET" && !!storyMapId:
-      return getStoryMap(event, storyMapId);  // Pass storyMapId as a separate argument
+      return getStoryMap(event, storyMapId); // Pass storyMapId as a separate argument
 
     case httpMethod === "PUT" && !!storyMapId:
-      return updateStoryMap(event, storyMapId);  // Pass storyMapId as a separate argument
+      return updateStoryMap(event, storyMapId); // Pass storyMapId as a separate argument
 
     case httpMethod === "DELETE" && !!storyMapId:
-      return deleteStoryMap(event, storyMapId);  // Pass storyMapId as a separate argument
+      return deleteStoryMap(event, storyMapId); // Pass storyMapId as a separate argument
 
     default:
       return {
@@ -259,8 +262,7 @@ export const handleStoryMappingRoutes = async (event) => {
   }
 };
 
-
-export const handleWritingEnvironmentRoutes = async (event) => {
+const handleWritingEnvironmentRoutes = async (event) => {
   const { httpMethod, path } = event;
 
   const idMatch = path.match(/\/([a-fA-F0-9]{24})$/);
@@ -271,13 +273,13 @@ export const handleWritingEnvironmentRoutes = async (event) => {
       return createWritingSession(JSON.parse(event.body));
 
     case httpMethod === "GET" && !!writtingId:
-      return getWritingSession(event, writtingId);  
+      return getWritingSession(event, writtingId);
 
     case httpMethod === "PUT" && !!writtingId:
-      return updateWritingSession(event, writtingId);  
+      return updateWritingSession(event, writtingId);
 
     case httpMethod === "DELETE" && !!writtingId:
-      return deleteWritingSession(event, writtingId);  
+      return deleteWritingSession(event, writtingId);
 
     case httpMethod === "POST" && path === "writing-environment/feedback":
       return getAIFeedback(event);
@@ -735,7 +737,6 @@ const resetUserPreferences = async (event) => {
   };
 };
 
-
 // story endpoints
 const getOrCreateStory = async (event) => {
   try {
@@ -779,15 +780,62 @@ const getOrCreateStory = async (event) => {
   }
 };
 
-const createStory = async (data) => {
+const createStory = async (event) => {
   try {
-    const { userId, title, content, genre } = data;
-    const story = new Story({ author: userId, title, content, genre });
-    await story.save();
-    return {
-      statusCode: 201,
-      body: JSON.stringify(story),
-    };
+     // Retrieve user ID from the event
+     const userResponse = await getCurrentUser(event);
+   
+     // Check if user retrieval was successful
+     if (userResponse.statusCode !== 200) {
+       return userResponse; // Return error if user retrieval failed
+     }
+   
+     // Parse user ID from the response
+     const userId = JSON.parse(userResponse.body).user.id;
+   
+     // Parse and validate the input data
+     let storyData = event.body;
+   
+     if (typeof storyData === "string") {
+       try {
+         storyData = JSON.parse(storyData);
+       } catch (parseError) {
+         return {
+           statusCode: 400,
+           body: JSON.stringify({ message: "Invalid JSON in request body" }),
+         };
+       }
+     }
+   
+     // Destructure and validate story data
+     const { title, content, genre } = storyData;
+   
+     if (!title || !content || !genre) {
+       return {
+         statusCode: 400,
+         body: JSON.stringify({
+           message: "Title, content, and genre are required",
+         }),
+       };
+     }
+   
+     // Create a new story instance with validated data
+     const newStory = new Story({
+       author: userId,
+       title: title,
+       content: content,
+       genre: genre
+     });
+   
+     // Save the story to the database
+     const savedStory = await newStory.save();
+   
+     // Return success response
+     return {
+       statusCode: 201,
+       body: JSON.stringify(savedStory)
+     };
+   
   } catch (error) {
     logger.error("Create story error:", error);
     return {
@@ -801,12 +849,24 @@ const createStory = async (data) => {
 
 const getStories = async (event) => {
   try {
-    const userId = await verifyToken(event);
-    const stories = await Story.find({ author: userId });
-    return {
-      statusCode: 200,
-      body: JSON.stringify(stories),
-    };
+
+     // Get current user using getCurrentUser
+     const userResponse = await getCurrentUser(event);
+
+     // Check if user retrieval was successful
+     if (userResponse.statusCode !== 200) {
+       return userResponse; // Return error if user retrieval failed
+     }
+ 
+     // Parse user ID from the response
+     const userId = JSON.parse(userResponse.body).user.id;
+ 
+     const stories = await Story.find({ author: userId });
+ 
+     return {
+       statusCode: 200,
+       body: JSON.stringify(stories),
+     };
   } catch (error) {
     logger.error("Get stories error:", error);
     return {
@@ -818,17 +878,48 @@ const getStories = async (event) => {
   }
 };
 
-const getStory = async (event) => {
+const getStory = async (event, storyId) => {
   try {
-    const userId = await verifyToken(event);
-    const storyId = event.path.split("/").pop();
-    const story = await Story.findOne({ _id: storyId, author: userId });
+    const userResponse = await getCurrentUser(event);
+    if (userResponse.statusCode !== 200) return userResponse;
+
+    const userId = JSON.parse(userResponse.body).user.id;
+    if (!userId) {
+      return {
+        statusCode: 401,
+        body: JSON.stringify({
+          message: "Unauthorized: User not authenticated",
+        }),
+      };
+    }
+
+    if (!storyId) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: "Invalid story ID" }),
+      };
+    }
+    console.log("Story ID:", storyId);
+    console.log("User ID:", userId);
+    const storyObjectId = storyId && ObjectId.isValid(storyId) ? new ObjectId(storyId) : null;
+    const userObjectId = userId && ObjectId.isValid(userId) ? new ObjectId(userId) : null;
+
+    if (!storyObjectId || !userObjectId)
+      throw new Error("Invalid Story or user ID");
+
+    // Query the database
+    const story = await Story.findOne({
+      _id: storyObjectId,
+      author: userObjectId,
+    });
+    console.log("User story:", story);
     if (!story) {
       return {
         statusCode: 404,
         body: JSON.stringify({ message: "Story not found" }),
       };
     }
+
     return {
       statusCode: 200,
       body: JSON.stringify(story),
@@ -844,22 +935,64 @@ const getStory = async (event) => {
   }
 };
 
-const updateStory = async (event) => {
+const updateStory = async (event, storyId) => {
   try {
-    const userId = await verifyToken(event);
-    const storyId = event.path.split("/").pop();
-    const updates = JSON.parse(event.body);
+    const userResponse = await getCurrentUser(event);
+    if (userResponse.statusCode !== 200) return userResponse;
+
+    const userId = JSON.parse(userResponse.body).user.id;
+    if (!userId) {
+      return {
+        statusCode: 401,
+        body: JSON.stringify({
+          message: "Unauthorized: User not authenticated",
+        }),
+      };
+    }
+
+    if (!storyId) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: "Invalid story ID" }),
+      };
+    }
+
+
+    let updates = event.body;
+    if (typeof updates === "string") {
+      try {
+        updates = JSON.parse(updates);
+      } catch {
+        return {
+          statusCode: 400,
+          body: JSON.stringify({ message: "Invalid JSON in request body" }),
+        };
+      }
+    }
+
+    const storyObjectId = storyId && ObjectId.isValid(storyId) ? new ObjectId(storyId) : null;
+    const userObjectId = userId && ObjectId.isValid(userId) ? new ObjectId(userId) : null;
+
+    if (!storyObjectId || !userObjectId)
+      throw new Error("Invalid Story or user ID");
+
+    // Query the database
     const story = await Story.findOneAndUpdate(
-      { _id: storyId, author: userId },
+      {
+        _id: storyObjectId,
+        author: userObjectId,
+      },
       updates,
       { new: true }
     );
+
     if (!story) {
       return {
         statusCode: 404,
-        body: JSON.stringify({ message: "Story not found" }),
+        body: JSON.stringify({ message: "Outline not found" }),
       };
     }
+
     return {
       statusCode: 200,
       body: JSON.stringify(story),
@@ -875,20 +1008,47 @@ const updateStory = async (event) => {
   }
 };
 
-const deleteStory = async (event) => {
+const deleteStory = async (event, storyId) => {
   try {
-    const userId = await verifyToken(event);
-    const storyId = event.path.split("/").pop();
+
+    const userResponse = await getCurrentUser(event);
+    if (userResponse.statusCode !== 200) return userResponse;
+
+    const userId = JSON.parse(userResponse.body).user.id;
+    if (!userId) {
+      return {
+        statusCode: 401,
+        body: JSON.stringify({
+          message: "Unauthorized: User not authenticated",
+        }),
+      };
+    }
+
+    if (!storyId) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: "Invalid outline ID" }),
+      };
+    }
+    const storyObjectId = storyId && ObjectId.isValid(storyId) ? new ObjectId(storyId) : null;
+    const userObjectId = userId && ObjectId.isValid(userId) ? new ObjectId(userId) : null;
+
+    if (!storyObjectId || !userObjectId)
+      throw new Error("Invalid Story or user ID");
+
+    
     const story = await Story.findOneAndDelete({
-      _id: storyId,
-      author: userId,
+      _id: storyObjectId,
+      author: userObjectId,
     });
+
     if (!story) {
       return {
         statusCode: 404,
-        body: JSON.stringify({ message: "Story not found" }),
+        body: JSON.stringify({ message: "Outline not found" }),
       };
     }
+    
     return {
       statusCode: 200,
       body: JSON.stringify({ message: "Story deleted successfully" }),
@@ -940,7 +1100,6 @@ const updateStoryContent = async (event) => {
     };
   }
 };
-
 
 // AI endpoints
 const generateAndSaveStoryPrompt = async (event) => {
@@ -1394,7 +1553,6 @@ const dashboardAnalysis = async (data) => {
   }
 };
 
-
 // deck endpoints
 const createDeck = async (event) => {
   try {
@@ -1484,7 +1642,7 @@ const getUserDecks = async (event) => {
   }
 };
 
-export const getDeck = async (event, deckId) => {
+const getDeck = async (event, deckId) => {
   try {
     const userResponse = await getCurrentUser(event);
     if (userResponse.statusCode !== 200) return userResponse;
@@ -1608,11 +1766,9 @@ const deleteDeck = async (event) => {
   }
 };
 
-
 // card endpoints
 const generateCard = async (event, userId) => {
   try {
-
     let card = event.body;
 
     // If body is a string, parse it
@@ -1629,7 +1785,6 @@ const generateCard = async (event, userId) => {
 
     const cardType = card.cardType;
 
-
     validateCardType(cardType);
 
     const prompt = `Generate a ${cardType} card for a deck-building story game.`;
@@ -1638,12 +1793,12 @@ const generateCard = async (event, userId) => {
       messages: [
         {
           role: "user",
-          content: prompt
-        }
+          content: prompt,
+        },
       ],
       max_tokens: 100,
     });
-    
+
     const cardContent = response.choices[0].message.content.trim();
     const newCard = new Card({
       userId,
@@ -1684,17 +1839,17 @@ const customizeCard = async (event, userId, cardId) => {
     }
 
     validateCustomization(customization);
-    
+
     const card = await Card.findOneAndUpdate(
       { _id: cardId, userId },
       { $set: { customization } },
       { new: true }
     );
-    
+
     if (!card) {
       throw new AppError("Card not found", 404);
     }
-    
+
     return {
       statusCode: 200,
       body: JSON.stringify(card),
@@ -1704,7 +1859,8 @@ const customizeCard = async (event, userId, cardId) => {
     return {
       statusCode: error.statusCode || 500,
       body: JSON.stringify({
-        message: error.message || "An error occurred while customizing the card",
+        message:
+          error.message || "An error occurred while customizing the card",
       }),
     };
   }
@@ -1728,17 +1884,17 @@ const setCardRarity = async (event, userId, cardId) => {
 
     const { rarity } = rarityData;
     validateRarity(rarity);
-    
+
     const card = await Card.findOneAndUpdate(
       { _id: cardId, userId },
       { $set: { rarity } },
       { new: true }
     );
-    
+
     if (!card) {
       throw new AppError("Card not found", 404);
     }
-    
+
     return {
       statusCode: 200,
       body: JSON.stringify(card),
@@ -1779,19 +1935,19 @@ const integrateCardIntoStory = async (event, userId, cardId) => {
     const story = await Story.findOne({ _id: storyId, author: userId });
 
     const card = await Card.findById(cardId);
-    console.log('Found Card:', card ? card._id : 'Not Found');
+    console.log("Found Card:", card ? card._id : "Not Found");
 
     if (!story) {
-      console.log('Story not found details:', { 
-        storyId, 
-        userId, 
-        searchCriteria: { _id: storyId, author: userId } 
+      console.log("Story not found details:", {
+        storyId,
+        userId,
+        searchCriteria: { _id: storyId, author: userId },
       });
       throw new AppError("Story not found", 404);
     }
 
     if (!card) {
-      console.log('Card not found details:', { cardId });
+      console.log("Card not found details:", { cardId });
       throw new AppError("Card not found", 404);
     }
 
@@ -1799,13 +1955,15 @@ const integrateCardIntoStory = async (event, userId, cardId) => {
     if (story.integratedCards.includes(cardId)) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ message: "Card already integrated into this story" }),
+        body: JSON.stringify({
+          message: "Card already integrated into this story",
+        }),
       };
     }
 
     story.content += `\n\n[Card Integration: ${card.content}]`;
     story.integratedCards.push(cardId);
-    
+
     // Save and log the result
     const savedStory = await story.save();
 
@@ -1814,12 +1972,14 @@ const integrateCardIntoStory = async (event, userId, cardId) => {
       body: JSON.stringify(savedStory),
     };
   } catch (error) {
-    console.error('Full Integrate card into story error:', error);
+    console.error("Full Integrate card into story error:", error);
     logger.error("Integrate card into story error:", error);
     return {
       statusCode: error.statusCode || 500,
       body: JSON.stringify({
-        message: error.message || "An error occurred while integrating the card into the story",
+        message:
+          error.message ||
+          "An error occurred while integrating the card into the story",
       }),
     };
   }
@@ -1851,11 +2011,11 @@ const getCard = async (event, userId, cardId) => {
 const deleteCard = async (event, userId, cardId) => {
   try {
     const card = await Card.findOneAndDelete({ _id: cardId, userId });
-    
+
     if (!card) {
       throw new AppError("Card not found", 404);
     }
-    
+
     return {
       statusCode: 200,
       body: JSON.stringify({ message: "Card deleted successfully" }),
@@ -1902,7 +2062,7 @@ const createOutline = async (event) => {
     // Add userId to the outline data for validation
     const validationResult = validateOutline({
       ...outlineData,
-      userId
+      userId,
     });
 
     // Ensure necessary fields are present
@@ -1920,12 +2080,12 @@ const createOutline = async (event) => {
     const newOutline = new Outline({
       userId,
       title: validationResult.title,
-      type: validationResult.type || 'plotter',
-      sections: validationResult.sections.map(section => ({
+      type: validationResult.type || "plotter",
+      sections: validationResult.sections.map((section) => ({
         ...section,
         id: section.id || uuidv4(), // Ensure ID exists
-        children: section.children || []
-      }))
+        children: section.children || [],
+      })),
     });
 
     // Save the outline to the database
@@ -1935,21 +2095,17 @@ const createOutline = async (event) => {
     return {
       statusCode: 201,
       body: JSON.stringify({
-        message: 'Outline created successfully',
-        outline: savedOutline.toObject()
+        message: "Outline created successfully",
+        outline: savedOutline.toObject(),
       }),
     };
   } catch (error) {
-    // Log the full error for debugging
-    logger.error("Create outline error:", error);
-
-    // Return a sanitized error response
     return {
       statusCode: 500,
       body: JSON.stringify({
         message: "An error occurred while creating the outline",
-        error: error.message || 'Unknown error',
-        timestamp: new Date().toISOString()
+        error: error.message || "Unknown error",
+        timestamp: new Date().toISOString(),
       }),
     };
   }
@@ -1957,17 +2113,16 @@ const createOutline = async (event) => {
 
 const getAllOutlines = async (event) => {
   try {
-   // Get current user using getCurrentUser
-   const userResponse = await getCurrentUser(event);
+    // Get current user using getCurrentUser
+    const userResponse = await getCurrentUser(event);
 
-   // Check if user retrieval was successful
-   if (userResponse.statusCode !== 200) {
-     return userResponse; // Return error if user retrieval failed
-   }
+    // Check if user retrieval was successful
+    if (userResponse.statusCode !== 200) {
+      return userResponse; // Return error if user retrieval failed
+    }
 
-   // Parse user ID from the response
-   const userId = JSON.parse(userResponse.body).user.id;
-
+    // Parse user ID from the response
+    const userId = JSON.parse(userResponse.body).user.id;
 
     const outlines = await Outline.find({ userId });
 
@@ -1989,7 +2144,6 @@ const getAllOutlines = async (event) => {
 
 const getOutline = async (event, outlineId) => {
   try {
-
     const userResponse = await getCurrentUser(event);
     if (userResponse.statusCode !== 200) return userResponse;
 
@@ -1997,7 +2151,9 @@ const getOutline = async (event, outlineId) => {
     if (!userId) {
       return {
         statusCode: 401,
-        body: JSON.stringify({ message: "Unauthorized: User not authenticated" }),
+        body: JSON.stringify({
+          message: "Unauthorized: User not authenticated",
+        }),
       };
     }
 
@@ -2007,10 +2163,12 @@ const getOutline = async (event, outlineId) => {
         body: JSON.stringify({ message: "Invalid outline ID" }),
       };
     }
-    const outlineObjectId = ObjectId.isValid(outlineId) ? new ObjectId(outlineId) : null;
+    const outlineObjectId = ObjectId.isValid(outlineId)
+      ? new ObjectId(outlineId)
+      : null;
     const userObjectId = ObjectId.isValid(userId) ? new ObjectId(userId) : null;
 
-    console.log(outlineObjectId,userObjectId);
+    console.log(outlineObjectId, userObjectId);
     if (!outlineObjectId || !userObjectId)
       throw new Error("Invalid outline or user ID");
 
@@ -2052,7 +2210,9 @@ const updateOutline = async (event, outlineId) => {
     if (!userId) {
       return {
         statusCode: 401,
-        body: JSON.stringify({ message: "Unauthorized: User not authenticated" }),
+        body: JSON.stringify({
+          message: "Unauthorized: User not authenticated",
+        }),
       };
     }
 
@@ -2074,7 +2234,7 @@ const updateOutline = async (event, outlineId) => {
         };
       }
     }
-    
+
     const { error } = validateOutline(updates);
     if (error) {
       return {
@@ -2083,19 +2243,23 @@ const updateOutline = async (event, outlineId) => {
       };
     }
 
-    const outlineObjectId = ObjectId.isValid(outlineId) ? new ObjectId(outlineId) : null;
+    const outlineObjectId = ObjectId.isValid(outlineId)
+      ? new ObjectId(outlineId)
+      : null;
     const userObjectId = ObjectId.isValid(userId) ? new ObjectId(userId) : null;
 
     if (!outlineObjectId || !userObjectId)
       throw new Error("Invalid outline or user ID");
 
     // Query the database
-    const outline = await Outline.findOneAndUpdate({
-      _id: outlineObjectId, userId: userObjectId},
+    const outline = await Outline.findOneAndUpdate(
+      {
+        _id: outlineObjectId,
+        userId: userObjectId,
+      },
       updates,
       { new: true }
     );
-
 
     if (!outline) {
       return {
@@ -2129,17 +2293,21 @@ const deleteOutline = async (event, outlineId) => {
     if (!userId) {
       return {
         statusCode: 401,
-        body: JSON.stringify({ message: "Unauthorized: User not authenticated" })
+        body: JSON.stringify({
+          message: "Unauthorized: User not authenticated",
+        }),
       };
     }
 
     if (!outlineId) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ message: "Invalid outline ID" })
+        body: JSON.stringify({ message: "Invalid outline ID" }),
       };
     }
-    const outlineObjectId = ObjectId.isValid(outlineId) ? new ObjectId(outlineId) : null;
+    const outlineObjectId = ObjectId.isValid(outlineId)
+      ? new ObjectId(outlineId)
+      : null;
     const userObjectId = ObjectId.isValid(userId) ? new ObjectId(userId) : null;
 
     if (!outlineObjectId || !userObjectId)
@@ -2172,7 +2340,6 @@ const deleteOutline = async (event, outlineId) => {
     };
   }
 };
-
 
 // storymap endpoints
 const createStoryMap = async (event) => {
@@ -2227,7 +2394,7 @@ const createStoryMap = async (event) => {
       title,
       description,
       elements,
-      userId,  // Attach the userId here
+      userId, // Attach the userId here
     });
 
     // Save the story map to the database
@@ -2249,7 +2416,6 @@ const createStoryMap = async (event) => {
   }
 };
 
-
 const getStoryMap = async (event, storyMapId) => {
   console.log("Getting story map with ID:", storyMapId);
   try {
@@ -2265,7 +2431,9 @@ const getStoryMap = async (event, storyMapId) => {
       };
     }
 
-    const storyMapObjectId = ObjectId.isValid(storyMapId) ? new ObjectId(storyMapId) : null;
+    const storyMapObjectId = ObjectId.isValid(storyMapId)
+      ? new ObjectId(storyMapId)
+      : null;
     const userObjectId = ObjectId.isValid(userId) ? new ObjectId(userId) : null;
 
     if (!storyMapObjectId || !userObjectId) {
@@ -2274,7 +2442,7 @@ const getStoryMap = async (event, storyMapId) => {
 
     const storyMap = await StoryMap.findOne({
       _id: storyMapObjectId,
-      userId: userObjectId
+      userId: userObjectId,
     });
 
     if (!storyMap) {
@@ -2299,7 +2467,7 @@ const getStoryMap = async (event, storyMapId) => {
   }
 };
 
-const updateStoryMap = async (event,storyMapId) => {
+const updateStoryMap = async (event, storyMapId) => {
   try {
     const userResponse = await getCurrentUser(event);
     if (userResponse.statusCode !== 200) return userResponse;
@@ -2312,7 +2480,9 @@ const updateStoryMap = async (event,storyMapId) => {
         body: JSON.stringify({ message: "Invalid storyMap ID" }),
       };
     }
-    const storyMapObjectId = ObjectId.isValid(storyMapId) ? new ObjectId(storyMapId) : null;
+    const storyMapObjectId = ObjectId.isValid(storyMapId)
+      ? new ObjectId(storyMapId)
+      : null;
     const userObjectId = ObjectId.isValid(userId) ? new ObjectId(userId) : null;
 
     if (!storyMapObjectId || !userObjectId)
@@ -2355,7 +2525,7 @@ const updateStoryMap = async (event,storyMapId) => {
   }
 };
 
-const deleteStoryMap = async (event,storyMapId) => {
+const deleteStoryMap = async (event, storyMapId) => {
   try {
     const userResponse = await getCurrentUser(event);
     if (userResponse.statusCode !== 200) return userResponse;
@@ -2368,7 +2538,9 @@ const deleteStoryMap = async (event,storyMapId) => {
         body: JSON.stringify({ message: "Invalid storyMap ID" }),
       };
     }
-    const storyMapObjectId = ObjectId.isValid(storyMapId) ? new ObjectId(storyMapId) : null;
+    const storyMapObjectId = ObjectId.isValid(storyMapId)
+      ? new ObjectId(storyMapId)
+      : null;
     const userObjectId = ObjectId.isValid(userId) ? new ObjectId(userId) : null;
 
     if (!storyMapObjectId || !userObjectId)
@@ -2376,7 +2548,7 @@ const deleteStoryMap = async (event,storyMapId) => {
 
     const storyMap = await StoryMap.findOneAndDelete({
       _id: storyMapObjectId,
-      userId: userObjectId
+      userId: userObjectId,
     });
 
     if (!storyMap) {
@@ -2486,7 +2658,7 @@ const createWritingSession = async (event) => {
       content,
       duration,
       wordCount,
-      userId, 
+      userId,
     });
 
     // Save the writing session to the database
@@ -2508,7 +2680,7 @@ const createWritingSession = async (event) => {
   }
 };
 
-const getWritingSession = async (event,writtingId) => {
+const getWritingSession = async (event, writtingId) => {
   try {
     const userResponse = await getCurrentUser(event);
     if (userResponse.statusCode !== 200) return userResponse;
@@ -2522,7 +2694,9 @@ const getWritingSession = async (event,writtingId) => {
       };
     }
 
-    const writtingObjectId = ObjectId.isValid(writtingId) ? new ObjectId(writtingId) : null;
+    const writtingObjectId = ObjectId.isValid(writtingId)
+      ? new ObjectId(writtingId)
+      : null;
     const userObjectId = ObjectId.isValid(userId) ? new ObjectId(userId) : null;
 
     if (!writtingObjectId || !userObjectId) {
@@ -2531,7 +2705,7 @@ const getWritingSession = async (event,writtingId) => {
 
     const session = await WritingSession.findOne({
       _id: writtingObjectId,
-      userId: userObjectId
+      userId: userObjectId,
     });
 
     if (!session) {
@@ -2540,7 +2714,7 @@ const getWritingSession = async (event,writtingId) => {
         body: JSON.stringify({ message: "writting not found" }),
       };
     }
-    
+
     return {
       statusCode: 200,
       body: JSON.stringify(session),
@@ -2556,7 +2730,7 @@ const getWritingSession = async (event,writtingId) => {
   }
 };
 
-const updateWritingSession = async (event,writtingId) => {
+const updateWritingSession = async (event, writtingId) => {
   try {
     const userResponse = await getCurrentUser(event);
     if (userResponse.statusCode !== 200) return userResponse;
@@ -2570,7 +2744,9 @@ const updateWritingSession = async (event,writtingId) => {
       };
     }
 
-    const writtingObjectId = ObjectId.isValid(writtingId) ? new ObjectId(writtingId) : null;
+    const writtingObjectId = ObjectId.isValid(writtingId)
+      ? new ObjectId(writtingId)
+      : null;
     const userObjectId = ObjectId.isValid(userId) ? new ObjectId(userId) : null;
 
     if (!writtingObjectId || !userObjectId) {
@@ -2578,7 +2754,7 @@ const updateWritingSession = async (event,writtingId) => {
     }
 
     const updates = event.body;
-       const { error } = validateWritingSession(updates);
+    const { error } = validateWritingSession(updates);
     if (error) {
       return {
         statusCode: 400,
@@ -2599,7 +2775,6 @@ const updateWritingSession = async (event,writtingId) => {
       };
     }
 
-
     return {
       statusCode: 200,
       body: JSON.stringify(session),
@@ -2615,7 +2790,7 @@ const updateWritingSession = async (event,writtingId) => {
   }
 };
 
-const deleteWritingSession = async (event,writtingId) => {
+const deleteWritingSession = async (event, writtingId) => {
   try {
     const userResponse = await getCurrentUser(event);
     if (userResponse.statusCode !== 200) return userResponse;
@@ -2629,7 +2804,9 @@ const deleteWritingSession = async (event,writtingId) => {
       };
     }
 
-    const writtingObjectId = ObjectId.isValid(writtingId) ? new ObjectId(writtingId) : null;
+    const writtingObjectId = ObjectId.isValid(writtingId)
+      ? new ObjectId(writtingId)
+      : null;
     const userObjectId = ObjectId.isValid(userId) ? new ObjectId(userId) : null;
 
     if (!writtingObjectId || !userObjectId) {
@@ -2638,7 +2815,7 @@ const deleteWritingSession = async (event,writtingId) => {
 
     const session = await WritingSession.Delete({
       _id: writtingObjectId,
-      userId: userObjectId
+      userId: userObjectId,
     });
 
     if (!session) {
@@ -2695,7 +2872,6 @@ const getWritingGuidance = async (data) => {
   }
 };
 
-
 // Normalize paths to remove trailing slashes
 const normalizePath = (path) => path.replace(/\/+$/, "");
 
@@ -2709,22 +2885,21 @@ const extractDeckId = (event) => {
 const extractCardId = (path) => {
   const pathParts = path.split("/").filter((part) => part !== "");
   console.log("Path parts:", pathParts);
-  
+
   // If the path is a single card ID, return it directly
   if (pathParts.length === 1 && pathParts[0].length === 24) {
     return pathParts[0];
   }
-  
+
   // Check if the path includes 'cards'
-  const cardsIndex = pathParts.indexOf('cards');
+  const cardsIndex = pathParts.indexOf("cards");
   if (cardsIndex !== -1 && pathParts.length > cardsIndex + 1) {
     return pathParts[cardsIndex + 1];
   }
-  
+
   // If 'cards' is not in the path, return the last part
   return pathParts[pathParts.length - 1];
 };
-
 
 // Centralized error handler
 const handleError = (error) => {
@@ -2740,6 +2915,11 @@ const handleError = (error) => {
 
 module.exports = {
   handleUserRoutes,
+  handleAIRoutes,
   handleStoryRoutes,
-  handleAIRoutes
+  handleDeckRoutes,
+  handleCardRoutes,
+  handleOutlineRoutes,
+  handleStoryMappingRoutes,
+  handleWritingEnvironmentRoutes,
 };

@@ -7,17 +7,18 @@ require("./crypto-polyfill.js");
 const {
   handleUserRoutes,
   handleAIRoutes,
-
   handleDeckRoutes,
   handleCardRoutes,
   handleStoryMappingRoutes,
   handleOutlineRoutes,
-  handleWritingEnvironmentRoutes
+  handleWritingEnvironmentRoutes,
+  handleStoryRoutes,
 } = require("./routeHandlers.js");
+const connectDB = require("../config/database.js");
+const logger = require("../utils/logger.js");
+const { getCurrentUser } = require("./currentUser.js");
 
-import { getCurrentUser } from "./currentUser.js";
-import connectDB from "../config/database.js";
-import logger from '../utils/logger.js';
+
 
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
@@ -360,7 +361,7 @@ app.use("/stories", async (req, res) => {
     const response = await handleStoryRoutes({
       httpMethod: req.method,
       path: req.path.replace(/^\/stories/, ""),
-      body: JSON.stringify(req.body),
+      body: req.body, 
       headers: req.headers,
       queryStringParameters: req.query,
     });
@@ -371,12 +372,45 @@ app.use("/stories", async (req, res) => {
   }
 });
 
+app.post("/stories/get-or-create", async (req, res) => {
+  try {
+    const response = await handleStoryRoutes({
+      httpMethod: "POST",
+      path: "/get-or-create",
+      body: JSON.stringify(req.body),
+      headers: req.headers,
+    });
+
+    res.status(response.statusCode).json(JSON.parse(response.body));
+  } catch (error) {
+    logger.error("Get or create story route error:", error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.use("/stories/:id", async (req, res) => {
+  try {
+    const response = await handleStoryRoutes({
+      httpMethod: req.method,
+      path: req.path,
+      body: req.body,
+      headers: req.headers,
+      queryStringParameters: req.query,
+      pathParameters: { id: req.params.id },
+    });
+    res.status(response.statusCode).json(JSON.parse(response.body));
+  } catch (error) {
+    logger.error("story route error:", error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
 app.use("/decks", async (req, res) => {
   try {
     const response = await handleDeckRoutes({
       httpMethod: req.method,
       path: req.path.replace(/^\/decks/, ""),
-      body: req.body, // Remove JSON.stringify here
+      body: req.body, 
       headers: req.headers,
       queryStringParameters: req.query,
     });
@@ -436,24 +470,6 @@ app.use("/cards/:id", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
-
-app.post("/stories/get-or-create", async (req, res) => {
-  try {
-    const response = await handleStoryRoutes({
-      httpMethod: "POST",
-      path: "/get-or-create",
-      body: JSON.stringify(req.body),
-      headers: req.headers,
-    });
-
-    res.status(response.statusCode).json(JSON.parse(response.body));
-  } catch (error) {
-    logger.error("Get or create story route error:", error);
-    res.status(500).json({ message: error.message });
-  }
-});
-
-
 
 app.use("/story-mapping", async (req, res) => {
   try {

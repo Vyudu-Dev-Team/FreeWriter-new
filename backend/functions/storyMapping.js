@@ -1,6 +1,6 @@
-import { MongoClient } from "mongodb";
-import { validateStoryMap } from "../utils/validators.js";
-import logger from "../utils/logger.js";
+const { MongoClient } = require( "mongodb");
+const { validateStoryMap } = require( "../utils/validators.js");
+const logger = require( "../utils/logger.js");
 
 const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri, {
@@ -14,7 +14,7 @@ const client = new MongoClient(uri, {
  * @param {Object} context - The context object from Netlify
  * @returns {Object} - The response object
  */
-export const handler = async (event, context) => {
+const handler = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
 
   try {
@@ -131,3 +131,7 @@ async function deleteStoryMap(id, storyMaps) {
     body: JSON.stringify({ message: "Story map deleted successfully" }),
   };
 }
+
+module.exports = {
+  handler
+};

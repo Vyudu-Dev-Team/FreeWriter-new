@@ -1,5 +1,5 @@
-import winston from 'winston';
-import path from 'path';
+const winston = require( 'winston');
+const path = require( 'path');
 
 // Define log levels
 const levels = {
@@ -74,4 +74,4 @@ logger.stream = {
   write: (message) => logger.info(message.trim()),
 };
 
-export default logger;
+module.exports =  logger;

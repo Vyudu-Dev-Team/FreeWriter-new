@@ -1,5 +1,4 @@
-const mongoose = require('mongoose');
-
+const mongoose = require("mongoose");
 const StorySchema = new mongoose.Schema({
   author: {
     type: mongoose.Schema.Types.ObjectId,
@@ -27,7 +26,8 @@ const StorySchema = new mongoose.Schema({
       'Horror', 
       'Thriller', 
       'Adventure', 
-      'General'
+      'General',
+      'Fiction',
     ],
     default: 'General'
   },
@@ -133,4 +133,4 @@ StorySchema.statics.findByGenre = function(genre) {
 
 const Story = mongoose.model('Story', StorySchema);
 
-export default Story;
+module.exports =   Story;

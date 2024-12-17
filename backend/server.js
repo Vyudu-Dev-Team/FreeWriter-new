@@ -1,12 +1,12 @@
-import serverless from 'serverless-http';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import { notFound, errorHandler } from './utils/errorHandler.js';
-import { handleUserRoutes, handleAIRoutes } from './functions/routeHandlers.js';
-import mongoose from 'mongoose';
-import helmet from 'helmet';
-import connectDB from './config/database.js';
-import OpenAI from 'openai';
+const serverless = require("serverless-http");
+const cors = require("cors");
+const dotenv = require("dotenv");
+const { notFound, errorHandler } = require('./utils/errorHandler.js');
+const { handleUserRoutes, handleAIRoutes } = require('./functions/routeHandlers.js');
+const mongoose = require("mongoose");
+const helmet = require("helmet");
+const connectDB = require('./config/database.js');
+const OpenAI = require("openai");
 
 
 // Load environment variables
@@ -22,7 +22,7 @@ const openai = new OpenAI({
 });
 
 
-export const handler = async (event, context) => {
+const handler = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
 
   const ALLOWED_ORIGINS = [
@@ -87,4 +87,7 @@ export const handler = async (event, context) => {
       },
     };
   }
+};
+module.exports = {
+  handler
 };

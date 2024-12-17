@@ -1,7 +1,7 @@
 // utils/jwt.js
-import jwt from 'jsonwebtoken';
-import logger from '../utils/logger.js';
-import AppError from "../utils/appError.js";
+const jwt = require( 'jsonwebtoken');
+const logger = require( '../utils/logger.js');
+const AppError = require( "../utils/appError.js");
 
 
 /**
@@ -22,7 +22,7 @@ class JWTError extends Error {
  * @returns {string} JWT token
  * @throws {Error} If JWT_SECRET is not configured
  */
-export const generateToken = (payload, expiresIn = '24h') => {
+const generateToken = (payload, expiresIn = '24h') => {
   if (!process.env.JWT_SECRET) {
     throw new JWTError('JWT_SECRET is not configured', 500);
   }
@@ -35,7 +35,7 @@ export const generateToken = (payload, expiresIn = '24h') => {
  * @returns {Object} Decoded token payload
  * @throws {JWTError} If token is missing, invalid, or expired
  */
-export const verifyToken = async (token) => {
+const verifyToken = async (token) => {
   if (!token) {
     logger.error("Token is missing in the request.");
     throw new JWTError("Token is required");
@@ -76,7 +76,7 @@ export const verifyToken = async (token) => {
  * @returns {Object} Decoded token payload
  * @throws {JWTError} If token is missing, invalid, or expired
  */
-export const verifyTokenFromEvent = async (event) => {
+const verifyTokenFromEvent = async (event) => {
   // Extensive logging for debugging
   logger.info("Full event object for token verification:", JSON.stringify(event, null, 2));
 
@@ -115,7 +115,7 @@ export const verifyTokenFromEvent = async (event) => {
  * @returns {Object} Decoded token payload
  * @throws {JWTError} If token is invalid or expired
  */
-export const verifyEmailToken = async (token) => {
+const verifyEmailToken = async (token) => {
   return verifyToken(token);
 };
 
@@ -124,7 +124,7 @@ export const verifyEmailToken = async (token) => {
  * @param {Object} req - Request object
  * @returns {string|null} Extracted token or null if not found
  */
-export const extractTokenFromRequest = (req) => {
+const extractTokenFromRequest = (req) => {
   if (!req) return null;
   
   // Check Authorization header (most common method)
@@ -151,3 +151,10 @@ export const extractTokenFromRequest = (req) => {
   return null;
 };
 
+module.exports = {
+  generateToken,
+  verifyToken,
+  verifyTokenFromEvent,
+  verifyEmailToken,
+  extractTokenFromRequest,
+};
