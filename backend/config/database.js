@@ -10,13 +10,8 @@ const connectDB = async () => {
     return cachedDb;
   }
 
-  console.log('MONGODB_URI:', process.env.MONGODB_URI);
-
   try {
-    const db = await mongoose.connect(process.env.MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    const db = await mongoose.connect(process.env.MONGODB_URI);
     cachedDb = db;
     console.log('MongoDB connected successfully');
     return db;
@@ -26,4 +21,4 @@ const connectDB = async () => {
   }
 };
 
-module.exports = connectDB;
+module.exports =   connectDB;

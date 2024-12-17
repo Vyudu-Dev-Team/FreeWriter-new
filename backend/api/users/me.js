@@ -2,7 +2,7 @@ import { connectToDatabase } from '../../utils/database';
 import { verifyToken } from '../../utils/auth';
 import { ObjectId } from 'mongodb';
 
-export default async function handler(req, res) {
+module.exports =  async function handler(req, res) {
   if (req.method !== 'GET') {
     return res.status(405).json({ message: 'Method Not Allowed' });
   }

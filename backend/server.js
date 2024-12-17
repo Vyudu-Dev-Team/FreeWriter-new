@@ -1,12 +1,12 @@
-import serverless from 'serverless-http';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import { notFound, errorHandler } from './utils/errorHandler.js';
-import { handleUserRoutes, handleStoryRoutes, handleAIRoutes } from './functions/routeHandlers.js';
-import mongoose from 'mongoose';
-import helmet from 'helmet';
-import connectDB from './config/database.js';
-import OpenAI from 'openai';
+const serverless = require("serverless-http");
+const cors = require("cors");
+const dotenv = require("dotenv");
+const { notFound, errorHandler } = require('./utils/errorHandler.js');
+const { handleUserRoutes, handleAIRoutes } = require('./functions/routeHandlers.js');
+const mongoose = require("mongoose");
+const helmet = require("helmet");
+const connectDB = require('./config/database.js');
+const OpenAI = require("openai");
 
 
 // Load environment variables
@@ -21,14 +21,8 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-// Comprehensive CORS configuration
-// const ALLOWED_ORIGINS = [
-//   'http://localhost:5173', 
-//   'https://freewriter-develop-branch.netlify.app',
-//   'https://www.freewriter.app'
-// ];
 
-export const handler = async (event, context) => {
+const handler = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
 
   const ALLOWED_ORIGINS = [
@@ -67,8 +61,6 @@ export const handler = async (event, context) => {
     // Route Handling
     if (path.startsWith('/users')) {
       response = await handleUserRoutes(event);
-    } else if (path.startsWith('/stories')) {
-      response = await handleStoryRoutes(event);
     } else if (path.startsWith('/ai')) {
       response = await handleAIRoutes(event);
     } else {
@@ -95,4 +87,7 @@ export const handler = async (event, context) => {
       },
     };
   }
+};
+module.exports = {
+  handler
 };
