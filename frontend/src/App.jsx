@@ -51,7 +51,7 @@ function App() {
             <Route path="/forgot-password" element={<ForgotPassword />} />
 
             <Route path="/onboarding" element={<PrivateRoute><Onboarding /></PrivateRoute>} />
-            <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
+            <Route path="/profile" element={<ProfilePage />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/prompt" element={<PromptPage />} />
             <Route path="/story-map" element={<PrivateRoute><StoryMapComponent /></PrivateRoute>} />
