@@ -1,7 +1,7 @@
 import { connectToDatabase } from '../utils/database';
 import Story from '../models/Story';
 
-export default async (req, res) => {
+module.exports =  async (req, res) => {
   if (req.method === 'GET') {
     try {
       await connectToDatabase();

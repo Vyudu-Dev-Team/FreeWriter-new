@@ -1,7 +1,7 @@
-import { generateStoryPrompt } from '../services/aiService.js';
-import AppError from '../utils/appError.js';
+const { generateStoryPrompt } = require( '../services/aiService.js');
+const AppError = require( '../utils/appError.js');
 
-export const handler = async (event) => {
+const handler = async (event) => {
   try {
     const { genre, writingStyle, complexity, targetAudience } = JSON.parse(event.body);
 
@@ -28,4 +28,8 @@ export const handler = async (event) => {
       })
     };
   }
+};
+
+module.exports = {
+  handler
 };

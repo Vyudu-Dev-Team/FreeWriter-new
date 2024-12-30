@@ -1,7 +1,7 @@
 // import { connectToDatabase } from '../../utils/database';
 // import { verifyToken } from '../../utils/auth';
 
-// export default async function handler(req, res) {
+// module.exports =  async function handler(req, res) {
 //   try {
 //     const { userId } = await verifyToken(req);
 

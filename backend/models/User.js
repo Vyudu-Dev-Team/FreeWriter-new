@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import crypto from 'crypto';
+const mongoose = require( 'mongoose');
+const bcrypt = require( 'bcryptjs');
+const jwt = require( 'jsonwebtoken');
+const crypto = require( 'crypto');
 
 const userSchema = new mongoose.Schema({
   username: {
@@ -29,6 +29,21 @@ const userSchema = new mongoose.Schema({
     enum: ['plotter', 'pantser', 'creative'],
     default: 'plotter',
   },
+  progression: {
+    genre: String,
+    writingStyle: String,
+    complexity: String,
+    targetAudience: String,
+    storyCompletionPercentage: { type: Number, default: 0 },
+  },
+  points: { type: Number, default: 0 },
+  badges: [String],
+
+  decks: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Deck'
+  }],
+ 
   preferences: {
     type: Object,
     default: {},
@@ -107,4 +122,4 @@ userSchema.methods.createPasswordResetToken = function() {
 
 const User = mongoose.model('User', userSchema);
 
-export default User;
+module.exports =   User;

@@ -19,8 +19,11 @@
     "deploy": "netlify deploy --prod"
   },
   "devDependencies": {
-    "concurrently": "^6.5.1",
+    "concurrently": "^6.2.0",
     "dotenv-cli": "^7.0.0",
     "netlify-cli": "^12.0.0"
+  },
+  "dependencies": {
+    "uuid": "^11.0.3"
   }
 }
