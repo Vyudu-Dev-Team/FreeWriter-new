@@ -333,16 +333,16 @@ export default function FreewriterCards() {
 	const [selectedCard, setSelectedCard] = useState(null);
 	const [feedbackData, setFeedbackData] = useState(defaultFeedback);
 
-	useEffect(() => {
-		const loadFeedback = async () => {
-			if (selectedCard) {
-				const response = await fetchFeedback(selectedCard);
-				setFeedback({ title: selectedCard, text: response.data.feedback });
-			}
-		};
+	// useEffect(() => {
+	// 	const loadFeedback = async () => {
+	// 		if (selectedCard) {
+	// 			const response = await fetchFeedback(selectedCard);
+	// 			setFeedback({ title: selectedCard, text: response.data.feedback });
+	// 		}
+	// 	};
 
-		// loadFeedback();
-	}, [selectedCard]);
+	// 	// loadFeedback();
+	// }, [selectedCard]);
 
 	const setFeedback = (data) => {
 		const newFeedback = defaultFeedback.map((item) => (
