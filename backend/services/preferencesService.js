@@ -1,6 +1,6 @@
 // services/preferencesService.js
-import User from "../models/User.js";
-import AppError from "../utils/appError.js";
+const User = require( "../models/User.js");
+const AppError = require( "../utils/appError.js");
 
 /**
  * Preference categories
@@ -43,7 +43,7 @@ const DEFAULT_PREFERENCES = {
  * @param {string} userId - User ID
  * @returns {Object} User preferences
  */
-export const getPreferences = async (userId) => {
+const getPreferences = async (userId) => {
   const user = await User.findById(userId);
   if (!user) {
     throw new AppError("User not found", 404);
@@ -62,7 +62,7 @@ export const getPreferences = async (userId) => {
  * @param {Object} newPreferences - New user preferences
  * @returns {Object} Updated preferences
  */
-export const updatePreferences = async (userId, newPreferences) => {
+const updatePreferences = async (userId, newPreferences) => {
   const user = await User.findById(userId);
   if (!user) {
     throw new AppError("User not found", 404);
@@ -87,7 +87,7 @@ export const updatePreferences = async (userId, newPreferences) => {
  * @param {string} userId - User ID
  * @returns {Object} Default preferences
  */
-export const resetPreferences = async (userId) => {
+const resetPreferences = async (userId) => {
   const user = await User.findById(userId);
   if (!user) {
     throw new AppError("User not found", 404);
@@ -145,4 +145,12 @@ const sanitizePreferenceValue = (value, expectedType) => {
     default:
       return value;
   }
+};
+
+module.exports = {
+  getPreferences,
+  updatePreferences,
+  resetPreferences,
+  validateAndSanitizePreferences,
+  sanitizePreferenceValue,
 };

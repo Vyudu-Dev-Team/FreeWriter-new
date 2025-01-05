@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import { loginLimiter } from '../middleware/rateLimiter';
 import { sanitizeInput } from '../../utils/sanitizer';
 
-export default async function handler(req, res) {
+module.exports =  async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method Not Allowed' });
   }

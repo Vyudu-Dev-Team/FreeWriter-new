@@ -1,8 +1,8 @@
 // utils/errorHandler.js
 
-import AppError from './appError.js';
+const AppError = require( './appError.js');
 
-export const notFound = (event) => {
+const notFound = (event) => {
   return {
     statusCode: 404,
     body: JSON.stringify({ message: `Not Found - ${event.path}` }),
@@ -14,7 +14,7 @@ export const notFound = (event) => {
   };
 };
 
-export const errorHandler = (error, event) => {
+const errorHandler = (error, event) => {
   console.error(`[Error] ${error.message}`, {
     path: event.path,
     method: event.httpMethod,
@@ -37,4 +37,9 @@ export const errorHandler = (error, event) => {
       "Access-Control-Allow-Headers": "Content-Type, Authorization"
     }
   };
+};
+
+module.exports = {
+  notFound,
+  errorHandler,
 };

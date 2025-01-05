@@ -1,11 +1,8 @@
 // services/aiFeedbackService.js
+const Feedback = require( '../models/Feedback.js');
+const { updateAIModel } = require( '../services/aiService.js');
 
-// services/aiFeedbackService.js
-
-import Feedback from '../models/Feedback.js';
-import { updateAIModel } from '../services/aiService.js';
-
-export const analyzeFeedback = async () => {
+const analyzeFeedback = async () => {
   const feedbacks = await Feedback.find().populate('user', 'writingStyle').populate('prompt', 'genre');
   
   const averageRating = calculateAverageRating(feedbacks);
@@ -19,7 +16,7 @@ export const analyzeFeedback = async () => {
   };
 };
 
-export const adjustAIParameters = async (analysis) => {
+const adjustAIParameters = async (analysis) => {
   const newParameters = {
     temperature: calculateNewTemperature(analysis.averageRating),
     topP: calculateNewTopP(analysis.ratingsByGenre),
@@ -100,4 +97,9 @@ const calculateNewPresencePenalty = (ratingsByGenre) => {
   const genreDiversity = ratingsByGenre.length / 10; // Assuming 10 as max number of genres
   // Higher genre diversity leads to lower presence penalty (encourage more diverse topics)
   return Math.max(0, Math.min(2.0, 2.0 - genreDiversity));
+};
+
+module.exports = {
+  analyzeFeedback,
+  adjustAIParameters,
 };

@@ -1,14 +1,16 @@
-import AppError from './appError.js';
-import mongoose from 'mongoose';
+const AppError = require( './appError.js');
+const mongoose = require( 'mongoose');
+const Joi = require( 'joi');
+const { v4: uuidv4 } = require("uuid");
 
-export const validateCardType = (cardType) => {
+const validateCardType = (cardType) => {
   const validTypes = ['character', 'plot', 'setting', 'theme'];
   if (!validTypes.includes(cardType)) {
     throw new AppError(`Invalid card type. Must be one of: ${validTypes.join(', ')}`, 400);
   }
 };
 
-export const validateCustomization = (customization) => {
+const validateCustomization = (customization) => {
   if (typeof customization !== 'object' || customization === null) {
     throw new AppError('Customization must be a non-null object', 400);
   }
@@ -44,14 +46,14 @@ export const validateCustomization = (customization) => {
   }
 };
 
-export const validateRarity = (rarity) => {
+const validateRarity = (rarity) => {
   const validRarities = ['common', 'uncommon', 'rare', 'legendary'];
   if (!validRarities.includes(rarity)) {
     throw new AppError(`Invalid rarity. Must be one of: ${validRarities.join(', ')}`, 400);
   }
 };
 
-export const validateDeckOperation = (userId, deckId, operation) => {
+const validateDeckOperation = (userId, deckId, operation) => {
   if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
     throw new AppError('Invalid user ID', 400);
   }
@@ -64,7 +66,7 @@ export const validateDeckOperation = (userId, deckId, operation) => {
   }
 };
 
-export const validateStoryIntegration = (userId, storyId, cardId) => {
+const validateStoryIntegration = (userId, storyId, cardId) => {
   if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
     throw new AppError('Invalid user ID', 400);
   }
@@ -76,7 +78,7 @@ export const validateStoryIntegration = (userId, storyId, cardId) => {
   }
 };
 
-export const validateCardContent = (content) => {
+const validateCardContent = (content) => {
   if (typeof content !== 'string') {
     throw new AppError('Card content must be a string', 400);
   }
@@ -85,7 +87,7 @@ export const validateCardContent = (content) => {
   }
 };
 
-export const validateDeckName = (name) => {
+const validateDeckName = (name) => {
   if (typeof name !== 'string') {
     throw new AppError('Deck name must be a string', 400);
   }
@@ -94,7 +96,7 @@ export const validateDeckName = (name) => {
   }
 };
 
-export const validateDeckSize = (cards) => {
+const validateDeckSize = (cards) => {
   if (!Array.isArray(cards)) {
     throw new AppError('Cards must be an array', 400);
   }
@@ -103,7 +105,7 @@ export const validateDeckSize = (cards) => {
   }
 };
 
-export const validateCardBalance = (cards) => {
+const validateCardBalance = (cards) => {
   const typeCounts = cards.reduce((acc, card) => {
     acc[card.type] = (acc[card.type] || 0) + 1;
     return acc;
@@ -119,24 +121,134 @@ export const validateCardBalance = (cards) => {
   }
 };
 
-export const validateStoryProgress = (progress) => {
+const validateStoryProgress = (progress) => {
   if (typeof progress !== 'number' || progress < 0 || progress > 100) {
     throw new AppError('Story progress must be a number between 0 and 100', 400);
   }
 };
 
-export const validateCardInteraction = (interaction) => {
+const validateCardInteraction = (interaction) => {
   const validInteractions = ['draw', 'play', 'discard'];
   if (!validInteractions.includes(interaction)) {
     throw new AppError(`Invalid card interaction. Must be one of: ${validInteractions.join(', ')}`, 400);
   }
 };
 
-export const validateAIPrompt = (prompt) => {
+const validateAIPrompt = (prompt) => {
   if (typeof prompt !== 'string') {
     throw new AppError('AI prompt must be a string', 400);
   }
   if (prompt.length < 10 || prompt.length > 500) {
     throw new AppError('AI prompt must be between 10 and 500 characters', 400);
   }
+};
+
+const validateStoryMap = (data) => {
+  const schema = Joi.object({
+    title: Joi.string().required(),
+    description: Joi.string().optional(),  // Make description optional
+    elements: Joi.array().items(Joi.object({
+      type: Joi.string().valid('chapter', 'scene', 'character', 'plot', 'setting').required(),
+      title: Joi.string().required(),
+    })).required(),
+  });
+
+  return schema.validate(data);
+};
+
+const validateOutline = (data) => {
+  // Recursive section schema
+  const createSectionSchema = () => Joi.object({
+    id: Joi.string().default(() => uuidv4()),
+    title: Joi.string().required(),
+    content: Joi.string().allow('').optional(),
+    children: Joi.array().items(Joi.link('...')).optional()
+  });
+
+  const schema = Joi.object({
+    title: Joi.string().required(),
+    type: Joi.string().valid('plotter', 'pantser').default('plotter'),
+    sections: Joi.array().items(createSectionSchema()).required(),
+  }).options({ 
+    allowUnknown: false,
+    abortEarly: false 
+  });
+
+  const { error, value } = schema.validate(data);
+  
+  if (error) {
+    throw new Error(`Validation Error: ${error.details.map(d => d.message).join(', ')}`);
+  }
+
+  // Ensure all sections have IDs
+  const processSection = (section) => ({
+    ...section,
+    id: section.id || uuidv4(),
+    children: section.children ? section.children.map(processSection) : []
+  });
+
+  return {
+    ...value,
+    sections: value.sections.map(processSection)
+  };
+};
+
+
+const validateWritingSession = (data) => {
+  const schema = Joi.object({
+    title: Joi.string().required(),
+    content: Joi.string().allow('').optional(),
+    wordCount: Joi.number().integer().min(0).default(0),
+    duration: Joi.number().integer().min(0).optional(), // Keep for frontend flexibility
+    lastSaved: Joi.date().iso().default(() => new Date()),
+  }).options({ allowUnknown: false });
+
+  return schema.validate(data);
+};
+
+const validateAIFeedbackRequest = (data) => {
+  const schema = Joi.object({
+    text: Joi.string().required(),
+    genre: Joi.string().required(),
+    style: Joi.string().required(),
+  });
+
+  return schema.validate(data);
+};
+
+
+const validateDragAndDropOperation = (data) => {
+  const schema = Joi.object({
+    elementId: Joi.string().required(),
+    sourcePosition: Joi.object({
+      x: Joi.number().required(),
+      y: Joi.number().required(),
+    }).required(),
+    targetPosition: Joi.object({
+      x: Joi.number().required(),
+      y: Joi.number().required(),
+    }).required(),
+  });
+
+  return schema.validate(data);
+};
+
+module.exports = {
+  validateDragAndDropOperation,
+  validateAIFeedbackRequest,
+  validateWritingSession,
+  validateOutline,
+  validateStoryMap,
+  validateAIPrompt,
+  validateCardInteraction,
+  validateCardBalance,
+  validateDeckSize,
+  validateStoryProgress,
+  validateDeckName,
+  validateCardContent,
+  validateStoryIntegration,
+  validateDeckOperation,
+  validateRarity,
+  validateCustomization,
+  validateCardType,
 };

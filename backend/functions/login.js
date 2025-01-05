@@ -1,9 +1,9 @@
-import connectDB from '../config/database.js';
-import User from '../models/User.js';
-import { generateToken as createToken } from '../utils/jwt.js';;
-import { errorHandler } from '../utils/errorHandler.js';
+const connectDB = require( '../config/database.js');
+  const User = require( '../models/User.js');
+  const { generateToken : createToken } = require( '../utils/jwt.js');
+  const { errorHandler } = require( '../utils/errorHandler.js');
 
-export const handler = async (event, context) => {
+const handler = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
   
   try {
@@ -33,4 +33,8 @@ export const handler = async (event, context) => {
   } catch (error) {
     return errorHandler(error);
   }
+};
+
+module.exports = {
+  handler
 };

@@ -30,9 +30,10 @@
     "firebase-admin": "^11.10.0",
     "helmet": "^7.0.0",
     "hpp": "^0.2.3",
+    "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.0",
     "mongodb-migrations": "^0.8.5",
-    "mongoose": "^7.3.1",
+    "mongoose": "^8.9.1",
     "morgan": "^1.10.0",
     "nodemailer": "^6.9.3",
     "openai": "^4.72.0",
@@ -50,5 +51,8 @@
   },
   "jest": {
     "testTimeout": 30000
+  },
+  "resolutions": {
+    "bson": "5.5.1"
   }
 }

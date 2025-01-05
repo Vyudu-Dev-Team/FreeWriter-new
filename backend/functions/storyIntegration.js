@@ -1,8 +1,8 @@
-import connectDB from '../config/database.js';
-import Story from '../models/story.js';
-import { integrateCardIntoStory } from '../services/storyIntegrationService.js';
-import { errorHandler } from '../utils/errorHandler.js';
-import logger from '../utils/logger.js';
+const connectDB = require( '../config/database.js');
+const Story = require( '../models/story.js');
+const { integrateCardIntoStory } = require( '../services/storyIntegrationService.js');
+const { errorHandler } = require( '../utils/errorHandler.js');
+const logger = require( '../utils/logger.js');
 
 /**
  * Integrates a card into a user's story.
@@ -10,7 +10,7 @@ import logger from '../utils/logger.js';
  * @param {Object} context - The Netlify function context object.
  * @returns {Object} The updated story or an error response.
  */
-export const handler = async (event, context) => {
+const handler = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
 
   try {
@@ -34,4 +34,8 @@ export const handler = async (event, context) => {
     logger.error('Error in story integration', { error: error.message });
     return errorHandler(error);
   }
+};
+
+module.exports = {
+  handler
 };
