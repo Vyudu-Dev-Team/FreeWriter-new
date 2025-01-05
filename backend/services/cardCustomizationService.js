@@ -1,4 +1,4 @@
-import { validateCustomization, validateRarity } from '../utils/validators.js';
+const { validateCustomization, validateRarity } = require( '../utils/validators.js');
 
 /**
  * Customizes a card with user-defined attributes.
@@ -6,7 +6,7 @@ import { validateCustomization, validateRarity } from '../utils/validators.js';
  * @param {Object} customization - The customization options.
  * @returns {Object} The customized card.
  */
-export const customizeCard = async (card, customization) => {
+const customizeCard = async (card, customization) => {
   validateCustomization(customization);
   card.customization = { ...card.customization, ...customization };
   return card;
@@ -18,8 +18,13 @@ export const customizeCard = async (card, customization) => {
  * @param {string} rarity - The new rarity level.
  * @returns {Object} The updated card.
  */
-export const setCardRarity = async (card, rarity) => {
+const setCardRarity = async (card, rarity) => {
   validateRarity(rarity);
   card.rarity = rarity;
   return card;
+};
+
+module.exports = {
+  customizeCard,
+  setCardRarity,
 };

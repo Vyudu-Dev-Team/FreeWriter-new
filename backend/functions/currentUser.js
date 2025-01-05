@@ -1,7 +1,7 @@
-import User from "../models/User.js";
-import { verifyToken } from "../utils/jwt.js";
+const User = require( "../models/User.js");
+const { verifyToken } = require( "../utils/jwt.js");
 
-export const getCurrentUser = async (req, res) => {
+const getCurrentUser = async (req, res) => {
   try {
     const token = req.headers.authorization?.split(" ")[1];
     if (!token) {
@@ -31,3 +31,6 @@ export const getCurrentUser = async (req, res) => {
   }
 };
 
+module.exports = {
+  getCurrentUser
+};

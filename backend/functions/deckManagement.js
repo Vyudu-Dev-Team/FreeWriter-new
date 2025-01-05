@@ -1,8 +1,8 @@
-import connectDB from '../config/database.js';
-import Deck from '../models/Deck.js';
-import { viewDeck, editDeck, organizeDeck } from '../services/deckManagementService.js';
-import { errorHandler } from '../utils/errorHandler.js';
-import logger from '../utils/logger.js';
+const connectDB = require( '../config/database.js');
+const Deck = require( '../models/Deck.js');
+const { viewDeck, editDeck, organizeDeck } = require( '../services/deckManagementService.js');
+const { errorHandler } = require( '../utils/errorHandler.js');
+const logger = require( '../utils/logger.js');
 
 /**
  * Manages user decks (viewing, editing, and organizing).
@@ -10,7 +10,7 @@ import logger from '../utils/logger.js';
  * @param {Object} context - The Netlify function context object.
  * @returns {Object} The result of the deck operation or an error response.
  */
-export const handler = async (event, context) => {
+const handler = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
 
   try {
@@ -43,4 +43,7 @@ export const handler = async (event, context) => {
     logger.error('Error in deck management', { error: error.message });
     return errorHandler(error);
   }
+};
+module.exports = {
+  handler
 };

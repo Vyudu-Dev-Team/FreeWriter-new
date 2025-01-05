@@ -1,6 +1,6 @@
-import Story from '../models/story.js';
-import Card from '../models/Card.js';
-import { validateStoryIntegration } from '../utils/validators.js';
+const Story = require( '../models/story.js');
+const Card = require( '../models/Card.js');
+const { validateStoryIntegration } = require( '../utils/validators.js');
 
 /**
  * Integrates a card into a user's story.
@@ -9,7 +9,7 @@ import { validateStoryIntegration } from '../utils/validators.js';
  * @param {string} cardId - The ID of the card to integrate.
  * @returns {Object} The updated story.
  */
-export const integrateCardIntoStory = async (userId, storyId, cardId) => {
+const integrateCardIntoStory = async (userId, storyId, cardId) => {
   validateStoryIntegration(userId, storyId, cardId);
 
   const story = await Story.findOne({ _id: storyId, userId });
@@ -24,4 +24,7 @@ export const integrateCardIntoStory = async (userId, storyId, cardId) => {
   story.integratedCards.push(cardId);
 
   return await story.save();
+};
+module.exports = {
+  integrateCardIntoStory,
 };

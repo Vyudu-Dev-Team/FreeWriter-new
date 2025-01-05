@@ -1,7 +1,7 @@
-import { generateStoryGuidance } from '../services/aiService.js';
-import AppError from '../utils/appError.js';
+const { generateStoryGuidance } = require( '../services/aiService.js');
+const AppError = require( '../utils/appError.js');
 
-export const handler = async (event) => {
+const handler = async (event) => {
   try {
     const { prompt } = JSON.parse(event.body);
 
@@ -28,4 +28,8 @@ export const handler = async (event) => {
       })
     };
   }
+};
+
+module.exports = {
+  handler
 };

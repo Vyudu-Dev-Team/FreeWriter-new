@@ -1,6 +1,6 @@
 // utils/sendEmail.js
-import nodemailer from "nodemailer";
-import AppError from "./appError.js";
+const nodemailer = require( "nodemailer");
+  const AppError = require( "./appError.js");
 
 const createTransporter = () => {
   // For development/testing, you can use ethereal.email
@@ -49,7 +49,7 @@ const sendEmail = async ({ to, subject, text, html }) => {
   }
 };
 
-export const sendVerificationEmail = async (user, verificationToken) => {
+const sendVerificationEmail = async (user, verificationToken) => {
   console.log("Sending verification email to:", user.email);
 
   // Add more detailed validation
@@ -97,7 +97,7 @@ export const sendVerificationEmail = async (user, verificationToken) => {
   }
 };
 
-export const sendPasswordResetEmail = async (user, resetToken) => {
+const sendPasswordResetEmail = async (user, resetToken) => {
   try {
     console.log("Sending password reset email to:", user);
     if (!user || !user.email) {
@@ -134,4 +134,9 @@ export const sendPasswordResetEmail = async (user, resetToken) => {
 };
 
 
-export default sendEmail;
+module.exports = {
+  sendPasswordResetEmail,
+  sendVerificationEmail,
+  sendEmail,
+  createTransporter,
+};

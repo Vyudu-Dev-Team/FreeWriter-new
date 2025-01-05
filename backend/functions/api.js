@@ -6,16 +6,19 @@ const path = require("path");
 require("./crypto-polyfill.js");
 const {
   handleUserRoutes,
-  handleStoryRoutes,
   handleAIRoutes,
-
   handleDeckRoutes,
-  handleCardRoutes
-} from "./routeHandlers.js";
+  handleCardRoutes,
+  handleStoryMappingRoutes,
+  handleOutlineRoutes,
+  handleWritingEnvironmentRoutes,
+  handleStoryRoutes,
+} = require("./routeHandlers.js");
+const connectDB = require("../config/database.js");
+const logger = require("../utils/logger.js");
+const { getCurrentUser } = require("./currentUser.js");
 
-import { getCurrentUser } from "./currentUser.js";
-import connectDB from "../config/database.js";
-import logger from '../utils/logger.js';
+
 
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
@@ -264,36 +267,22 @@ app.post("/users/reset-preferences", async (req, res) => {
   }
 });
 
-// Story routes
-app.use("/stories", async (req, res) => {
-  try {
-    const response = await handleStoryRoutes({
-      httpMethod: req.method,
-      path: req.path.replace(/^\/stories/, ""),
-      body: JSON.stringify(req.body),
-      headers: req.headers,
-      queryStringParameters: req.query,
-    });
-    res.status(response.statusCode).json(response.body);
-  } catch (error) {
-    logger.error("Story route error:", error);
-    res.status(500).json({ message: error.message });
-  }
-});
-
 // AI routes
-app.use("/ai", async (req, res) => {
+app.post("/ai/generate-story-prompt", async (req, res) => {
   try {
     const response = await handleAIRoutes({
-      httpMethod: req.method,
-      path: req.path.replace(/^\/ai/, ""),
-      body: JSON.stringify(req.body),
+      httpMethod: "POST",
+      path: "/generate-story-prompt",
+      body: JSON.stringify(req.body), 
       headers: req.headers,
       queryStringParameters: req.query,
     });
-    res.status(response.statusCode).json(response.body);
+
+    // Send the response back to the client
+    res.status(response.statusCode).json(JSON.parse(response.body));
   } catch (error) {
-    logger.error("AI route error:", error);
+    logger.error("Generate story prompt error:", error);
+    // Send a 500 error if something goes wrong
     res.status(500).json({ message: error.message });
   }
 });
@@ -350,7 +339,6 @@ app.post("/ai/submit-feedback", async (req, res) => {
 });
 
 app.post('/ai/dashboard-analysis', async (req, res) => {
-  logger.log('Received dashboard analysis request');
   try {
     const response = await handleAIRoutes({
       path: '/ai/dashboard-analysis',
@@ -367,14 +355,81 @@ app.post('/ai/dashboard-analysis', async (req, res) => {
   }
 });
 
+// Story routes
+app.use("/stories", async (req, res) => {
+  try {
+    const response = await handleStoryRoutes({
+      httpMethod: req.method,
+      path: req.path.replace(/^\/stories/, ""),
+      body: req.body, 
+      headers: req.headers,
+      queryStringParameters: req.query,
+    });
+    res.status(response.statusCode).json(response.body);
+  } catch (error) {
+    logger.error("Story route error:", error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.post("/stories/get-or-create", async (req, res) => {
+  try {
+    const response = await handleStoryRoutes({
+      httpMethod: "POST",
+      path: "/get-or-create",
+      body: JSON.stringify(req.body),
+      headers: req.headers,
+    });
+
+    res.status(response.statusCode).json(JSON.parse(response.body));
+  } catch (error) {
+    logger.error("Get or create story route error:", error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.use("/stories/:id", async (req, res) => {
+  try {
+    const response = await handleStoryRoutes({
+      httpMethod: req.method,
+      path: req.path,
+      body: req.body,
+      headers: req.headers,
+      queryStringParameters: req.query,
+      pathParameters: { id: req.params.id },
+    });
+    res.status(response.statusCode).json(JSON.parse(response.body));
+  } catch (error) {
+    logger.error("story route error:", error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
 app.use("/decks", async (req, res) => {
   try {
     const response = await handleDeckRoutes({
       httpMethod: req.method,
       path: req.path.replace(/^\/decks/, ""),
-      body: JSON.stringify(req.body),
+      body: req.body, 
       headers: req.headers,
       queryStringParameters: req.query,
+    });
+    res.status(response.statusCode).json(JSON.parse(response.body));
+  } catch (error) {
+    logger.error("Deck route error:", error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.use("/decks/:id", async (req, res) => {
+  try {
+    const response = await handleDeckRoutes({
+      httpMethod: req.method,
+      path: req.path,
+      body: req.body,
+      headers: req.headers,
+      queryStringParameters: req.query,
+      pathParameters: { id: req.params.id },
     });
     res.status(response.statusCode).json(JSON.parse(response.body));
   } catch (error) {
@@ -387,14 +442,142 @@ app.use("/cards", async (req, res) => {
   try {
     const response = await handleCardRoutes({
       httpMethod: req.method,
-      path: req.path.replace(/^\/cards/, ""),
-      body: JSON.stringify(req.body),
+      path: req.path,
+      body: req.body,
       headers: req.headers,
       queryStringParameters: req.query,
     });
     res.status(response.statusCode).json(JSON.parse(response.body));
   } catch (error) {
     logger.error("Card route error:", error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.use("/cards/:id", async (req, res) => {
+  try {
+    const response = await handleCardRoutes({
+      httpMethod: req.method,
+      path: req.path,
+      body: req.body,
+      headers: req.headers,
+      queryStringParameters: req.query,
+      pathParameters: { id: req.params.id },
+    });
+    res.status(response.statusCode).json(JSON.parse(response.body));
+  } catch (error) {
+    logger.error("Card route error:", error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.use("/story-mapping", async (req, res) => {
+  try {
+    const response = await handleStoryMappingRoutes({
+      httpMethod: req.method,
+      path: req.path,
+      body: req.body, 
+      headers: req.headers,
+      queryStringParameters: req.query,
+    });
+
+    res.status(response.statusCode).json(JSON.parse(response.body));
+  } catch (error) {
+    logger.error("Story mapping route error:", error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.use("/story-mapping/:id", async (req, res) => {
+  try {
+    const response = await handleStoryMappingRoutes({
+      httpMethod: req.method,
+      path: req.path,
+      body: req.body,
+      headers: req.headers,
+      queryStringParameters: req.query,
+      pathParameters: { id: req.params.id }, // Ensure this is passed
+    });
+    res.status(response.statusCode).json(JSON.parse(response.body));
+  } catch (error) {
+    logger.error("Story mapping route error:", error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.use("/outlines", async (req, res) => {
+  try {
+    const response = await handleOutlineRoutes({
+      httpMethod: req.method,
+      path: req.path.replace(/^\/outlines/, ""),
+      body: req.body, 
+      headers: req.headers,
+      queryStringParameters: req.query,
+    });
+    res.status(response.statusCode).json(JSON.parse(response.body));
+  } catch (error) {
+    logger.error("Outline route error:", error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.use("/outlines/:id", async (req, res) => {
+  try {
+
+    const response = await handleOutlineRoutes({
+      httpMethod: req.method,
+      path: req.path, // Use originalUrl for full path
+      body: req.body,
+      headers: req.headers,
+      queryStringParameters: req.query,
+      pathParameters: { id: req.params.id },
+    });
+
+    // Ensure response body is parsed safely
+    const responseBody = response.body ? 
+      JSON.parse(response.body) : 
+      { message: 'No response body' };
+
+    res.status(response.statusCode).json(responseBody);
+  } catch (error) {
+    console.error('Comprehensive route error:', error);
+    res.status(500).json({ 
+      message: 'Internal server error',
+      error: error.message,
+      stack: process.env.NODE_ENV !== 'production' ? error.stack : undefined
+    });
+  }
+});
+
+app.use("/writing-environment", async (req, res) => {
+  try {
+    const response = await handleWritingEnvironmentRoutes({
+      httpMethod: req.method,
+      path: req.path,
+      body: req.body,
+      headers: req.headers,
+      queryStringParameters: req.query,
+    });
+    res.status(response.statusCode).json(JSON.parse(response.body));
+  } catch (error) {
+    logger.error("Writing environment route error:", error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.use("/writing-environment/sessions/:id", async (req, res) => {
+  try {
+    const response = await handleWritingEnvironmentRoutes({
+      httpMethod: req.method,
+      path: req.path,
+      body: req.body,
+      headers: req.headers,
+      queryStringParameters: req.query,
+      pathParameters: { id: req.params.id },
+    });
+    res.status(response.statusCode).json(JSON.parse(response.body));
+  } catch (error) {
+    logger.error("Writing environment session route error:", error);
     res.status(500).json({ message: error.message });
   }
 });

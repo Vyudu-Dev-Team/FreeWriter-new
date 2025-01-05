@@ -1,11 +1,11 @@
-import connectDB from "../config/database.js";
-import User from "../models/User.js";
-import Profile from "../models/Profile.js";
-import { generateToken as createToken } from "../utils/jwt.js";
-import { errorHandler } from "../utils/errorHandler.js";
-import { sendVerificationEmail } from "../utils/sendEmail.js";
+const connectDB = require( "../config/database.js");
+  const User = require( "../models/User.js");
+  const Profile = require( "../models/Profile.js");
+  const { generateToken : createToken } = require( "../utils/jwt.js");
+  const { errorHandler } = require( "../utils/errorHandler.js");
+  const { sendVerificationEmail } = require( "../utils/sendEmail.js");
 
-export const handler = async (event, context) => {
+const handler = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
 
   try {
@@ -66,4 +66,8 @@ export const handler = async (event, context) => {
     console.error("Registration error:", error);
     return errorHandler(error);
   }
+};
+
+module.exports = {
+  handler
 };
