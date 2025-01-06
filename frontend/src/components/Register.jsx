@@ -17,6 +17,7 @@ import { useAppContext } from "../contexts/AppContext";
 import { ArrowBack } from "@mui/icons-material";
 import styled from "@mui/styled-engine";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { getFCMToken } from '../firebase/firebase';
 
 const StyledContainer = styled(Container)({
   minHeight: "100vh",
@@ -178,12 +179,8 @@ function RegisterComponent() {
     }
 
     try {
-      console.log("Attempting to register with data:", {
-        username: formData.username.trim(),
-        email: formData.email.trim().toLowerCase(),
-        password: formData.password,
-        writingMode: formData.writingMode,
-      });
+      const deviceToken = await getFCMToken();
+      console.log("Retrieved device token:", deviceToken);
 
       dispatch({ type: "SET_ERROR", payload: null });
 
@@ -194,6 +191,7 @@ function RegisterComponent() {
           email: formData.email.trim().toLowerCase(),
           password: formData.password,
           writingMode: formData.writingMode,
+          deviceToken,
         });
 
         console.log("Registration attempt result:", success);

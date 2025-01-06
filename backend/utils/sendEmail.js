@@ -2,45 +2,39 @@
 const nodemailer = require( "nodemailer");
   const AppError = require( "./appError.js");
 
-const createTransporter = () => {
-  // For development/testing, you can use ethereal.email
-  if (process.env.NODE_ENV === "development") {
+  const createTransporter = () => {
+    if (process.env.NODE_ENV === "development") {
+      return nodemailer.createTransport({
+        host: "smtp.ethereal.email",
+        port: 587,
+        secure: false,
+        auth: {
+          user: process.env.EMAIL_USERNAME,
+          pass: process.env.EMAIL_PASSWORD,
+        },
+      });
+    }
+
     return nodemailer.createTransport({
-      host: "smtp.ethereal.email",
-      port: 587,
-      secure: false,
+      service: process.env.EMAIL_SERVICE,
       auth: {
         user: process.env.EMAIL_USERNAME,
         pass: process.env.EMAIL_PASSWORD,
       },
     });
-  }
-
-  // For production, use your preferred email service (e.g., Gmail, SendGrid)
-  return nodemailer.createTransport({
-    service: process.env.EMAIL_SERVICE, // e.g., 'gmail'
-    auth: {
-      user: process.env.EMAIL_USERNAME,
-      pass: process.env.EMAIL_PASSWORD,
-    },
-  });
 };
 
 const sendEmail = async ({ to, subject, text, html }) => {
   try {
     console.log("Attempting to send email to:", to);
     const transporter = createTransporter();
-    console.log("Transporter created");
-
     const mailOptions = {
-      from: process.env.EMAIL_FROM,
+      from: process.env.EMAIL_USERNAME,
       to,
       subject,
       text,
       html,
     };
-    console.log("Mail options:", mailOptions);
-
     const info = await transporter.sendMail(mailOptions);
     console.log("Email sent:", info.response);
   } catch (error) {
@@ -50,9 +44,7 @@ const sendEmail = async ({ to, subject, text, html }) => {
 };
 
 const sendVerificationEmail = async (user, verificationToken) => {
-  console.log("Sending verification email to:", user.email);
-
-  // Add more detailed validation
+  // Validate user object
   if (!user || !user.email || !user.username) {
     console.error("Invalid user object:", user);
     throw new AppError(
@@ -62,7 +54,19 @@ const sendVerificationEmail = async (user, verificationToken) => {
     );
   }
 
-  const verificationURL = `${process.env.FRONTEND_URL}/verify-email/${verificationToken}`;
+  const base64URLEncode = (str) => {
+    return str
+      .replace(/\+/g, '-')  // Convert '+' to '-'
+      .replace(/\//g, '_')  // Convert '/' to '_'
+      .replace(/=+$/, '');  // Remove ending '='
+  };
+  
+  const encodedToken = base64URLEncode(Buffer.from(verificationToken).toString('base64'));
+  console.log('Original token:', verificationToken);
+  console.log('Encoded token:', encodedToken);
+
+  const verificationURL = `${process.env.FRONTEND_URL}/verify-email/${encodedToken}`;
+
 
   const html = `
     <div style="max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;">
@@ -80,22 +84,22 @@ const sendVerificationEmail = async (user, verificationToken) => {
     </div>
   `;
 
-  try {
-    await sendEmail({
-      to: user.email,
-      subject: "Email Verification",
-      text: `Please verify your email by clicking the following link: ${verificationURL}`,
-      html,
+  // Fire-and-forget email sending
+  sendEmail({
+    to: user.email,
+    subject: "Email Verification",
+    text: `Please verify your email by clicking the following link: ${verificationURL}`,
+    html,
+  })
+    .then(() => {
+      console.log("Verification email sent successfully to:", user.email);
+    })
+    .catch((error) => {
+      console.error("Failed to send verification email:", error);
+      // Log error but do not throw to avoid affecting the main flow
     });
-    console.log("Verification email sent successfully to:", user.email);
-  } catch (error) {
-    console.error("Failed to send verification email:", error);
-    throw new AppError(
-      `Failed to send verification email: ${error.message}`,
-      500
-    );
-  }
 };
+
 
 const sendPasswordResetEmail = async (user, resetToken) => {
   try {

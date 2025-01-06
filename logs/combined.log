@@ -1605,3 +1605,893 @@
 2024-12-04 22:57:10:5710 [32minfo[39m: [32mProcessed Request:[39m
 2024-12-04 22:57:40:5740 [31merror[39m: [31mDatabase connection error: querySrv ETIMEOUT _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
 2024-12-04 22:58:25:5825 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-16 13:15:21:1521 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-16 13:15:37:1537 [31merror[39m: [31mLogin error: User2.findOne is not a function[39m
+2024-12-16 13:27:35:2735 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-16 13:27:35:2735 [31merror[39m: [31mLogin error: User2.findOne is not a function[39m
+2024-12-16 15:02:16:216 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-16 15:02:30:230 [31merror[39m: [31mLogin error: User2.findOne is not a function[39m
+2024-12-16 15:31:56:3156 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-16 15:31:56:3156 [31merror[39m: [31mLogin error: User2.findOne is not a function[39m
+2024-12-16 17:09:48:948 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-16 17:09:48:948 [31merror[39m: [31mLogin error: User2.findOne is not a function[39m
+2024-12-17 10:52:09:529 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-17 10:53:43:5343 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-17 11:07:28:728 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-17 11:07:35:735 [31merror[39m: [31mStory route error: handleStoryRoutes is not defined[39m
+2024-12-17 11:08:58:858 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-17 11:09:06:96 [32minfo[39m: [32mToken to verify:[39m
+2024-12-17 11:09:06:96 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2024-12-17 11:09:07:97 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2024-12-17 11:09:13:913 [31merror[39m: [31mCreate story error: Validation failed: genre: `Fiction` is not a valid enum value for path `genre`.[39m
+2024-12-17 11:18:19:1819 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-17 11:18:22:1822 [32minfo[39m: [32mToken to verify:[39m
+2024-12-17 11:18:22:1822 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2024-12-17 11:18:22:1822 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2024-12-17 11:18:56:1856 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-17 11:18:56:1856 [32minfo[39m: [32mToken to verify:[39m
+2024-12-17 11:18:56:1856 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2024-12-17 11:18:56:1856 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2024-12-17 11:18:56:1856 [31merror[39m: [31mGet stories error: outlines is not defined[39m
+2024-12-17 11:21:04:214 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-17 11:21:07:217 [32minfo[39m: [32mToken to verify:[39m
+2024-12-17 11:21:07:217 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2024-12-17 11:21:07:217 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2024-12-17 11:21:21:2121 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-17 11:21:21:2121 [32minfo[39m: [32mToken to verify:[39m
+2024-12-17 11:21:21:2121 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2024-12-17 11:21:21:2121 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2024-12-17 11:21:22:2122 [31merror[39m: [31mGet story error: Unsupported BSON version, bson types must be from bson 5.x.x[39m
+2024-12-17 11:23:06:236 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-17 11:45:23:4523 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-17 11:45:26:4526 [32minfo[39m: [32mToken to verify:[39m
+2024-12-17 11:45:26:4526 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2024-12-17 11:45:26:4526 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2024-12-17 11:45:29:4529 [31merror[39m: [31mGet story error: Unsupported BSON version, bson types must be from bson 5.x.x[39m
+2024-12-17 11:50:07:507 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-17 11:50:33:5033 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-17 11:50:33:5033 [32minfo[39m: [32mToken to verify:[39m
+2024-12-17 11:50:33:5033 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2024-12-17 11:50:33:5033 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2024-12-17 11:50:34:5034 [31merror[39m: [31mUpdate story error: Unsupported BSON version, bson types must be from bson 5.x.x[39m
+2024-12-17 11:55:49:5549 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-17 11:55:49:5549 [32minfo[39m: [32mToken to verify:[39m
+2024-12-17 11:55:49:5549 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2024-12-17 11:55:49:5549 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2024-12-17 11:55:49:5549 [31merror[39m: [31mGet story error: Unsupported BSON version, bson types must be from bson 5.x.x[39m
+2024-12-17 12:16:36:1636 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-17 12:16:36:1636 [32minfo[39m: [32mToken to verify:[39m
+2024-12-17 12:16:36:1636 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2024-12-17 12:16:36:1636 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2024-12-17 12:16:38:1638 [31merror[39m: [31mGet story error: Unsupported BSON version, bson types must be from bson 5.x.x[39m
+2024-12-17 12:42:35:4235 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-17 12:42:35:4235 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-17 12:43:27:4327 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-17 12:43:59:4359 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-17 12:43:59:4359 [32minfo[39m: [32mToken to verify:[39m
+2024-12-17 12:43:59:4359 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2024-12-17 12:43:59:4359 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2024-12-17 12:43:59:4359 [31merror[39m: [31mGet story error: Unsupported BSON version, bson types must be from bson 6.x.x[39m
+2024-12-17 12:44:41:4441 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-17 12:44:41:4441 [32minfo[39m: [32mToken to verify:[39m
+2024-12-17 12:44:41:4441 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2024-12-17 12:44:41:4441 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2024-12-17 12:44:41:4441 [31merror[39m: [31mUpdate story error: Unsupported BSON version, bson types must be from bson 6.x.x[39m
+2024-12-17 12:50:18:5018 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-17 12:50:20:5020 [32minfo[39m: [32mToken to verify:[39m
+2024-12-17 12:50:20:5020 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2024-12-17 12:50:20:5020 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2024-12-17 12:50:23:5023 [31merror[39m: [31mGet story error: Unsupported BSON version, bson types must be from bson 6.x.x[39m
+2024-12-17 15:19:06:196 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-17 15:19:50:1950 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-17 15:20:28:2028 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-17 15:20:28:2028 [32minfo[39m: [32mToken to verify:[39m
+2024-12-17 15:20:28:2028 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2024-12-17 15:20:28:2028 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2024-12-17 15:20:28:2028 [31merror[39m: [31mGet story error: Unsupported BSON version, bson types must be from bson 6.x.x[39m
+2024-12-17 19:59:14:5914 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-17 19:59:17:5917 [32minfo[39m: [32mToken to verify:[39m
+2024-12-17 19:59:17:5917 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2024-12-17 19:59:17:5917 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2024-12-17 19:59:20:5920 [31merror[39m: [31mGet story error: Unsupported BSON version, bson types must be from bson 6.x.x[39m
+2024-12-17 20:18:59:1859 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-17 20:18:59:1859 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2024-12-17 20:21:12:2112 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-17 20:21:33:2133 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-17 20:21:59:2159 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-17 20:21:59:2159 [32minfo[39m: [32mToken to verify:[39m
+2024-12-17 20:21:59:2159 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2024-12-17 20:21:59:2159 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2024-12-17 20:25:03:253 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-17 20:25:05:255 [32minfo[39m: [32mToken to verify:[39m
+2024-12-17 20:25:05:255 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2024-12-17 20:25:05:255 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2024-12-17 20:28:29:2829 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-17 20:28:32:2832 [32minfo[39m: [32mToken to verify:[39m
+2024-12-17 20:28:32:2832 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2024-12-17 20:28:32:2832 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2024-12-17 20:33:19:3319 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-17 20:33:19:3319 [32minfo[39m: [32mToken to verify:[39m
+2024-12-17 20:33:19:3319 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2024-12-17 20:33:19:3319 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2024-12-17 20:42:18:4218 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-17 20:42:21:4221 [32minfo[39m: [32mToken to verify:[39m
+2024-12-17 20:42:21:4221 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2024-12-17 20:42:21:4221 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2024-12-17 20:42:39:4239 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-17 20:42:39:4239 [32minfo[39m: [32mToken to verify:[39m
+2024-12-17 20:42:39:4239 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2024-12-17 20:42:39:4239 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2024-12-17 20:42:46:4246 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-17 20:43:15:4315 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-17 20:43:15:4315 [32minfo[39m: [32mToken to verify:[39m
+2024-12-17 20:43:15:4315 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2024-12-17 20:43:15:4315 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2024-12-30 13:00:54:054 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-30 13:01:13:113 [32minfo[39m: [32mHit register route[39m
+2024-12-30 13:01:23:123 [31merror[39m: [31mFailed to generate FCM token: admin.messaging(...).getToken is not a function[39m
+2024-12-30 13:01:25:125 [32minfo[39m: [32mGenerated Verification Token:[39m
+2024-12-30 13:01:48:148 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-30 13:01:53:153 [32minfo[39m: [32mHit register route[39m
+2024-12-30 13:01:59:159 [31merror[39m: [31mRegister error: User already exists[39m
+2024-12-30 19:48:29:4829 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-30 19:48:30:4830 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2024-12-30 19:55:27:5527 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-30 19:55:37:5537 [32minfo[39m: [32mHit register route[39m
+2024-12-30 19:56:06:566 [32minfo[39m: [32mGenerated Verification Token:[39m
+2024-12-30 20:01:21:121 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-30 20:01:21:121 [32minfo[39m: [32mHit register route[39m
+2024-12-30 20:01:22:122 [32minfo[39m: [32mGenerated Verification Token:[39m
+2024-12-30 20:01:26:126 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-30 20:01:28:128 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-30 20:01:28:128 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-30 21:17:33:1733 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-30 21:17:33:1733 [32minfo[39m: [32mHit register route[39m
+2024-12-30 21:17:36:1736 [32minfo[39m: [32mGenerated Verification Token:[39m
+2024-12-30 21:17:40:1740 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-30 21:17:41:1741 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-30 21:17:41:1741 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-30 21:31:23:3123 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-30 21:31:23:3123 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-30 21:57:49:5749 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-30 21:57:49:5749 [32minfo[39m: [32mHit register route[39m
+2024-12-30 21:57:53:5753 [32minfo[39m: [32mGenerated Verification Token:[39m
+2024-12-30 21:57:55:5755 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-30 21:57:57:5757 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-30 21:57:57:5757 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-30 22:09:49:949 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-30 22:09:49:949 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-30 22:13:55:1355 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-30 22:13:55:1355 [32minfo[39m: [32mHit register route[39m
+2024-12-30 22:13:58:1358 [32minfo[39m: [32mGenerated Verification Token:[39m
+2024-12-30 22:14:02:142 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-30 22:14:04:144 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-30 22:14:04:144 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-30 22:18:32:1832 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-30 22:18:32:1832 [32minfo[39m: [32mHit register route[39m
+2024-12-30 22:18:33:1833 [32minfo[39m: [32mGenerated Verification Token:[39m
+2024-12-30 22:18:37:1837 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-30 22:18:38:1838 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-30 22:18:38:1838 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-31 11:45:47:4547 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-31 11:45:48:4548 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2024-12-31 11:49:52:4952 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-31 11:49:56:4956 [32minfo[39m: [32mHit register route[39m
+2024-12-31 11:50:06:506 [32minfo[39m: [32mGenerated Verification Token:[39m
+2024-12-31 12:56:41:5641 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-31 12:56:44:5644 [32minfo[39m: [32mHit register route[39m
+2024-12-31 12:56:49:5649 [32minfo[39m: [32mGenerated Verification Token:[39m
+2024-12-31 14:23:39:2339 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-31 14:23:40:2340 [32minfo[39m: [32mHit register route[39m
+2024-12-31 14:23:43:2343 [32minfo[39m: [32mGenerated Verification Token:[39m
+2024-12-31 14:23:47:2347 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-31 14:23:48:2348 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-31 14:23:48:2348 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-31 14:47:25:4725 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-31 14:47:25:4725 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-31 14:51:20:5120 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-31 14:51:21:5121 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-31 14:51:56:5156 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-31 14:51:59:5159 [31merror[39m: [31mLogin error: Invalid email or password[39m
+2024-12-31 14:57:10:5710 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-31 14:57:10:5710 [32minfo[39m: [32mHit register route[39m
+2024-12-31 14:57:12:5712 [32minfo[39m: [32mGenerated Verification Token:[39m
+2024-12-31 15:17:48:1748 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-31 15:17:50:1750 [32minfo[39m: [32mHit register route[39m
+2024-12-31 15:17:56:1756 [32minfo[39m: [32mGenerated Verification Token:[39m
+2024-12-31 15:19:09:199 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-31 15:19:09:199 [32minfo[39m: [32mHit register route[39m
+2024-12-31 15:19:11:1911 [32minfo[39m: [32mGenerated Verification Token:[39m
+2024-12-31 15:30:00:300 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-31 15:30:03:303 [32minfo[39m: [32mHit register route[39m
+2024-12-31 15:30:08:308 [32minfo[39m: [32mGenerated Verification Token:[39m
+2024-12-31 15:32:21:3221 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-31 15:32:21:3221 [32minfo[39m: [32mHit register route[39m
+2024-12-31 15:32:21:3221 [31merror[39m: [31mRegister error: User already exists[39m
+2024-12-31 15:35:09:359 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-31 15:35:09:359 [32minfo[39m: [32mHit register route[39m
+2024-12-31 15:35:12:3512 [32minfo[39m: [32mGenerated Verification Token:[39m
+2024-12-31 15:47:27:4727 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-31 15:47:27:4727 [32minfo[39m: [32mHit register route[39m
+2024-12-31 15:47:28:4728 [31merror[39m: [31mRegister error: User already exists[39m
+2024-12-31 15:47:29:4729 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-31 15:47:30:4730 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-31 15:49:49:4949 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-31 15:49:49:4949 [32minfo[39m: [32mHit register route[39m
+2024-12-31 15:49:52:4952 [32minfo[39m: [32mGenerated Verification Token:[39m
+2024-12-31 15:49:57:4957 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-31 15:49:57:4957 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-31 15:51:58:5158 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-31 15:51:58:5158 [32minfo[39m: [32mHit register route[39m
+2024-12-31 15:52:00:520 [32minfo[39m: [32mGenerated Verification Token:[39m
+2024-12-31 15:52:04:524 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-31 15:52:04:524 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-31 15:54:12:5412 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-31 15:54:13:5413 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-31 15:54:13:5413 [32minfo[39m: [32mToken to verify:[39m
+2024-12-31 15:54:13:5413 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2024-12-31 15:54:13:5413 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2024-12-31 15:54:14:5414 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-31 15:54:14:5414 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-31 16:07:37:737 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-31 16:07:37:737 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-31 16:07:37:737 [32minfo[39m: [32mToken to verify:[39m
+2024-12-31 16:07:37:737 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2024-12-31 16:07:37:737 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2024-12-31 16:07:37:737 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-31 16:07:39:739 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-31 16:07:39:739 [32minfo[39m: [32mToken to verify:[39m
+2024-12-31 16:07:39:739 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2024-12-31 16:07:39:739 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2024-12-31 16:07:39:739 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-31 16:07:39:739 [32minfo[39m: [32mToken to verify:[39m
+2024-12-31 16:07:39:739 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2024-12-31 16:07:39:739 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2024-12-31 16:07:40:740 [32minfo[39m: [32mProcessed Request:[39m
+2024-12-31 16:07:40:740 [32minfo[39m: [32mToken to verify:[39m
+2024-12-31 16:07:40:740 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2024-12-31 16:07:40:740 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-03 10:20:43:2043 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 10:20:45:2045 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-03 10:20:47:2047 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 10:20:48:2048 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 10:23:30:2330 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 10:23:30:2330 [32minfo[39m: [32mHit register route[39m
+2025-01-03 10:23:40:2340 [32minfo[39m: [32mGenerated Verification Token:[39m
+2025-01-03 10:23:41:2341 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 10:23:41:2341 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 10:31:29:3129 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 10:31:30:3130 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 10:31:30:3130 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 10:31:30:3130 [32minfo[39m: [32mHit register route[39m
+2025-01-03 10:31:32:3132 [31merror[39m: [31mDashboard AI Analysis error: Connection error.[39m
+2025-01-03 10:31:41:3141 [31merror[39m: [31mRegister error: Operation `users.findOne()` buffering timed out after 10000ms[39m
+2025-01-03 10:31:42:3142 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 10:31:43:3143 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 10:31:44:3144 [31merror[39m: [31mDashboard AI Analysis error: Connection error.[39m
+2025-01-03 10:31:45:3145 [31merror[39m: [31mDashboard AI Analysis error: Connection error.[39m
+2025-01-03 10:32:02:322 [31merror[39m: [31mDatabase connection error: querySrv ETIMEOUT _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-03 10:47:56:4756 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 10:47:59:4759 [32minfo[39m: [32mHit register route[39m
+2025-01-03 10:48:14:4814 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 10:48:14:4814 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 10:49:23:4923 [33mwarn[39m: [33mInvalid FCM token provided: Credential implementation provided to initializeApp() via the "credential" property failed to fetch a valid Google OAuth2 access token with the following error: "Error fetching access token: Error while making request: connect ETIMEDOUT 74.125.206.84:443.".[39m
+2025-01-03 10:49:45:4945 [31merror[39m: [31mRegister error: read ECONNRESET[39m
+2025-01-03 11:01:51:151 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 11:01:55:155 [32minfo[39m: [32mHit register route[39m
+2025-01-03 11:02:04:24 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 11:02:04:24 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 11:02:04:24 [32minfo[39m: [32mGenerated Verification Token:[39m
+2025-01-03 12:28:01:281 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 12:28:09:289 [32minfo[39m: [32mHit register route[39m
+2025-01-03 12:28:15:2815 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 12:28:15:2815 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 12:28:19:2819 [32minfo[39m: [32mGenerated Verification Token:[39m
+2025-01-03 14:57:07:577 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 14:57:07:577 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-03 14:57:08:578 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 14:57:08:578 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 15:15:59:1559 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 15:15:59:1559 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 15:27:23:2723 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 15:27:26:2726 [32minfo[39m: [32mHit register route[39m
+2025-01-03 15:27:32:2732 [32minfo[39m: [32mGenerated Verification Token:[39m
+2025-01-03 15:27:40:2740 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 15:27:40:2740 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 16:11:53:1153 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 16:11:53:1153 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 16:11:54:1154 [31merror[39m: [31mDashboard AI Analysis error: Connection error.[39m
+2025-01-03 16:12:30:1230 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 16:12:30:1230 [32minfo[39m: [32mHit register route[39m
+2025-01-03 16:12:33:1233 [32minfo[39m: [32mGenerated Verification Token:[39m
+2025-01-03 16:12:34:1234 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 16:12:34:1234 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 17:37:48:3748 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 17:37:48:3748 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 20:10:33:1033 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 20:10:33:1033 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 20:10:35:1035 [31merror[39m: [31mDashboard AI Analysis error: Connection error.[39m
+2025-01-03 20:11:05:115 [31merror[39m: [31mDatabase connection error: querySrv ETIMEOUT _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-03 20:21:43:2143 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 20:21:43:2143 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 21:22:42:2242 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 21:22:46:2246 [32minfo[39m: [32mHit register route[39m
+2025-01-03 21:22:53:2253 [32minfo[39m: [32mGenerated Verification Token:[39m
+2025-01-03 21:22:56:2256 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 21:22:56:2256 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 21:50:48:5048 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 21:50:52:5052 [32minfo[39m: [32mHit register route[39m
+2025-01-03 21:50:58:5058 [32minfo[39m: [32mGenerated Verification Token:[39m
+2025-01-03 21:50:59:5059 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 21:51:00:510 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 22:05:39:539 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 22:05:42:542 [32minfo[39m: [32mHit register route[39m
+2025-01-03 22:05:47:547 [32minfo[39m: [32mGenerated Verification Token:[39m
+2025-01-03 22:05:47:547 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 22:05:48:548 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 22:41:14:4114 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 22:41:14:4114 [32minfo[39m: [32mToken to verify:[39m
+2025-01-03 22:41:14:4114 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-03 22:41:14:4114 [31merror[39m: [31mFull token verification error: jwt malformed[39m
+2025-01-03 22:41:14:4114 [31merror[39m: [31mSpecific error type: JsonWebTokenError, Message: Invalid token signature[39m
+2025-01-03 22:41:15:4115 [31merror[39m: [31mVerification error: Invalid token signature[39m
+2025-01-03 22:41:15:4115 [31merror[39m: [31mVerification error: Invalid token signature[39m
+2025-01-03 22:41:15:4115 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 22:41:15:4115 [32minfo[39m: [32mToken to verify:[39m
+2025-01-03 22:41:15:4115 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-03 22:41:15:4115 [31merror[39m: [31mFull token verification error: jwt malformed[39m
+2025-01-03 22:41:15:4115 [31merror[39m: [31mSpecific error type: JsonWebTokenError, Message: Invalid token signature[39m
+2025-01-03 22:41:15:4115 [31merror[39m: [31mVerification error: Invalid token signature[39m
+2025-01-03 22:41:15:4115 [31merror[39m: [31mVerification error: Invalid token signature[39m
+2025-01-03 22:54:34:5434 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 22:54:34:5434 [32minfo[39m: [32mToken to verify:[39m
+2025-01-03 22:54:34:5434 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-03 22:54:34:5434 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-03 22:54:35:5435 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 22:54:35:5435 [32minfo[39m: [32mToken to verify:[39m
+2025-01-03 22:54:35:5435 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-03 22:54:35:5435 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-03 22:56:15:5615 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 22:56:17:5617 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 22:56:17:5617 [32minfo[39m: [32mToken to verify:[39m
+2025-01-03 22:56:17:5617 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-03 22:56:17:5617 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-03 22:56:18:5618 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 22:56:19:5619 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 23:06:18:618 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 23:06:18:618 [33mwarn[39m: [33m404 Not Found:[39m
+2025-01-03 23:18:30:1830 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 23:18:30:1830 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 23:18:31:1831 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 23:18:31:1831 [32minfo[39m: [32mToken to verify:[39m
+2025-01-03 23:18:31:1831 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-03 23:18:31:1831 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-03 23:18:32:1832 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 23:18:32:1832 [32minfo[39m: [32mToken to verify:[39m
+2025-01-03 23:18:32:1832 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-03 23:18:32:1832 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-03 23:18:32:1832 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 23:18:32:1832 [32minfo[39m: [32mToken to verify:[39m
+2025-01-03 23:18:32:1832 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-03 23:18:32:1832 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-03 23:18:33:1833 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 23:18:33:1833 [32minfo[39m: [32mToken to verify:[39m
+2025-01-03 23:18:33:1833 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-03 23:18:33:1833 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-03 23:19:45:1945 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 23:19:45:1945 [33mwarn[39m: [33m404 Not Found:[39m
+2025-01-03 23:22:07:227 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 23:22:19:2219 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 23:22:19:2219 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 23:22:21:2221 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 23:22:21:2221 [32minfo[39m: [32mToken to verify:[39m
+2025-01-03 23:22:21:2221 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-03 23:22:21:2221 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-03 23:22:21:2221 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 23:22:21:2221 [32minfo[39m: [32mToken to verify:[39m
+2025-01-03 23:22:21:2221 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-03 23:22:21:2221 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-03 23:22:23:2223 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 23:22:23:2223 [32minfo[39m: [32mToken to verify:[39m
+2025-01-03 23:22:23:2223 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-03 23:22:23:2223 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-03 23:22:24:2224 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 23:22:24:2224 [32minfo[39m: [32mToken to verify:[39m
+2025-01-03 23:22:24:2224 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-03 23:22:24:2224 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-03 23:23:38:2338 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 23:23:40:2340 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 23:23:40:2340 [32minfo[39m: [32mToken to verify:[39m
+2025-01-03 23:23:40:2340 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-03 23:23:40:2340 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-03 23:23:41:2341 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 23:23:41:2341 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 23:25:59:2559 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 23:26:14:2614 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 23:26:14:2614 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 23:26:17:2617 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 23:26:17:2617 [32minfo[39m: [32mToken to verify:[39m
+2025-01-03 23:26:17:2617 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-03 23:26:17:2617 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-03 23:26:17:2617 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 23:26:17:2617 [32minfo[39m: [32mToken to verify:[39m
+2025-01-03 23:26:17:2617 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-03 23:26:17:2617 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-03 23:26:17:2617 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 23:26:17:2617 [32minfo[39m: [32mToken to verify:[39m
+2025-01-03 23:26:17:2617 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-03 23:26:17:2617 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-03 23:26:17:2617 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 23:26:17:2617 [32minfo[39m: [32mToken to verify:[39m
+2025-01-03 23:26:17:2617 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-03 23:26:17:2617 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-03 23:26:54:2654 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-03 23:26:54:2654 [32minfo[39m: [32mToken to verify:[39m
+2025-01-03 23:26:54:2654 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-03 23:26:54:2654 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-05 11:35:07:357 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 11:35:09:359 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 11:35:14:3514 [31merror[39m: [31mDatabase connection error: querySrv ETIMEOUT _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-05 11:35:14:3514 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 11:35:14:3514 [32minfo[39m: [32mToken to verify:[39m
+2025-01-05 11:35:14:3514 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-05 11:35:15:3515 [31merror[39m: [31mFull token verification error: jwt expired[39m
+2025-01-05 11:35:15:3515 [31merror[39m: [31mSpecific error type: TokenExpiredError, Message: Token has expired[39m
+2025-01-05 11:35:16:3516 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 11:35:16:3516 [32minfo[39m: [32mToken to verify:[39m
+2025-01-05 11:35:16:3516 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-05 11:35:16:3516 [31merror[39m: [31mFull token verification error: jwt expired[39m
+2025-01-05 11:35:16:3516 [31merror[39m: [31mSpecific error type: TokenExpiredError, Message: Token has expired[39m
+2025-01-05 11:35:16:3516 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 11:35:16:3516 [32minfo[39m: [32mToken to verify:[39m
+2025-01-05 11:35:16:3516 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-05 11:35:16:3516 [31merror[39m: [31mFull token verification error: jwt expired[39m
+2025-01-05 11:35:16:3516 [31merror[39m: [31mSpecific error type: TokenExpiredError, Message: Token has expired[39m
+2025-01-05 11:35:24:3524 [31merror[39m: [31mLogin error: Operation `users.findOne()` buffering timed out after 10000ms[39m
+2025-01-05 11:59:31:5931 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 11:59:31:5931 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-05 12:00:09:09 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 12:18:24:1824 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 12:18:27:1827 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 12:18:27:1827 [32minfo[39m: [32mToken to verify:[39m
+2025-01-05 12:18:27:1827 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-05 12:18:27:1827 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-05 12:18:28:1828 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 12:18:28:1828 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 12:32:24:3224 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 13:03:58:358 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 13:04:02:42 [31merror[39m: [31mError sending push notification: "[object Object]" is not valid JSON[39m
+2025-01-05 13:20:10:2010 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 13:20:13:2013 [32minfo[39m: [32mToken to verify:[39m
+2025-01-05 13:20:13:2013 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-05 13:20:13:2013 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-05 13:20:15:2015 [31merror[39m: [31mError sending push notification: sendPushNotification is not defined[39m
+2025-01-05 14:04:46:446 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 14:04:49:449 [32minfo[39m: [32mToken to verify:[39m
+2025-01-05 14:04:49:449 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-05 14:04:49:449 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-05 14:04:53:453 [31merror[39m: [31mError sending push notification: Cast to ObjectId failed for value "dT6SYgqy-MCC6l8qBPVAz_:APA91bF9a5QTp62609IpwNgWLbPXonbUWTRKpHG76eMdejuY4I6sb7y5CRN3T_vYlIE60ITvR3hWSUsQMASOhzHvc11hWQ-Q4riK97VZwUCxM1Peh-f-bOg" (type string) at path "_id" for model "User"[39m
+2025-01-05 14:04:53:453 [31merror[39m: [31mError sending push notification: Cast to ObjectId failed for value "dT6SYgqy-MCC6l8qBPVAz_:APA91bF9a5QTp62609IpwNgWLbPXonbUWTRKpHG76eMdejuY4I6sb7y5CRN3T_vYlIE60ITvR3hWSUsQMASOhzHvc11hWQ-Q4riK97VZwUCxM1Peh-f-bOg" (type string) at path "_id" for model "User"[39m
+2025-01-05 14:16:52:1652 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 14:16:58:1658 [31merror[39m: [31mError awarding points: "[object Object]" is not valid JSON[39m
+2025-01-05 14:37:15:3715 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 14:37:16:3716 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 14:37:16:3716 [32minfo[39m: [32mToken to verify:[39m
+2025-01-05 14:37:16:3716 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-05 14:37:16:3716 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-05 14:37:19:3719 [32minfo[39m: [32mToken to verify:[39m
+2025-01-05 14:37:19:3719 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-05 14:37:19:3719 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-05 14:37:23:3723 [31merror[39m: [31mError awarding points: Invalid reward type[39m
+2025-01-05 14:37:23:3723 [31merror[39m: [31mError sending push notification: Cast to ObjectId failed for value "dT6SYgqy-MCC6l8qBPVAz_:APA91bF9a5QTp62609IpwNgWLbPXonbUWTRKpHG76eMdejuY4I6sb7y5CRN3T_vYlIE60ITvR3hWSUsQMASOhzHvc11hWQ-Q4riK97VZwUCxM1Peh-f-bOg" (type string) at path "_id" for model "User"[39m
+2025-01-05 14:37:23:3723 [31merror[39m: [31mError sending push notification: Cast to ObjectId failed for value "dT6SYgqy-MCC6l8qBPVAz_:APA91bF9a5QTp62609IpwNgWLbPXonbUWTRKpHG76eMdejuY4I6sb7y5CRN3T_vYlIE60ITvR3hWSUsQMASOhzHvc11hWQ-Q4riK97VZwUCxM1Peh-f-bOg" (type string) at path "_id" for model "User"[39m
+2025-01-05 14:44:04:444 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 14:44:08:448 [32minfo[39m: [32mToken to verify:[39m
+2025-01-05 14:44:08:448 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-05 14:44:08:448 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-05 14:44:12:4412 [31merror[39m: [31mError sending push notification: Cast to ObjectId failed for value "dT6SYgqy-MCC6l8qBPVAz_:APA91bF9a5QTp62609IpwNgWLbPXonbUWTRKpHG76eMdejuY4I6sb7y5CRN3T_vYlIE60ITvR3hWSUsQMASOhzHvc11hWQ-Q4riK97VZwUCxM1Peh-f-bOg" (type string) at path "_id" for model "User"[39m
+2025-01-05 14:44:12:4412 [31merror[39m: [31mError sending push notification: Cast to ObjectId failed for value "dT6SYgqy-MCC6l8qBPVAz_:APA91bF9a5QTp62609IpwNgWLbPXonbUWTRKpHG76eMdejuY4I6sb7y5CRN3T_vYlIE60ITvR3hWSUsQMASOhzHvc11hWQ-Q4riK97VZwUCxM1Peh-f-bOg" (type string) at path "_id" for model "User"[39m
+2025-01-05 14:44:44:4444 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 14:44:44:4444 [32minfo[39m: [32mToken to verify:[39m
+2025-01-05 14:44:44:4444 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-05 14:44:44:4444 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-05 14:44:44:4444 [31merror[39m: [31mError awarding points: Invalid reward type[39m
+2025-01-05 15:02:54:254 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 15:02:56:256 [31merror[39m: [31mError sending push notification: "[object Object]" is not valid JSON[39m
+2025-01-05 15:04:49:449 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 15:04:53:453 [31merror[39m: [31mError sending push notification: "[object Object]" is not valid JSON[39m
+2025-01-05 15:07:00:70 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 15:07:03:73 [32minfo[39m: [32mToken to verify:[39m
+2025-01-05 15:07:03:73 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-05 15:07:03:73 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-05 15:07:06:76 [31merror[39m: [31mError sending push notification: Cannot read properties of undefined (reading 'id')[39m
+2025-01-05 15:17:35:1735 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 15:17:39:1739 [32minfo[39m: [32mToken to verify:[39m
+2025-01-05 15:17:39:1739 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-05 15:17:39:1739 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-05 15:17:46:1746 [32minfo[39m: [32mPush notification sent to user 6777d7b33490d0ab79906c46[39m
+2025-01-05 15:19:17:1917 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 15:19:21:1921 [32minfo[39m: [32mToken to verify:[39m
+2025-01-05 15:19:21:1921 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-05 15:19:21:1921 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-05 15:19:26:1926 [32minfo[39m: [32mPush notification sent to user 6777d7b33490d0ab79906c46[39m
+2025-01-05 15:21:40:2140 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 15:21:40:2140 [31merror[39m: [31mError awarding points: "[object Object]" is not valid JSON[39m
+2025-01-05 15:23:22:2322 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 15:23:28:2328 [32minfo[39m: [32mToken to verify:[39m
+2025-01-05 15:23:28:2328 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-05 15:23:28:2328 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-05 15:23:33:2333 [32minfo[39m: [32mPush notification sent to user 6777d7b33490d0ab79906c46[39m
+2025-01-05 15:23:33:2333 [32minfo[39m: [32mAwarded 5 points to user 6777d7b33490d0ab79906c46 for DAILY_LOGIN[39m
+2025-01-05 15:23:46:2346 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 15:23:46:2346 [32minfo[39m: [32mToken to verify:[39m
+2025-01-05 15:23:46:2346 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-05 15:23:46:2346 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-05 15:23:51:2351 [32minfo[39m: [32mPush notification sent to user 6777d7b33490d0ab79906c46[39m
+2025-01-05 15:23:51:2351 [32minfo[39m: [32mAwarded 5 points to user 6777d7b33490d0ab79906c46 for DAILY_LOGIN[39m
+2025-01-05 15:25:32:2532 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 15:25:32:2532 [32minfo[39m: [32mToken to verify:[39m
+2025-01-05 15:25:32:2532 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-05 15:25:32:2532 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-05 15:26:16:2616 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 15:45:52:4552 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 15:45:55:4555 [31merror[39m: [31mError sending email notification: Cannot destructure property 'subject' of 'event.body.data' as it is undefined.[39m
+2025-01-05 15:53:39:5339 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 15:53:45:5345 [32minfo[39m: [32mToken to verify:[39m
+2025-01-05 15:53:45:5345 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-05 15:53:45:5345 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-05 15:53:50:5350 [32minfo[39m: [32mEmail sent to user 6777d7b33490d0ab79906c46[39m
+2025-01-05 15:54:05:545 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 15:54:05:545 [32minfo[39m: [32mToken to verify:[39m
+2025-01-05 15:54:05:545 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-05 15:54:05:545 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-05 15:54:08:548 [32minfo[39m: [32mEmail sent to user 6777d7b33490d0ab79906c46[39m
+2025-01-05 16:03:16:316 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 16:03:16:316 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 16:03:16:316 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 16:03:16:316 [32minfo[39m: [32mToken to verify:[39m
+2025-01-05 16:03:16:316 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-05 16:03:16:316 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-05 16:03:17:317 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 16:03:17:317 [32minfo[39m: [32mToken to verify:[39m
+2025-01-05 16:03:17:317 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-05 16:03:17:317 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-05 16:03:17:317 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 16:03:17:317 [32minfo[39m: [32mToken to verify:[39m
+2025-01-05 16:03:17:317 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-05 16:03:17:317 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-05 16:03:18:318 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 16:03:18:318 [32minfo[39m: [32mToken to verify:[39m
+2025-01-05 16:03:18:318 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-05 16:03:18:318 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-05 16:03:22:322 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 16:03:22:322 [32minfo[39m: [32mToken to verify:[39m
+2025-01-05 16:03:22:322 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-05 16:03:22:322 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-05 16:03:22:322 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 16:03:22:322 [32minfo[39m: [32mToken to verify:[39m
+2025-01-05 16:03:22:322 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-05 16:03:22:322 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-05 16:03:23:323 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 16:03:23:323 [32minfo[39m: [32mToken to verify:[39m
+2025-01-05 16:03:23:323 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-05 16:03:23:323 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-05 16:03:23:323 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 16:03:23:323 [32minfo[39m: [32mToken to verify:[39m
+2025-01-05 16:03:23:323 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-05 16:03:23:323 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-05 16:04:38:438 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 16:04:38:438 [32minfo[39m: [32mToken to verify:[39m
+2025-01-05 16:04:38:438 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-05 16:04:38:438 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-05 16:04:39:439 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 16:04:39:439 [33mwarn[39m: [33m404 Not Found:[39m
+2025-01-05 16:04:39:439 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 16:04:39:439 [33mwarn[39m: [33m404 Not Found:[39m
+2025-01-05 16:06:20:620 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 16:06:20:620 [32minfo[39m: [32mToken to verify:[39m
+2025-01-05 16:06:20:620 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-05 16:06:20:620 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-05 16:07:44:744 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 16:07:44:744 [32minfo[39m: [32mToken to verify:[39m
+2025-01-05 16:07:44:744 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-05 16:07:44:744 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-05 16:09:21:921 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 16:09:24:924 [32minfo[39m: [32mToken to verify:[39m
+2025-01-05 16:09:24:924 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-05 16:09:24:924 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-05 22:51:06:516 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 22:51:06:516 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 22:51:06:516 [32minfo[39m: [32mToken to verify:[39m
+2025-01-05 22:51:07:517 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-05 22:51:07:517 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-05 22:51:11:5111 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 22:51:11:5111 [31merror[39m: [31mDatabase connection error: querySrv ETIMEOUT _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-05 22:51:13:5113 [31merror[39m: [31mDashboard AI Analysis error: Connection error.[39m
+2025-01-05 22:51:19:5119 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 22:51:19:5119 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-05 22:51:19:5119 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 22:51:20:5120 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-05 22:51:20:5120 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 22:51:20:5120 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-05 22:51:20:5120 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 22:51:20:5120 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-05 22:51:20:5120 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 22:51:20:5120 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-05 22:51:21:5121 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 22:51:21:5121 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-05 22:51:21:5121 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 22:51:21:5121 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-05 23:30:40:3040 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 23:30:41:3041 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 23:32:36:3236 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 23:32:38:3238 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 23:32:38:3238 [32minfo[39m: [32mToken to verify:[39m
+2025-01-05 23:32:38:3238 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-05 23:32:38:3238 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-05 23:32:40:3240 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 23:32:40:3240 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 23:33:12:3312 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 23:33:12:3312 [32minfo[39m: [32mToken to verify:[39m
+2025-01-05 23:33:12:3312 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-05 23:33:12:3312 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-05 23:33:13:3313 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 23:33:13:3313 [32minfo[39m: [32mToken to verify:[39m
+2025-01-05 23:33:13:3313 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-05 23:33:13:3313 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-05 23:33:13:3313 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 23:33:13:3313 [32minfo[39m: [32mToken to verify:[39m
+2025-01-05 23:33:13:3313 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-05 23:33:13:3313 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-05 23:33:13:3313 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-05 23:33:13:3313 [32minfo[39m: [32mToken to verify:[39m
+2025-01-05 23:33:13:3313 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-05 23:33:13:3313 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 00:10:13:1013 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 00:10:13:1013 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 00:10:13:1013 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 00:10:13:1013 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 00:10:13:1013 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 00:10:13:1013 [33mwarn[39m: [33m404 Not Found:[39m
+2025-01-06 00:10:13:1013 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 00:10:13:1013 [33mwarn[39m: [33m404 Not Found:[39m
+2025-01-06 00:11:52:1152 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 00:11:52:1152 [33mwarn[39m: [33m404 Not Found:[39m
+2025-01-06 00:11:57:1157 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 00:11:57:1157 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 00:11:57:1157 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 00:11:57:1157 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 09:22:15:2215 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 09:22:47:2247 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 09:24:12:2412 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 09:24:14:2414 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 09:24:14:2414 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 09:24:14:2414 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 09:24:14:2414 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 09:24:16:2416 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 09:24:16:2416 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 09:52:30:5230 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 09:52:31:5231 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 09:52:31:5231 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 09:52:31:5231 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 09:52:31:5231 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 09:52:31:5231 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 09:52:31:5231 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 09:52:31:5231 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 09:52:31:5231 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 09:52:32:5232 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 09:52:32:5232 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 09:52:32:5232 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 09:52:32:5232 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 09:52:32:5232 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 09:52:32:5232 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 09:52:32:5232 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 09:52:32:5232 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 09:52:32:5232 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 10:00:48:048 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 10:00:48:048 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 10:00:48:048 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 10:00:48:048 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 10:00:48:048 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 10:00:49:049 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 10:00:49:049 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 10:00:49:049 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 10:00:49:049 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 10:00:49:049 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 10:00:49:049 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 10:00:49:049 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 10:00:49:049 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 10:00:49:049 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 10:00:49:049 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 10:00:49:049 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 10:00:49:049 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 10:00:49:049 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 11:06:03:63 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 11:06:03:63 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 11:06:03:63 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 11:06:03:63 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 11:06:03:63 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 11:06:03:63 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 11:06:03:63 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 11:06:03:63 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 11:06:03:63 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 11:06:03:63 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 11:06:04:64 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 11:06:04:64 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 11:06:04:64 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 11:06:04:64 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 11:06:04:64 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 11:06:04:64 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 11:06:04:64 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 11:06:04:64 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 11:06:04:64 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 11:06:05:65 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 11:06:05:65 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 11:06:05:65 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 11:06:05:65 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 16:29:43:2943 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 16:29:43:2943 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 16:29:44:2944 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 16:29:44:2944 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 16:29:44:2944 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 16:29:44:2944 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 16:29:48:2948 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 16:29:48:2948 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-06 16:29:49:2949 [31merror[39m: [31mDashboard AI Analysis error: Connection error.[39m
+2025-01-06 16:29:49:2949 [31merror[39m: [31mDashboard AI Analysis error: Connection error.[39m
+2025-01-06 16:30:41:3041 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 16:30:51:3051 [31merror[39m: [31mLogin error: Operation `users.findOne()` buffering timed out after 10000ms[39m
+2025-01-06 16:32:39:3239 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 16:32:49:3249 [31merror[39m: [31mLogin error: Operation `users.findOne()` buffering timed out after 10000ms[39m
+2025-01-06 16:32:58:3258 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 16:33:08:338 [31merror[39m: [31mLogin error: Operation `users.findOne()` buffering timed out after 10000ms[39m
+2025-01-06 16:33:50:3350 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 16:34:00:340 [31merror[39m: [31mLogin error: Operation `users.findOne()` buffering timed out after 10000ms[39m
+2025-01-06 16:36:01:361 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 16:36:11:3611 [31merror[39m: [31mLogin error: Operation `users.findOne()` buffering timed out after 10000ms[39m
+2025-01-06 16:42:24:4224 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 16:42:31:4231 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 16:42:31:4231 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 16:42:31:4231 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 16:42:31:4231 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 16:42:33:4233 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 16:42:33:4233 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 16:42:33:4233 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 16:42:33:4233 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 16:42:33:4233 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 16:42:33:4233 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 16:42:33:4233 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 16:42:33:4233 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 16:42:33:4233 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 16:42:33:4233 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 16:52:38:5238 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 16:52:38:5238 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 16:52:39:5239 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 16:52:39:5239 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 16:52:39:5239 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 16:52:39:5239 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 16:52:39:5239 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 16:52:40:5240 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 16:52:40:5240 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 16:52:40:5240 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 16:52:40:5240 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 16:52:41:5241 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 16:52:41:5241 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 16:52:41:5241 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 16:52:41:5241 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 16:52:41:5241 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 16:52:41:5241 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 16:52:41:5241 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 16:52:41:5241 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 16:52:42:5242 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 16:52:42:5242 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 16:52:42:5242 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 16:52:42:5242 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 17:12:40:1240 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 17:12:40:1240 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 17:12:42:1242 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 17:12:42:1242 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 17:12:42:1242 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 17:12:42:1242 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 17:12:42:1242 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 17:12:42:1242 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 17:12:42:1242 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 17:12:42:1242 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 17:12:42:1242 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 17:12:42:1242 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 17:12:42:1242 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 17:12:42:1242 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 17:12:42:1242 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 17:12:43:1243 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 17:12:43:1243 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 17:12:43:1243 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 17:12:43:1243 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 17:12:43:1243 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 17:12:43:1243 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 17:12:43:1243 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 17:12:43:1243 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 17:13:37:1337 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 17:13:37:1337 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 17:13:37:1337 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 17:13:37:1337 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 17:13:37:1337 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 17:13:37:1337 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 17:13:37:1337 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 17:13:37:1337 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 17:13:37:1337 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 17:13:37:1337 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 17:13:37:1337 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 17:13:37:1337 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 17:13:37:1337 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 17:13:37:1337 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 17:13:37:1337 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 17:13:37:1337 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 17:13:37:1337 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 17:13:37:1337 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 17:13:39:1339 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 17:13:39:1339 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 17:13:39:1339 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 17:13:40:1340 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 17:13:40:1340 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 17:13:40:1340 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 17:13:40:1340 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 17:13:40:1340 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 17:14:11:1411 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 17:14:11:1411 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 17:14:11:1411 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 17:14:11:1411 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 19:36:08:368 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 19:36:08:368 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 19:36:09:369 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 19:36:09:369 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 19:36:09:369 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 19:36:10:3610 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 19:36:10:3610 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 19:36:12:3612 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 19:36:12:3612 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 19:36:12:3612 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 19:36:12:3612 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 19:36:13:3613 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 19:36:13:3613 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 19:36:13:3613 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 19:36:13:3613 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 19:36:13:3613 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 19:36:13:3613 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 19:36:13:3613 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 19:36:13:3613 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 19:45:47:4547 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 19:46:05:465 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 19:46:05:465 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 19:46:06:466 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 19:46:08:468 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 19:46:56:4656 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 19:46:57:4657 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 19:46:57:4657 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 19:46:57:4657 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 19:46:57:4657 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 19:46:59:4659 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 19:46:59:4659 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 19:46:59:4659 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 19:46:59:4659 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 19:46:59:4659 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 19:46:59:4659 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 19:46:59:4659 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 19:46:59:4659 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 19:46:59:4659 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 19:46:59:4659 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 19:47:19:4719 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 19:47:19:4719 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 19:47:19:4719 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 19:47:19:4719 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 19:48:57:4857 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 19:48:57:4857 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 19:48:57:4857 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 19:48:57:4857 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 19:51:22:5122 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 19:51:22:5122 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 19:51:22:5122 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 19:51:22:5122 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-06 19:59:11:5911 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-06 19:59:11:5911 [32minfo[39m: [32mToken to verify:[39m
+2025-01-06 19:59:11:5911 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-06 19:59:11:5911 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m

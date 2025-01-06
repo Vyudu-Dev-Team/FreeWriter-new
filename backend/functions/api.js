@@ -13,6 +13,7 @@ const {
   handleOutlineRoutes,
   handleWritingEnvironmentRoutes,
   handleStoryRoutes,
+  handleNotificationRoutes,
 } = require("./routeHandlers.js");
 const connectDB = require("../config/database.js");
 const logger = require("../utils/logger.js");
@@ -107,22 +108,20 @@ app.post("/users/login", async (req, res) => {
 // Current user route
 app.get("/users/current-user", getCurrentUser);
 
-app.all("/users/verify-email", async (req, res) => {
+app.post("/users/verify-email", async (req, res) => {
   try {
-    let token;
-    if (req.method === "GET") {
-      token = req.query.token;
-    } else {
-      token = req.body.token;
+    const { token } = req.body;
+    if (!token) {
+      return res.status(400).json({ message: "Verification token is required" });
     }
-
+    
     const response = await handleUserRoutes({
-      httpMethod: req.method,
+      httpMethod: 'POST',
       path: "/verify-email",
       body: JSON.stringify({ token }),
       headers: req.headers,
-      queryStringParameters: req.query,
     });
+    
     res.status(response.statusCode).json(JSON.parse(response.body));
   } catch (error) {
     logger.error("Verification error:", error);
@@ -578,6 +577,22 @@ app.use("/writing-environment/sessions/:id", async (req, res) => {
     res.status(response.statusCode).json(JSON.parse(response.body));
   } catch (error) {
     logger.error("Writing environment session route error:", error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.use("/notifications", async (req, res) => {
+  try {
+    const response = await handleNotificationRoutes({
+      httpMethod: req.method,
+      path: req.path.replace(/^\/notifications/, ""),
+      body: req.body, 
+      headers: req.headers,
+      queryStringParameters: req.query,
+    });
+    res.status(response.statusCode).json(JSON.parse(response.body));
+  } catch (error) {
+    logger.error("Notification route error:", error);
     res.status(500).json({ message: error.message });
   }
 });

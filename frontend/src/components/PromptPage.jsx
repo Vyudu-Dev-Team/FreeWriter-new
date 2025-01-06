@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import { Star, Cached, HelpOutline, Settings } from "@mui/icons-material";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
+import { aiAPI } from '../services/api';
 
 // Create a custom theme for styling
 const theme = createTheme({
@@ -97,7 +98,7 @@ function PromptPage() {
 
     const fetchPrompts = async () => {
         try {
-            const response = await axios.get("/api/prompts");
+            const response = await aiAPI.generatePrompt({});
             setPrompts(response.data.prompts);
         } catch (error) {
             console.error("Error fetching prompts:", error);

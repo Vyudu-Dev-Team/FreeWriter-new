@@ -6,7 +6,11 @@ const Profile = require("../models/Profile.js");
 const StoryMap = require("../models/StoryMap.js");
 const Outline = require("../models/Outline.js");
 const WritingSession = require("../models/WritingSession.js");
-const { verifyToken, generateToken, verifyEmailToken } = require("../utils/jwt.js");
+const {
+  verifyToken,
+  generateToken,
+  verifyEmailToken,
+} = require("../utils/jwt.js");
 const {
   sendVerificationEmail,
   sendPasswordResetEmail,
@@ -15,7 +19,7 @@ const {
   updatePreferences,
   getPreferences,
   resetPreferences,
-} = require("../services/preferencesService.js");
+} = require("../Services/preferencesService.js");
 const {
   validateCardType,
   validateCustomization,
@@ -32,16 +36,44 @@ const logger = require("../utils/logger.js");
 const {
   generateAIFeedback,
   generateStoryPrompt,
-} = require("../services/aiService.js");
-const { adjustAIParameters } = require("../services/aiFeedbackService.js");
+} = require("../Services/aiService.js");
+const { adjustAIParameters } = require("../Services/aiFeedbackService.js");
+const { 
+  subscribeToNotifications,
+  sendEmailNotification,
+  sendPushNotification,
+  notifyInactiveUsers,
+  awardPoints,
+  checkAndAwardBadge,
+  getUserRewards,
 
+} = require("../Services/notificationService.js");
+  
 const crypto = require("crypto");
 const bcrypt = require("bcryptjs");
 const { v4: uuidv4 } = require("uuid");
 const { ObjectId } = require("mongodb");
 const OpenAI = require("openai");
 const openai = new OpenAI(process.env.OPENAI_API_KEY);
+const admin = require('firebase-admin');
 
+const initializeFirebase = () => {
+  try {
+    if (!admin.apps.length) {
+      admin.initializeApp({
+        credential: admin.credential.cert({
+          projectId: process.env.FIREBASE_PROJECT_ID,
+          clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+          privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+        }),
+      });
+    }
+    return true;
+  } catch (error) {
+    logger.error('Firebase initialization error:', error);
+    return false;
+  }
+};
 
 const handleUserRoutes = async (event) => {
   const { httpMethod, path } = event;
@@ -69,7 +101,7 @@ const handleUserRoutes = async (event) => {
     case "POST /verify-email":
       return verifyEmail(event);
     case "POST /resend-verification":
-      response = await resendVerification(JSON.parse(event.body));
+      return resendVerification(JSON.parse(event.body));
     case "GET /preferences":
       return getUserPreferences(event);
     case "PUT /preferences":
@@ -77,7 +109,7 @@ const handleUserRoutes = async (event) => {
     case "POST /reset-preferences":
       return resetUserPreferences(event);
     default:
-      return { statusCode: 404, body: { message: "Not Found" } };
+      return { statusCode: 404, body: JSON.stringify({ message: "Not Found" }) };
   }
 };
 
@@ -291,28 +323,52 @@ const handleWritingEnvironmentRoutes = async (event) => {
   }
 };
 
+const handleNotificationRoutes = async (event) => {
+  const { httpMethod, path } = event;
+  const route = path.replace("/notifications", "");
+
+  switch (`${httpMethod} ${route}`) {
+    case "POST /subscribe":
+      return subscribeToNotificationsHandler(event);
+    case "POST /send-email":
+      return sendEmailNotificationHandler(event);
+    case "POST /send-push":
+      return sendPushNotificationHandler(event);
+    case "POST /award-points":
+      return awardPointsHandler(event);
+    case "GET /rewards":
+      return getUserRewardsHandler(event);
+    default:
+      return {
+        statusCode: 404,
+        body: JSON.stringify({ message: "Not Found" }),
+      };
+  }
+};
+
 // user endpoints
 const getCurrentUser = async (event) => {
   try {
     const authHeader = event.headers?.authorization;
     const token = authHeader?.replace("Bearer ", "").trim();
+    
     if (!token) {
       return {
         statusCode: 401,
         body: JSON.stringify({ message: "No token provided" }),
       };
     }
-
+    
     const decoded = await verifyToken(token);
     const user = await User.findById(decoded.userId).select("-password");
-
+    
     if (!user) {
       return {
         statusCode: 404,
         body: JSON.stringify({ message: "User not found" }),
       };
     }
-
+    
     return {
       statusCode: 200,
       body: JSON.stringify({
@@ -323,6 +379,7 @@ const getCurrentUser = async (event) => {
           isEmailVerified: user.isEmailVerified,
           writingMode: user.writingMode,
           goals: user.goals,
+          fcmToken: user.fcmToken, // Added fcmToken to the response
         },
       }),
     };
@@ -336,7 +393,7 @@ const getCurrentUser = async (event) => {
 };
 
 const register = async (userData) => {
-  const { username, email, password, writingMode } = userData;
+  const { username, email, password, writingMode, deviceToken } = userData;
 
   if (!username || !email || !password) {
     throw new AppError("Please provide all required fields", 400);
@@ -347,24 +404,67 @@ const register = async (userData) => {
     throw new AppError("User already exists", 400);
   }
 
-  const user = new User({ username, email, password, writingMode });
+  // Initialize Firebase only when needed
+  const isFirebaseInitialized = initializeFirebase();
+  let fcmToken = isFirebaseInitialized ? deviceToken : null;
+
+  if (fcmToken) {
+    try {
+      // Validate FCM token
+      await admin.messaging().send({
+        token: fcmToken,
+        data: { type: 'TEST' },
+      }, true);
+    } catch (error) {
+      logger.warn("Invalid FCM token provided:", error);
+      fcmToken = null; // Invalidate the token
+    }
+  }
+
+  const user = new User({
+    username,
+    email,
+    password,
+    writingMode,
+    fcmToken,
+    notificationPreferences: {
+      email: true,
+      push: !!fcmToken,
+    },
+  });
+
   await user.save();
 
   const verificationToken = generateToken({ userId: user._id }, "1d");
   logger.info("Generated Verification Token:", verificationToken);
-  try {
-    await sendVerificationEmail(user, verificationToken);
-  } catch (emailError) {
+
+  // Fire-and-forget email sending
+  sendVerificationEmail(user, verificationToken).catch((emailError) => {
     logger.error("Failed to send verification email:", emailError);
-    throw new AppError("Failed to send verification email", 500);
+  });
+
+  // Send welcome notification if FCM token is valid
+  if (fcmToken) {
+    admin.messaging()
+      .send({
+        token: fcmToken,
+        notification: { title: 'Welcome', body: 'Thank you for registering!' },
+      })
+      .catch((error) => {
+        logger.error("Failed to send welcome notification:", error);
+      });
   }
 
   return {
     statusCode: 201,
     body: {
-      message:
-        "User registered successfully. Please check your email to verify your account.",
-      user: { id: user._id, username: user.username, email: user.email },
+      message: "User registered successfully. Please check your email to verify your account.",
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        fcmToken: user.fcmToken,
+      },
     },
   };
 };
@@ -782,60 +882,59 @@ const getOrCreateStory = async (event) => {
 
 const createStory = async (event) => {
   try {
-     // Retrieve user ID from the event
-     const userResponse = await getCurrentUser(event);
-   
-     // Check if user retrieval was successful
-     if (userResponse.statusCode !== 200) {
-       return userResponse; // Return error if user retrieval failed
-     }
-   
-     // Parse user ID from the response
-     const userId = JSON.parse(userResponse.body).user.id;
-   
-     // Parse and validate the input data
-     let storyData = event.body;
-   
-     if (typeof storyData === "string") {
-       try {
-         storyData = JSON.parse(storyData);
-       } catch (parseError) {
-         return {
-           statusCode: 400,
-           body: JSON.stringify({ message: "Invalid JSON in request body" }),
-         };
-       }
-     }
-   
-     // Destructure and validate story data
-     const { title, content, genre } = storyData;
-   
-     if (!title || !content || !genre) {
-       return {
-         statusCode: 400,
-         body: JSON.stringify({
-           message: "Title, content, and genre are required",
-         }),
-       };
-     }
-   
-     // Create a new story instance with validated data
-     const newStory = new Story({
-       author: userId,
-       title: title,
-       content: content,
-       genre: genre
-     });
-   
-     // Save the story to the database
-     const savedStory = await newStory.save();
-   
-     // Return success response
-     return {
-       statusCode: 201,
-       body: JSON.stringify(savedStory)
-     };
-   
+    // Retrieve user ID from the event
+    const userResponse = await getCurrentUser(event);
+
+    // Check if user retrieval was successful
+    if (userResponse.statusCode !== 200) {
+      return userResponse; // Return error if user retrieval failed
+    }
+
+    // Parse user ID from the response
+    const userId = JSON.parse(userResponse.body).user.id;
+
+    // Parse and validate the input data
+    let storyData = event.body;
+
+    if (typeof storyData === "string") {
+      try {
+        storyData = JSON.parse(storyData);
+      } catch (parseError) {
+        return {
+          statusCode: 400,
+          body: JSON.stringify({ message: "Invalid JSON in request body" }),
+        };
+      }
+    }
+
+    // Destructure and validate story data
+    const { title, content, genre } = storyData;
+
+    if (!title || !content || !genre) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({
+          message: "Title, content, and genre are required",
+        }),
+      };
+    }
+
+    // Create a new story instance with validated data
+    const newStory = new Story({
+      author: userId,
+      title: title,
+      content: content,
+      genre: genre,
+    });
+
+    // Save the story to the database
+    const savedStory = await newStory.save();
+
+    // Return success response
+    return {
+      statusCode: 201,
+      body: JSON.stringify(savedStory),
+    };
   } catch (error) {
     logger.error("Create story error:", error);
     return {
@@ -849,24 +948,23 @@ const createStory = async (event) => {
 
 const getStories = async (event) => {
   try {
+    // Get current user using getCurrentUser
+    const userResponse = await getCurrentUser(event);
 
-     // Get current user using getCurrentUser
-     const userResponse = await getCurrentUser(event);
+    // Check if user retrieval was successful
+    if (userResponse.statusCode !== 200) {
+      return userResponse; // Return error if user retrieval failed
+    }
 
-     // Check if user retrieval was successful
-     if (userResponse.statusCode !== 200) {
-       return userResponse; // Return error if user retrieval failed
-     }
- 
-     // Parse user ID from the response
-     const userId = JSON.parse(userResponse.body).user.id;
- 
-     const stories = await Story.find({ author: userId });
- 
-     return {
-       statusCode: 200,
-       body: JSON.stringify(stories),
-     };
+    // Parse user ID from the response
+    const userId = JSON.parse(userResponse.body).user.id;
+
+    const stories = await Story.find({ author: userId });
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify(stories),
+    };
   } catch (error) {
     logger.error("Get stories error:", error);
     return {
@@ -901,8 +999,10 @@ const getStory = async (event, storyId) => {
     }
     console.log("Story ID:", storyId);
     console.log("User ID:", userId);
-    const storyObjectId = storyId && ObjectId.isValid(storyId) ? new ObjectId(storyId) : null;
-    const userObjectId = userId && ObjectId.isValid(userId) ? new ObjectId(userId) : null;
+    const storyObjectId =
+      storyId && ObjectId.isValid(storyId) ? new ObjectId(storyId) : null;
+    const userObjectId =
+      userId && ObjectId.isValid(userId) ? new ObjectId(userId) : null;
 
     if (!storyObjectId || !userObjectId)
       throw new Error("Invalid Story or user ID");
@@ -957,7 +1057,6 @@ const updateStory = async (event, storyId) => {
       };
     }
 
-
     let updates = event.body;
     if (typeof updates === "string") {
       try {
@@ -970,8 +1069,10 @@ const updateStory = async (event, storyId) => {
       }
     }
 
-    const storyObjectId = storyId && ObjectId.isValid(storyId) ? new ObjectId(storyId) : null;
-    const userObjectId = userId && ObjectId.isValid(userId) ? new ObjectId(userId) : null;
+    const storyObjectId =
+      storyId && ObjectId.isValid(storyId) ? new ObjectId(storyId) : null;
+    const userObjectId =
+      userId && ObjectId.isValid(userId) ? new ObjectId(userId) : null;
 
     if (!storyObjectId || !userObjectId)
       throw new Error("Invalid Story or user ID");
@@ -1010,7 +1111,6 @@ const updateStory = async (event, storyId) => {
 
 const deleteStory = async (event, storyId) => {
   try {
-
     const userResponse = await getCurrentUser(event);
     if (userResponse.statusCode !== 200) return userResponse;
 
@@ -1030,13 +1130,14 @@ const deleteStory = async (event, storyId) => {
         body: JSON.stringify({ message: "Invalid outline ID" }),
       };
     }
-    const storyObjectId = storyId && ObjectId.isValid(storyId) ? new ObjectId(storyId) : null;
-    const userObjectId = userId && ObjectId.isValid(userId) ? new ObjectId(userId) : null;
+    const storyObjectId =
+      storyId && ObjectId.isValid(storyId) ? new ObjectId(storyId) : null;
+    const userObjectId =
+      userId && ObjectId.isValid(userId) ? new ObjectId(userId) : null;
 
     if (!storyObjectId || !userObjectId)
       throw new Error("Invalid Story or user ID");
 
-    
     const story = await Story.findOneAndDelete({
       _id: storyObjectId,
       author: userObjectId,
@@ -1048,7 +1149,7 @@ const deleteStory = async (event, storyId) => {
         body: JSON.stringify({ message: "Outline not found" }),
       };
     }
-    
+
     return {
       statusCode: 200,
       body: JSON.stringify({ message: "Story deleted successfully" }),
@@ -2417,7 +2518,6 @@ const createStoryMap = async (event) => {
 };
 
 const getStoryMap = async (event, storyMapId) => {
-  console.log("Getting story map with ID:", storyMapId);
   try {
     const userResponse = await getCurrentUser(event);
     if (userResponse.statusCode !== 200) return userResponse;
@@ -2872,6 +2972,226 @@ const getWritingGuidance = async (data) => {
   }
 };
 
+const subscribeToNotificationsHandler = async (event) => {
+  try {
+    const { subscription } = JSON.parse(event.body);
+
+    const userResponse = await getCurrentUser(event);
+    if (userResponse.statusCode !== 200) return userResponse;
+
+    const user = JSON.parse(userResponse.body).user;
+    const userObjectId = ObjectId.isValid(user.id) ? new ObjectId(user.id) : null;
+
+    if (!userObjectId) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: "Invalid user ID format" }),
+      };
+    }
+
+    // Update both FCM token and push subscription
+    await User.findByIdAndUpdate(userObjectId, {
+      fcmToken: subscription.fcmToken,
+      pushSubscription: subscription,
+    });
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        message: "Successfully subscribed to push notifications",
+      }),
+    };
+  } catch (error) {
+    logger.error("Error subscribing to push notifications:", error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        message: "Error subscribing to push notifications",
+        error: error.message,
+      }),
+    };
+  }
+};
+
+const sendEmailNotificationHandler = async (event) => {
+  try {
+    const { subject, text } = event.body.data;
+
+    const userResponse = await getCurrentUser(event);
+    if (userResponse.statusCode !== 200) return userResponse;
+
+    const user = JSON.parse(userResponse.body).user;
+    const userObjectId = ObjectId.isValid(user.id) ? new ObjectId(user.id) : null;
+
+    if (!userObjectId) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: "Invalid user ID format" }),
+      };
+    }
+
+    await sendEmailNotification(userObjectId, subject, text);
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: "Email notification sent successfully" }),
+    };
+  } catch (error) {
+    logger.error("Error sending email notification:", error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ 
+        message: "Error sending email notification",
+        error: error.message 
+      }),
+    };
+  }
+};
+
+const sendPushNotificationHandler = async (event) => {
+  try {
+    const { title, body } = event.body.data;
+    
+    const userResponse = await getCurrentUser(event);
+    if (userResponse.statusCode !== 200) return userResponse;
+    
+    const user = JSON.parse(userResponse.body).user;
+    
+    if (!user.fcmToken) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: "User has no FCM token registered" }),
+      };
+    }
+
+    // Send push notification using fcmToken directly from user object
+    const message = {
+      notification: { title, body },
+      token: user.fcmToken
+    };
+
+    await admin.messaging().send(message);
+    logger.info(`Push notification sent to user ${user.id}`);
+    
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: "Push notification sent successfully" }),
+    };
+  } catch (error) {
+    logger.error("Error sending push notification:", error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ 
+        message: "Error sending push notification", 
+        error: error.message 
+      }),
+    };
+  }
+};
+
+const awardPointsHandler = async (event) => {
+  try {
+    const { rewardType } = event.body.data;
+    
+    const validRewardTypes = ['DAILY_LOGIN', 'STORY_COMPLETION', 'WRITING_STREAK'];
+    if (!validRewardTypes.includes(rewardType)) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ 
+          message: "Invalid reward type",
+          validTypes: validRewardTypes
+        }),
+      };
+    }
+    
+    const userResponse = await getCurrentUser(event);
+    if (userResponse.statusCode !== 200) return userResponse;
+    
+    const user = JSON.parse(userResponse.body).user;
+    const userObjectId = ObjectId.isValid(user.id) ? new ObjectId(user.id) : null;
+    
+    if (!userObjectId) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: "Invalid user ID format" }),
+      };
+    }
+
+    const updatedRewards = await awardPoints(userObjectId, rewardType);
+    
+    // Send push notification if user has FCM token
+    if (user.fcmToken) {
+      const message = {
+        notification: {
+          title: 'Points Awarded!',
+          body: `You've earned points for: ${rewardType}`
+        },
+        token: user.fcmToken
+      };
+      await admin.messaging().send(message);
+    }
+    
+    await checkAndAwardBadge(userObjectId);
+    
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        message: "Points awarded successfully",
+        rewards: updatedRewards,
+      }),
+    };
+  } catch (error) {
+    logger.error("Error awarding points:", error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ 
+        message: "Error awarding points",
+        error: error.message 
+      }),
+    };
+  }
+};
+
+const getUserRewardsHandler = async (event) => {
+  try {
+    const userResponse = await getCurrentUser(event);
+    if (userResponse.statusCode !== 200) return userResponse;
+
+    const user = JSON.parse(userResponse.body).user;
+    const userObjectId = ObjectId.isValid(user.id) ? new ObjectId(user.id) : null;
+
+    if (!userObjectId) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: "Invalid user ID format" }),
+      };
+    }
+
+    const userWithRewards = await User.findById(userObjectId).select("rewards");
+
+    if (!userWithRewards) {
+      return {
+        statusCode: 404,
+        body: JSON.stringify({ message: "User not found" }),
+      };
+    }
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ rewards: userWithRewards.rewards }),
+    };
+  } catch (error) {
+    logger.error("Error fetching user rewards:", error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ 
+        message: "Error fetching user rewards",
+        error: error.message 
+      }),
+    };
+  }
+};
+
 // Normalize paths to remove trailing slashes
 const normalizePath = (path) => path.replace(/\/+$/, "");
 
@@ -2922,4 +3242,5 @@ module.exports = {
   handleOutlineRoutes,
   handleStoryMappingRoutes,
   handleWritingEnvironmentRoutes,
+  handleNotificationRoutes,
 };

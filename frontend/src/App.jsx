@@ -11,6 +11,7 @@ import ForgotPassword from './components/ForgotPassword';
 import Onboarding from './components/Onboarding';
 import Register from './components/Register';
 import EmailVerification from './components/EmailVerification';
+import FCMTest from './components/FCMTest';
 
 import Home from './components/Home';
 
@@ -32,7 +33,6 @@ import FeedbackForm from './components/FeedbackForm';
 import { AppProvider } from './contexts/AppContext';
 import ProfilePage from './components/profileSetup';
 import TitleScreen from './components/SplashScreen';
-
 
 function App() {
   return (
@@ -61,11 +61,13 @@ function App() {
             <Route path="/badges" element={<PrivateRoute><BadgeDisplay /></PrivateRoute>} />
             <Route path="/sketch" element={<PrivateRoute><SketchGenerator /></PrivateRoute>} />
             <Route path="/feedback" element={<PrivateRoute><FeedbackForm /></PrivateRoute>} />
+            <Route path="/fcm-test" element={<FCMTest />} />
           </Routes>
         </Router>
       </ThemeProvider>
     </AppProvider>
   );
 }
+console.log(111111111111111111111111111111111111);
 
 export default App;

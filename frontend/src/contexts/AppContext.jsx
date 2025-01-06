@@ -1,16 +1,17 @@
 import React, { createContext, useContext, useReducer, useEffect } from "react";
-import { userAPI, setAuthToken, aiAPI, deckAPI } from "../services/api";
+import { userAPI, setAuthToken, aiAPI, deckAPI, fcmAPI } from "../services/api";
 
 const AppContext = createContext();
 
 const initialState = {
   user: null,
-  stories: [],
+  stories: [], 
   currentStory: null,
   notifications: [],
   badges: [],
   loading: false,
   error: null,
+  fcmToken: null,
 };
 
 function appReducer(state, action) {
@@ -29,6 +30,8 @@ function appReducer(state, action) {
       return { ...state, loading: action.payload };
     case "SET_ERROR":
       return { ...state, error: action.payload };
+    case "SET_FCM_TOKEN":
+      return { ...state, fcmToken: action.payload };
     case "LOGOUT":
       return initialState;
     default:
@@ -50,14 +53,34 @@ export function AppProvider({ children }) {
   const fetchUser = async () => {
     try {
       dispatch({ type: "SET_LOADING", payload: true });
+
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("No authentication token found");
+      }
+
+      setAuthToken(token);
+
       const res = await userAPI.getCurrentUser();
+      console.log("Current user response:", res);
+
+      if (!res.data) {
+        throw new Error("No user data in response");
+      }
+
       dispatch({ type: "SET_USER", payload: res.data });
+
+      if (res.data.fcmToken) {
+        dispatch({ type: "SET_FCM_TOKEN", payload: res.data.fcmToken });
+      }
+
       dispatch({ type: "SET_ERROR", payload: null });
     } catch (error) {
       console.error("Error fetching user:", error);
-      dispatch({ type: "SET_ERROR", payload: "Failed to fetch user data" });
       localStorage.removeItem("token");
       setAuthToken(null);
+      dispatch({ type: "SET_USER", payload: null });
+      dispatch({ type: "SET_ERROR", payload: "Failed to fetch user data" });
     } finally {
       dispatch({ type: "SET_LOADING", payload: false });
     }
@@ -66,16 +89,29 @@ export function AppProvider({ children }) {
   const login = async ({ email, password }) => {
     try {
       dispatch({ type: "SET_LOADING", payload: true });
+
       const res = await userAPI.login(email, password);
+      console.log("Login response:", res);
+
+      if (!res.data || !res.data.token) {
+        throw new Error("No authentication token received");
+      }
+
       localStorage.setItem("token", res.data.token);
       setAuthToken(res.data.token);
+
       await fetchUser();
+
       dispatch({ type: "SET_ERROR", payload: null });
       return true;
     } catch (error) {
+      console.error("Login error:", error);
+      localStorage.removeItem("token");
+      setAuthToken(null);
       dispatch({
         type: "SET_ERROR",
-        payload: error.response?.data?.message || "Login failed",
+        payload:
+          error.response?.data?.message || error.message || "Login failed",
       });
       return false;
     } finally {
@@ -85,52 +121,44 @@ export function AppProvider({ children }) {
 
   const register = async (data) => {
     try {
-      console.log("AppContext register called with:", data);
       dispatch({ type: "SET_LOADING", payload: true });
 
-      // Destructure the data to match the API method signature
-      const { username, email, password, writingMode } = data;
+      const { username, email, password, writingMode, deviceToken } = data;
 
-      console.log("Calling userAPI.register with:", {
+      console.log("Sending registration request with:", {
         username,
         email,
-        password,
         writingMode,
+        deviceToken,
       });
 
       const res = await userAPI.register(
         username,
         email,
         password,
-        writingMode
+        writingMode,
+        deviceToken
       );
 
-      console.log("Register API response:", res);
+      console.log("Full registration response:", res);
 
-      localStorage.setItem("token", res.data.token);
-      setAuthToken(res.data.token);
+      const { user, success, message } = res.data;
 
-      await fetchUser();
-      dispatch({ type: "SET_ERROR", payload: null });
-      return true;
-    } catch (error) {
-      console.error("Full registration error:", error);
-      console.error("Error response:", error.response);
-
-      // More detailed error logging
-      if (error.response) {
-        // The request was made and the server responded with a status code
-        console.error("Error data:", error.response.data);
-        console.error("Error status:", error.response.status);
-        console.error("Error headers:", error.response.headers);
-      } else if (error.request) {
-        // The request was made but no response was received
-        console.error("No response received:", error.request);
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        console.error("Error setting up request:", error.message);
+      if (!success) {
+        throw new Error(message || "Registration failed");
       }
 
+      dispatch({ type: "SET_USER", payload: user });
+      dispatch({ type: "SET_ERROR", payload: null });
+
+      // Instead of expecting a token, we'll show a success message
+      return {
+        success: true,
+        message:
+          "Registration successful. Please check your email to verify your account.",
+      };
+    } catch (error) {
+      console.error("Full registration error:", error);
       dispatch({
         type: "SET_ERROR",
         payload:
@@ -138,7 +166,13 @@ export function AppProvider({ children }) {
           error.message ||
           "Registration failed",
       });
-      return false;
+      return {
+        success: false,
+        message:
+          error.response?.data?.message ||
+          error.message ||
+          "Registration failed",
+      };
     } finally {
       dispatch({ type: "SET_LOADING", payload: false });
     }
@@ -149,6 +183,7 @@ export function AppProvider({ children }) {
     setAuthToken(null);
     dispatch({ type: "LOGOUT" });
   };
+
   const saveProfile = async (profileData) => {
     try {
       dispatch({ type: "SET_LOADING", payload: true });
@@ -171,8 +206,7 @@ export function AppProvider({ children }) {
     try {
       dispatch({ type: "SET_LOADING", payload: true });
       const res = await userAPI.verifyEmail(token);
-      
-      // Update token if a new one is provided
+
       if (res.data.token) {
         localStorage.setItem("token", res.data.token);
         setAuthToken(res.data.token);
@@ -184,7 +218,7 @@ export function AppProvider({ children }) {
     } catch (error) {
       dispatch({
         type: "SET_ERROR",
-        payload: error.response?.data?.message || "Email verification failed"
+        payload: error.response?.data?.message || "Email verification failed",
       });
       return false;
     } finally {
@@ -201,7 +235,9 @@ export function AppProvider({ children }) {
     } catch (error) {
       dispatch({
         type: "SET_ERROR",
-        payload: error.response?.data?.message || "Failed to resend verification email"
+        payload:
+          error.response?.data?.message ||
+          "Failed to resend verification email",
       });
       return false;
     } finally {
@@ -210,11 +246,11 @@ export function AppProvider({ children }) {
   };
 
   const fetchContent = async (title) => {
-    // TODO: random story id for testing  
+    // TODO: random story id for testing
     let storyId = "123";
     try {
       // fetching character, conflict, and world card content by querrying with their title and storyid
-      const res = await deckAPI.getCardContent(title, storyId)
+      const res = await deckAPI.getCardContent(title, storyId);
       return res.data;
     } catch (error) {
       dispatch({
@@ -226,7 +262,7 @@ export function AppProvider({ children }) {
   };
 
   const saveContent = async (title, content) => {
-    // TODO: random story id for testing  
+    // TODO: random story id for testing
     let storyId = "123";
     try {
       const res = await deckAPI.saveCardContent({ content, storyId, title });
@@ -241,11 +277,11 @@ export function AppProvider({ children }) {
   };
 
   const fetchFeedback = async (cardTitle) => {
-    // TODO: random story id for testing  
+    // TODO: random story id for testing
     let storyId = "123";
 
     try {
-      const res = await aiAPI.submitFeedback({cardTitle, storyId});
+      const res = await aiAPI.submitFeedback({ cardTitle, storyId });
       return res.data;
     } catch (error) {
       dispatch({
@@ -253,6 +289,41 @@ export function AppProvider({ children }) {
         payload: error.response?.data?.message || "Failed to save content",
       });
       return null; // Return null or handle as needed
+    }
+  };
+  const updateFCMToken = async (token) => {
+    try {
+      dispatch({ type: "SET_LOADING", payload: true });
+      await userAPI.updateFCMToken(token);
+      dispatch({ type: "SET_FCM_TOKEN", payload: token });
+      dispatch({ type: "SET_ERROR", payload: null });
+      return true;
+    } catch (error) {
+      dispatch({
+        type: "SET_ERROR",
+        payload: error.response?.data?.message || "Failed to update FCM token",
+      });
+      return false;
+    } finally {
+      dispatch({ type: "SET_LOADING", payload: false });
+    }
+  };
+
+  const testFCMNotification = async () => {
+    try {
+      dispatch({ type: "SET_LOADING", payload: true });
+      await fcmAPI.testNotification();
+      dispatch({ type: "SET_ERROR", payload: null });
+      return true;
+    } catch (error) {
+      dispatch({
+        type: "SET_ERROR",
+        payload:
+          error.response?.data?.message || "Failed to send test notification",
+      });
+      return false;
+    } finally {
+      dispatch({ type: "SET_LOADING", payload: false });
     }
   };
 
@@ -268,6 +339,8 @@ export function AppProvider({ children }) {
     fetchContent,
     saveContent,
     fetchFeedback,
+    updateFCMToken,
+    testFCMNotification,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

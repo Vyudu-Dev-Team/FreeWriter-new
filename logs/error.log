@@ -733,3 +733,90 @@
 2024-12-04 21:18:08:188 [31merror[39m: [31mSpecific error type: TokenExpiredError, Message: Token has expired[39m
 2024-12-04 21:18:08:188 [31merror[39m: [31mGet current user error: Token has expired[39m
 2024-12-04 22:57:40:5740 [31merror[39m: [31mDatabase connection error: querySrv ETIMEOUT _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2024-12-16 13:15:37:1537 [31merror[39m: [31mLogin error: User2.findOne is not a function[39m
+2024-12-16 13:27:35:2735 [31merror[39m: [31mLogin error: User2.findOne is not a function[39m
+2024-12-16 15:02:30:230 [31merror[39m: [31mLogin error: User2.findOne is not a function[39m
+2024-12-16 15:31:56:3156 [31merror[39m: [31mLogin error: User2.findOne is not a function[39m
+2024-12-16 17:09:48:948 [31merror[39m: [31mLogin error: User2.findOne is not a function[39m
+2024-12-17 11:07:35:735 [31merror[39m: [31mStory route error: handleStoryRoutes is not defined[39m
+2024-12-17 11:09:13:913 [31merror[39m: [31mCreate story error: Validation failed: genre: `Fiction` is not a valid enum value for path `genre`.[39m
+2024-12-17 11:18:56:1856 [31merror[39m: [31mGet stories error: outlines is not defined[39m
+2024-12-17 11:21:22:2122 [31merror[39m: [31mGet story error: Unsupported BSON version, bson types must be from bson 5.x.x[39m
+2024-12-17 11:45:29:4529 [31merror[39m: [31mGet story error: Unsupported BSON version, bson types must be from bson 5.x.x[39m
+2024-12-17 11:50:34:5034 [31merror[39m: [31mUpdate story error: Unsupported BSON version, bson types must be from bson 5.x.x[39m
+2024-12-17 11:55:49:5549 [31merror[39m: [31mGet story error: Unsupported BSON version, bson types must be from bson 5.x.x[39m
+2024-12-17 12:16:38:1638 [31merror[39m: [31mGet story error: Unsupported BSON version, bson types must be from bson 5.x.x[39m
+2024-12-17 12:43:59:4359 [31merror[39m: [31mGet story error: Unsupported BSON version, bson types must be from bson 6.x.x[39m
+2024-12-17 12:44:41:4441 [31merror[39m: [31mUpdate story error: Unsupported BSON version, bson types must be from bson 6.x.x[39m
+2024-12-17 12:50:23:5023 [31merror[39m: [31mGet story error: Unsupported BSON version, bson types must be from bson 6.x.x[39m
+2024-12-17 15:20:28:2028 [31merror[39m: [31mGet story error: Unsupported BSON version, bson types must be from bson 6.x.x[39m
+2024-12-17 19:59:20:5920 [31merror[39m: [31mGet story error: Unsupported BSON version, bson types must be from bson 6.x.x[39m
+2024-12-17 20:18:59:1859 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2024-12-30 13:01:23:123 [31merror[39m: [31mFailed to generate FCM token: admin.messaging(...).getToken is not a function[39m
+2024-12-30 13:01:59:159 [31merror[39m: [31mRegister error: User already exists[39m
+2024-12-30 19:48:30:4830 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2024-12-31 11:45:48:4548 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2024-12-31 14:51:59:5159 [31merror[39m: [31mLogin error: Invalid email or password[39m
+2024-12-31 15:32:21:3221 [31merror[39m: [31mRegister error: User already exists[39m
+2024-12-31 15:47:28:4728 [31merror[39m: [31mRegister error: User already exists[39m
+2025-01-03 10:20:45:2045 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-03 10:31:32:3132 [31merror[39m: [31mDashboard AI Analysis error: Connection error.[39m
+2025-01-03 10:31:41:3141 [31merror[39m: [31mRegister error: Operation `users.findOne()` buffering timed out after 10000ms[39m
+2025-01-03 10:31:44:3144 [31merror[39m: [31mDashboard AI Analysis error: Connection error.[39m
+2025-01-03 10:31:45:3145 [31merror[39m: [31mDashboard AI Analysis error: Connection error.[39m
+2025-01-03 10:32:02:322 [31merror[39m: [31mDatabase connection error: querySrv ETIMEOUT _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-03 10:49:45:4945 [31merror[39m: [31mRegister error: read ECONNRESET[39m
+2025-01-03 14:57:07:577 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-03 16:11:54:1154 [31merror[39m: [31mDashboard AI Analysis error: Connection error.[39m
+2025-01-03 20:10:35:1035 [31merror[39m: [31mDashboard AI Analysis error: Connection error.[39m
+2025-01-03 20:11:05:115 [31merror[39m: [31mDatabase connection error: querySrv ETIMEOUT _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-03 22:41:14:4114 [31merror[39m: [31mFull token verification error: jwt malformed[39m
+2025-01-03 22:41:14:4114 [31merror[39m: [31mSpecific error type: JsonWebTokenError, Message: Invalid token signature[39m
+2025-01-03 22:41:15:4115 [31merror[39m: [31mVerification error: Invalid token signature[39m
+2025-01-03 22:41:15:4115 [31merror[39m: [31mVerification error: Invalid token signature[39m
+2025-01-03 22:41:15:4115 [31merror[39m: [31mFull token verification error: jwt malformed[39m
+2025-01-03 22:41:15:4115 [31merror[39m: [31mSpecific error type: JsonWebTokenError, Message: Invalid token signature[39m
+2025-01-03 22:41:15:4115 [31merror[39m: [31mVerification error: Invalid token signature[39m
+2025-01-03 22:41:15:4115 [31merror[39m: [31mVerification error: Invalid token signature[39m
+2025-01-05 11:35:14:3514 [31merror[39m: [31mDatabase connection error: querySrv ETIMEOUT _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-05 11:35:15:3515 [31merror[39m: [31mFull token verification error: jwt expired[39m
+2025-01-05 11:35:15:3515 [31merror[39m: [31mSpecific error type: TokenExpiredError, Message: Token has expired[39m
+2025-01-05 11:35:16:3516 [31merror[39m: [31mFull token verification error: jwt expired[39m
+2025-01-05 11:35:16:3516 [31merror[39m: [31mSpecific error type: TokenExpiredError, Message: Token has expired[39m
+2025-01-05 11:35:16:3516 [31merror[39m: [31mFull token verification error: jwt expired[39m
+2025-01-05 11:35:16:3516 [31merror[39m: [31mSpecific error type: TokenExpiredError, Message: Token has expired[39m
+2025-01-05 11:35:24:3524 [31merror[39m: [31mLogin error: Operation `users.findOne()` buffering timed out after 10000ms[39m
+2025-01-05 11:59:31:5931 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-05 13:04:02:42 [31merror[39m: [31mError sending push notification: "[object Object]" is not valid JSON[39m
+2025-01-05 13:20:15:2015 [31merror[39m: [31mError sending push notification: sendPushNotification is not defined[39m
+2025-01-05 14:04:53:453 [31merror[39m: [31mError sending push notification: Cast to ObjectId failed for value "dT6SYgqy-MCC6l8qBPVAz_:APA91bF9a5QTp62609IpwNgWLbPXonbUWTRKpHG76eMdejuY4I6sb7y5CRN3T_vYlIE60ITvR3hWSUsQMASOhzHvc11hWQ-Q4riK97VZwUCxM1Peh-f-bOg" (type string) at path "_id" for model "User"[39m
+2025-01-05 14:04:53:453 [31merror[39m: [31mError sending push notification: Cast to ObjectId failed for value "dT6SYgqy-MCC6l8qBPVAz_:APA91bF9a5QTp62609IpwNgWLbPXonbUWTRKpHG76eMdejuY4I6sb7y5CRN3T_vYlIE60ITvR3hWSUsQMASOhzHvc11hWQ-Q4riK97VZwUCxM1Peh-f-bOg" (type string) at path "_id" for model "User"[39m
+2025-01-05 14:16:58:1658 [31merror[39m: [31mError awarding points: "[object Object]" is not valid JSON[39m
+2025-01-05 14:37:23:3723 [31merror[39m: [31mError awarding points: Invalid reward type[39m
+2025-01-05 14:37:23:3723 [31merror[39m: [31mError sending push notification: Cast to ObjectId failed for value "dT6SYgqy-MCC6l8qBPVAz_:APA91bF9a5QTp62609IpwNgWLbPXonbUWTRKpHG76eMdejuY4I6sb7y5CRN3T_vYlIE60ITvR3hWSUsQMASOhzHvc11hWQ-Q4riK97VZwUCxM1Peh-f-bOg" (type string) at path "_id" for model "User"[39m
+2025-01-05 14:37:23:3723 [31merror[39m: [31mError sending push notification: Cast to ObjectId failed for value "dT6SYgqy-MCC6l8qBPVAz_:APA91bF9a5QTp62609IpwNgWLbPXonbUWTRKpHG76eMdejuY4I6sb7y5CRN3T_vYlIE60ITvR3hWSUsQMASOhzHvc11hWQ-Q4riK97VZwUCxM1Peh-f-bOg" (type string) at path "_id" for model "User"[39m
+2025-01-05 14:44:12:4412 [31merror[39m: [31mError sending push notification: Cast to ObjectId failed for value "dT6SYgqy-MCC6l8qBPVAz_:APA91bF9a5QTp62609IpwNgWLbPXonbUWTRKpHG76eMdejuY4I6sb7y5CRN3T_vYlIE60ITvR3hWSUsQMASOhzHvc11hWQ-Q4riK97VZwUCxM1Peh-f-bOg" (type string) at path "_id" for model "User"[39m
+2025-01-05 14:44:12:4412 [31merror[39m: [31mError sending push notification: Cast to ObjectId failed for value "dT6SYgqy-MCC6l8qBPVAz_:APA91bF9a5QTp62609IpwNgWLbPXonbUWTRKpHG76eMdejuY4I6sb7y5CRN3T_vYlIE60ITvR3hWSUsQMASOhzHvc11hWQ-Q4riK97VZwUCxM1Peh-f-bOg" (type string) at path "_id" for model "User"[39m
+2025-01-05 14:44:44:4444 [31merror[39m: [31mError awarding points: Invalid reward type[39m
+2025-01-05 15:02:56:256 [31merror[39m: [31mError sending push notification: "[object Object]" is not valid JSON[39m
+2025-01-05 15:04:53:453 [31merror[39m: [31mError sending push notification: "[object Object]" is not valid JSON[39m
+2025-01-05 15:07:06:76 [31merror[39m: [31mError sending push notification: Cannot read properties of undefined (reading 'id')[39m
+2025-01-05 15:21:40:2140 [31merror[39m: [31mError awarding points: "[object Object]" is not valid JSON[39m
+2025-01-05 15:45:55:4555 [31merror[39m: [31mError sending email notification: Cannot destructure property 'subject' of 'event.body.data' as it is undefined.[39m
+2025-01-05 22:51:11:5111 [31merror[39m: [31mDatabase connection error: querySrv ETIMEOUT _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-05 22:51:13:5113 [31merror[39m: [31mDashboard AI Analysis error: Connection error.[39m
+2025-01-05 22:51:19:5119 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-05 22:51:20:5120 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-05 22:51:20:5120 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-05 22:51:20:5120 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-05 22:51:20:5120 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-05 22:51:21:5121 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-05 22:51:21:5121 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-06 16:29:48:2948 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-06 16:29:49:2949 [31merror[39m: [31mDashboard AI Analysis error: Connection error.[39m
+2025-01-06 16:29:49:2949 [31merror[39m: [31mDashboard AI Analysis error: Connection error.[39m
+2025-01-06 16:30:51:3051 [31merror[39m: [31mLogin error: Operation `users.findOne()` buffering timed out after 10000ms[39m
+2025-01-06 16:32:49:3249 [31merror[39m: [31mLogin error: Operation `users.findOne()` buffering timed out after 10000ms[39m
+2025-01-06 16:33:08:338 [31merror[39m: [31mLogin error: Operation `users.findOne()` buffering timed out after 10000ms[39m
+2025-01-06 16:34:00:340 [31merror[39m: [31mLogin error: Operation `users.findOne()` buffering timed out after 10000ms[39m
+2025-01-06 16:36:11:3611 [31merror[39m: [31mLogin error: Operation `users.findOne()` buffering timed out after 10000ms[39m
