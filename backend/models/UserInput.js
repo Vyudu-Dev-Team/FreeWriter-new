@@ -1,5 +1,5 @@
 // backend/models/UserInput.js
-import mongoose from 'mongoose';
+const mongoose = require( 'mongoose');
 
 const userInputSchema = new mongoose.Schema({
   userId: {
@@ -26,4 +26,4 @@ const userInputSchema = new mongoose.Schema({
   }
 });
 
-export default mongoose.model('UserInput', userInputSchema);
+module.exports =   mongoose.model('UserInput', userInputSchema);

@@ -1,6 +1,5 @@
-import OpenAI from 'openai';
-import { validateCardType } from '../utils/validators.js';
-
+const OpenAI = require( 'openai');
+const { validateCardType } = require( '../utils/validators.js');
 const openai = new OpenAI(process.env.OPENAI_API_KEY);
 
 /**
@@ -9,7 +8,7 @@ const openai = new OpenAI(process.env.OPENAI_API_KEY);
  * @param {string} cardType - The type of card to generate.
  * @returns {Object} The generated card object.
  */
-export const generateCard = async (userId, cardType) => {
+const generateCard = async (userId, cardType) => {
   validateCardType(cardType);
 
   const prompt = `Generate a ${cardType} card for a deck-building story game.`;
@@ -32,4 +31,8 @@ export const generateCard = async (userId, cardType) => {
     rarity: 'common', // Default rarity
     customization: {},
   };
+};
+
+module.exports = {
+  generateCard,
 };

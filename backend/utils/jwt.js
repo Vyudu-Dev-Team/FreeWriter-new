@@ -1,5 +1,8 @@
 // utils/jwt.js
-import jwt from 'jsonwebtoken';
+const jwt = require( 'jsonwebtoken');
+const logger = require( '../utils/logger.js');
+const AppError = require( "../utils/appError.js");
+
 
 /**
  * Custom error class for JWT-related errors
@@ -19,7 +22,7 @@ class JWTError extends Error {
  * @returns {string} JWT token
  * @throws {Error} If JWT_SECRET is not configured
  */
-export const generateToken = (payload, expiresIn = '24h') => {
+const generateToken = (payload, expiresIn = '24h') => {
   if (!process.env.JWT_SECRET) {
     throw new JWTError('JWT_SECRET is not configured', 500);
   }
@@ -32,21 +35,40 @@ export const generateToken = (payload, expiresIn = '24h') => {
  * @returns {Object} Decoded token payload
  * @throws {JWTError} If token is missing, invalid, or expired
  */
-export const verifyToken = async (token) => {
+const verifyToken = async (token) => {
   if (!token) {
-    throw new JWTError('Token is required');
+    logger.error("Token is missing in the request.");
+    throw new JWTError("Token is required");
   }
 
   try {
+    // Log the token and the secret for debugging
+    logger.info("Token to verify:", token);
+    logger.info("JWT_SECRET exists:", !!process.env.JWT_SECRET);
+
+    // Verify the token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    logger.info("Token verified successfully. Decoded payload:", decoded);
     return decoded;
   } catch (error) {
-    const message = error.name === 'TokenExpiredError' 
-      ? 'Token has expired'
-      : 'Invalid token';
+    // Provide more detailed error logging
+    logger.error("Full token verification error:", {
+      name: error.name,
+      message: error.message,
+      stack: error.stack
+    });
+
+    const message = 
+      error.name === "TokenExpiredError" ? "Token has expired" :
+      error.name === "JsonWebTokenError" ? "Invalid token signature" :
+      "Token verification failed";
+
+    logger.error(`Specific error type: ${error.name}, Message: ${message}`);
     throw new JWTError(message);
   }
 };
+
+
 
 /**
  * Verifies a JWT token from an event object
@@ -54,9 +76,37 @@ export const verifyToken = async (token) => {
  * @returns {Object} Decoded token payload
  * @throws {JWTError} If token is missing, invalid, or expired
  */
-export const verifyTokenFromEvent = async (event) => {
-  const { token } = event;
-  return verifyToken(token);
+const verifyTokenFromEvent = async (event) => {
+  // Extensive logging for debugging
+  logger.info("Full event object for token verification:", JSON.stringify(event, null, 2));
+
+  // Check multiple possible locations for the token
+  const token = 
+    event.headers?.authorization?.split(" ")[1] ||  // Bearer token in header
+    event.token ||                                  // Direct token property
+    event.body?.token ||                            // Token in body
+    (typeof event === 'string' ? event : null);     // If event is already a token string
+
+  logger.info("Extracted token:", token);
+
+  if (!token) {
+    logger.error("Token is missing from the event.");
+    throw new AppError("Authentication token is required", 401);
+  }
+
+  try {
+    logger.info("Attempting to verify token...");
+    const decoded = await verifyToken(token);
+    logger.info("Decoded token payload:", decoded);
+    return decoded.userId;
+  } catch (error) {
+    logger.error("Comprehensive token verification error:", {
+      message: error.message,
+      name: error.name,
+      stack: error.stack
+    });
+    throw new AppError("Invalid or expired token", 401);
+  }
 };
 
 /**
@@ -65,7 +115,7 @@ export const verifyTokenFromEvent = async (event) => {
  * @returns {Object} Decoded token payload
  * @throws {JWTError} If token is invalid or expired
  */
-export const verifyEmailToken = async (token) => {
+const verifyEmailToken = async (token) => {
   return verifyToken(token);
 };
 
@@ -74,13 +124,18 @@ export const verifyEmailToken = async (token) => {
  * @param {Object} req - Request object
  * @returns {string|null} Extracted token or null if not found
  */
-export const extractTokenFromRequest = (req) => {
+const extractTokenFromRequest = (req) => {
   if (!req) return null;
   
-  // Check Authorization header
+  // Check Authorization header (most common method)
   const authHeader = req.headers?.authorization;
   if (authHeader?.startsWith('Bearer ')) {
     return authHeader.substring(7);
+  }
+  
+  // Check for token in headers
+  if (req.headers?.token) {
+    return req.headers.token;
   }
   
   // Check query parameters
@@ -94,4 +149,12 @@ export const extractTokenFromRequest = (req) => {
   }
   
   return null;
+};
+
+module.exports = {
+  generateToken,
+  verifyToken,
+  verifyTokenFromEvent,
+  verifyEmailToken,
+  extractTokenFromRequest,
 };

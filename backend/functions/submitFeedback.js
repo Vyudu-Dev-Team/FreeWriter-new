@@ -1,8 +1,8 @@
-import { verifyToken } from '../utils/jwt.js';
-import Feedback from '../models/Feedback.js';
-import AppError from '../utils/appError.js';
+const { verifyToken } = require( '../utils/jwt.js');
+const Feedback = require( '../models/Feedback.js');
+const AppError = require( '../utils/appError.js');
 
-export const handler = async (event) => {
+const handler = async (event) => {
   try {
     const userId = await verifyToken(event);
     const { promptId, rating, comments } = JSON.parse(event.body);
@@ -35,4 +35,8 @@ export const handler = async (event) => {
       })
     };
   }
+};
+
+module.exports = {
+  handler
 };
