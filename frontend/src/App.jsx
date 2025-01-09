@@ -32,6 +32,8 @@ import Tutorials from './components/Tutorials';
 import { AppProvider } from './contexts/AppContext';
 import ProfilePage from './components/profileSetup';
 import TitleScreen from './components/SplashScreen';
+import Reward from './components/Reward';
+import StoryView from './components/StoryView';
 
 
 function App() {
@@ -43,6 +45,7 @@ function App() {
           <Navbar />
           <Routes>
             <Route path="/" element={<TitleScreen />} />
+            <Route path="/reward" element={<Reward />} />
             <Route path="/home" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
@@ -54,6 +57,7 @@ function App() {
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/prompt" element={<PromptPage />} />
+            <Route path="/story" element={<StoryView />} />
             <Route path="/story-map" element={<PrivateRoute><StoryMapComponent /></PrivateRoute>} />
             <Route path="/story-map/:storyId" element={<PrivateRoute><StoryMap /></PrivateRoute>} />
             <Route path="/deck" element={<DeckManager />} />
