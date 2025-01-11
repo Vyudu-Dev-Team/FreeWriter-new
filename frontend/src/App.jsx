@@ -28,10 +28,12 @@ import PrivateRoute from './components/PrivateRoute';
 // import NotificationCenter from './components/NotificationCenter';
 
 import FeedbackForm from './components/FeedbackForm';
-
+import Tutorials from './components/Tutorials';
 import { AppProvider } from './contexts/AppContext';
 import ProfilePage from './components/profileSetup';
 import TitleScreen from './components/SplashScreen';
+import Reward from './components/Reward';
+import StoryView from './components/StoryView';
 
 
 function App() {
@@ -43,16 +45,19 @@ function App() {
           <Navbar />
           <Routes>
             <Route path="/" element={<TitleScreen />} />
+            <Route path="/reward" element={<Reward />} />
             <Route path="/home" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/tutorial" element={<Tutorials />} />
             <Route path="/verify-email/:token" element={<EmailVerification />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
 
             <Route path="/onboarding" element={<PrivateRoute><Onboarding /></PrivateRoute>} />
-            <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
+            <Route path="/profile" element={<ProfilePage />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/prompt" element={<PromptPage />} />
+            <Route path="/story" element={<StoryView />} />
             <Route path="/story-map" element={<PrivateRoute><StoryMapComponent /></PrivateRoute>} />
             <Route path="/story-map/:storyId" element={<PrivateRoute><StoryMap /></PrivateRoute>} />
             <Route path="/deck" element={<DeckManager />} />

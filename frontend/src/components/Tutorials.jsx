@@ -1,9 +1,9 @@
 import React from 'react';
-import { 
-  Box, 
-  Typography, 
-  Button, 
-  IconButton, 
+import {
+  Box,
+  Typography,
+  Button,
+  IconButton,
   Paper,
   Card,
   CardContent,
@@ -15,7 +15,7 @@ import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import SettingsIcon from '@mui/icons-material/Settings';
 
 
-function FreewriterStory({handleSkipTutorial}) {
+function FreewriterStory({ handleSkipTutorial }) {
   return (
     <Box
       sx={{
@@ -36,12 +36,12 @@ function FreewriterStory({handleSkipTutorial}) {
           py: 4,
           position: 'absolute',
           top: 0,
-					textAlign: 'end'
+          textAlign: 'end'
         }}
       >
-        
+
         <Button
-				onClick={handleSkipTutorial}	
+          onClick={handleSkipTutorial}
           sx={{
             color: 'white',
             fontFamily: 'PixelSplitter, monospace',
@@ -52,7 +52,7 @@ function FreewriterStory({handleSkipTutorial}) {
       </Container>
 
       <Box
-			  bgcolor='white'
+        bgcolor='white'
         sx={{
           width: '80%',
           maxWidth: '800px',
@@ -61,11 +61,12 @@ function FreewriterStory({handleSkipTutorial}) {
           mt: 10,
         }}
       >
-      <Box
+        <Box
           sx={{
             width: '100%',
-            maxWidth: 800,
-            bgcolor: 'white',
+            backgroundImage: 'linear-gradient(#e5e5e5 2px, transparent 1px)',
+            backgroundSize: '100% 35px',
+            backgroundRepeat: 'repeat-y',
             borderRadius: 2,
             p: 3,
             mb: 2,
@@ -78,7 +79,7 @@ function FreewriterStory({handleSkipTutorial}) {
               sx={{
                 color: '#D8F651',
                 fontFamily: 'PixelSplitter, monospace',
-                fontSize: '1.5rem',
+                fontSize: '1.2rem',
               }}
             >
               FREEWRITER
@@ -107,6 +108,9 @@ function FreewriterStory({handleSkipTutorial}) {
                 bgcolor: 'black',
                 color: 'white',
                 cursor: 'pointer',
+                width: '50%',
+                mx: 'auto',
+                borderRadius: 3,
                 '&:hover': { opacity: 0.9 },
               }}
               onClick={() => setSelectedPrompt(0)}
@@ -126,6 +130,7 @@ function FreewriterStory({handleSkipTutorial}) {
                   sx={{
                     border: '1px solid black',
                     cursor: 'pointer',
+                    borderRadius: 3,
                     '&:hover': { bgcolor: 'rgba(0,0,0,0.05)' },
                     flex: 1,
                   }}
@@ -162,58 +167,65 @@ function FreewriterStory({handleSkipTutorial}) {
           </Box>
         </Box>
       </Box>
-      
-        {/* Category Cards */}
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            maxWidth: 800,
-            width: '100%',
-            zIndex: 1,
-            position: 'relative',
-            bottom: 50,
-            gap: 2,
-            bgcolor: 'black',
-          }}
-        >
-          {['CHARACTER', 'WORLD', 'CONFLICT'].map((category, index) => (
-            <Paper
-              key={category}
-              sx={{
-                width: 180,
-                height: 270,
-                bgcolor: index === 1 ? '#D8F651' : '#490BF4',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: index === 1 ? 'black' : 'white',
-                fontFamily: 'PixelSplitter, monospace',
-                fontSize: '1rem',
-                cursor: 'pointer',
-                '&:hover': { opacity: 0.9 },
-              }}
-            >
-              {category}
-            </Paper>
-          ))}
-        </Box>
+
+      {/* Category Cards */}
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          maxWidth: 800,
+          width: '100%',
+          zIndex: 2,
+          position: 'relative',
+          bottom: 30,
+          borderRadius: 4,
+          pt: 6,
+          gap: 6,
+          bgcolor: 'black',
+        }}
+      >
+        {['CHARACTER', 'WORLD', 'CONFLICT'].map((category, index) => (
+          <Paper
+            key={category}
+            sx={{
+              width: 150,
+              height: 200,
+              bgcolor: index === 1 ? '#D8F651' : '#490BF4',
+              display: 'flex',
+              alignItems: 'top',
+              pt: 2,
+              justifyContent: 'center',
+              color: index === 1 ? 'black' : 'white',
+              fontFamily: 'PixelSplitter, monospace',
+              fontSize: '1rem',
+              cursor: 'pointer',
+              borderRadius: 1,
+              border: '4px solid',
+              borderColor: `#000`,
+              boxShadow: `0 0 0 20px ${index === 1 ? '#D8F651' : '#490BF4'}`,
+              '&:hover': { opacity: 0.9 },
+            }}
+          >
+            {category}
+          </Paper>
+        ))}
+      </Box>
 
       <Box
         sx={{
           bgcolor: 'white',
           borderRadius: 2,
-          p: 3,
+          p: 4,
           mt: 4,
           width: '90%',
-          maxWidth: '1000px',
+          maxWidth: '1200px',
           boxShadow: 3,
           display: 'flex',
           alignItems: 'center',
           gap: 2,
-					zIndex: 111,
-					top: -30,
-					position:'relative'
+          zIndex: 111,
+          top: -210,
+          position: 'relative'
         }}
       >
         <Box
@@ -232,9 +244,9 @@ function FreewriterStory({handleSkipTutorial}) {
             color: 'black',
             fontFamily: 'PixelSplitter, monospace',
             fontSize: '14px',
-						textAlign: 'start',
-						width: '80%',
-						ml: 4
+            textAlign: 'start',
+            width: '80%',
+            ml: 4
           }}
         >
           LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT. NUNC MAXIMUS LACINIA EROS, AT PELLENTESQUE MI HENDRERIT EU.S PLATFORM
@@ -281,7 +293,7 @@ function FreewriterStory({handleSkipTutorial}) {
 //       </Button>
 
 //       {/* Main Container */}
-      
+
 
 //       {/* Bottom Section */}
 //       <Box
@@ -366,12 +378,12 @@ function FreewriterStory({handleSkipTutorial}) {
 //   );
 // }
 
-export default function ParentComponent({handleSkipTutorial,}) {
+export default function ParentComponent({ handleSkipTutorial, }) {
   const [showIntro, setShowIntro] = React.useState(true);
 
   if (showIntro) {
-    return <VigilIntro setShowIntro={setShowIntro} handleSkipTutorial={handleSkipTutorial}  />;
+    return <VigilIntro setShowIntro={setShowIntro} handleSkipTutorial={handleSkipTutorial} />;
   }
 
-  return <FreewriterStory handleSkipTutorial={handleSkipTutorial}  />;
+  return <FreewriterStory handleSkipTutorial={handleSkipTutorial} />;
 }

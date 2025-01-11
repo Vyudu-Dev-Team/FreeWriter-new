@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Typography, Grid, Card, CardContent, CardMedia, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Select, MenuItem } from '@mui/material';
 import axios from 'axios';
 import CardCreator from './CardCreator';
-import FreewriterCards from './CreateCard';
+import FreewriterCards from './UpdatedDeck';
 
 
 
@@ -116,7 +116,9 @@ function DeckManager() {
     //     </DialogActions>
     //   </Dialog>
     // </Container>
-    <FreewriterCards />
+   <FreewriterCards />
+
+   //<DeckPage />
   );
 }
 

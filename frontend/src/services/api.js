@@ -79,7 +79,7 @@ export const deckAPI = {
 };
 
 export const aiAPI = {
-  generatePrompt: (data) => api.post('/ai/generate-prompt', data),
+  generatePrompt: (data) => api.post('/ai/prompt', data),
   generateGuidance: (data) => api.post('/ai/generate-guidance', data),
   submitFeedback: (data) => api.post('/ai/submit-feedback', data),
   dashboardAnalysis: (data) => api.post('/ai/dashboard-analysis', data)
