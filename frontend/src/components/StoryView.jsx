@@ -42,6 +42,7 @@ const RetroButton = styled(Button)(({ theme, variant }) => ({
       backgroundColor: '#fff',
     	color: '#5f2ac7',
       boxShadow: '0 0 20px rgba(74, 30, 158, 0.5)',
+      margin: '0 1rem',
     },
   }),
   ...(variant === 'holy' && {
@@ -112,11 +113,10 @@ export default function StoryView() {
         {/* Story Details */}
         <StoryCard sx={{ flex: 1, }}>
           <CardContent sx={{ display: 'flex', flexDirection: 'column', height: '350px', gap: 2, backgroundColor: '#fff', }}>
-            <Box sx={{ display: 'flex', gap: 1 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '90%', mx: 'auto' }}>
               <Typography
                 variant="caption"
                 sx={{
-                  backgroundColor: '#f0f0f0',
                   padding: '4px 8px',
                   borderRadius: '4px',
                   fontSize: '0.7rem',
@@ -127,13 +127,12 @@ export default function StoryView() {
               <Typography
                 variant="caption"
                 sx={{
-                  backgroundColor: '#f0f0f0',
                   padding: '4px 8px',
                   borderRadius: '4px',
                   fontSize: '0.7rem',
                 }}
               >
-                ANOTHER KEYWORD
+                PURPOSE, BUSINESS
               </Typography>
             </Box>
 
