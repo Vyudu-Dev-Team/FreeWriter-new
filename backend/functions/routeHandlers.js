@@ -154,6 +154,8 @@ const handleAIRoutes = async (event) => {
       return submitFeedback(event);
     case "POST /dashboard-analysis":
       return dashboardAnalysis(event);
+    case "POST /interaction":
+      return conversationInteractions(event);
     default:
       return {
         statusCode: 404,
@@ -1409,6 +1411,35 @@ const generatePrompt = async (event) => {
           error.message || "An error occurred while generating the prompt",
       }),
     };
+  }
+};
+
+const conversationInteractions = async (event) => {
+  try {
+    const userResponse = await getCurrentUser(event);
+    console.log("User response:", userResponse);
+
+    if (userResponse.statusCode !== 200) {
+      return userResponse;
+    }
+
+    const { message } = JSON.parse(event.body);
+      const completion = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo",
+      messages: [{ role: "user", content: message }],
+    });
+
+    const aiResponse = completion.choices[0].message.content.trim();
+    console.log("AI response:", aiResponse);
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        response: aiResponse
+      }),
+    }
+  } catch (error) {
+    console.error("Error generating conversation interactions:", error);
   }
 };
 

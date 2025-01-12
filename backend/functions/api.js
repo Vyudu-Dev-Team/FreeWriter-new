@@ -318,6 +318,23 @@ app.post("/ai/generate-prompt", async (req, res) => {
   }
 });
 
+app.post("/ai/interaction", async (req, res) => {
+  try {
+    const response = await handleAIRoutes({
+      httpMethod: "POST",
+      path: "/interaction",
+      body: JSON.stringify(req.body),
+      headers: req.headers,
+      queryStringParameters: req.query,
+    });
+    
+    res.status(response.statusCode).json(response.body);
+  } catch (error) {
+    logger.error("Generate prompt error:", error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
 app.post("/ai/generate-guidance", async (req, res) => {
   try {
     const response = await handleAIRoutes({
