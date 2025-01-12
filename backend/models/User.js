@@ -1,7 +1,7 @@
-const mongoose = require( 'mongoose');
-const bcrypt = require( 'bcryptjs');
-const jwt = require( 'jsonwebtoken');
-const crypto = require( 'crypto');
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 
 const userSchema = new mongoose.Schema({
   username: {
@@ -24,10 +24,23 @@ const userSchema = new mongoose.Schema({
     minlength: [8, 'Password must be at least 8 characters long'],
     select: false,
   },
+  isEmailVerified: {
+    type: Boolean,
+    default: false,
+  },
   writingMode: {
     type: String,
-    enum: ['plotter', 'pantser', 'creative'],
-    default: 'plotter',
+    enum: ['beginner', 'plotter', 'pantser', 'creative'],
+    default: 'beginner',
+  },
+  // New field from second model
+  fcmToken: {
+    type: String,
+  },
+  // New field from second model
+  lastActive: {
+    type: Date,
+    default: Date.now,
   },
   progression: {
     genre: String,
@@ -36,14 +49,15 @@ const userSchema = new mongoose.Schema({
     targetAudience: String,
     storyCompletionPercentage: { type: Number, default: 0 },
   },
-  points: { type: Number, default: 0 },
-  badges: [String],
-
+  // Combined rewards and points structure
+  rewards: {
+    points: { type: Number, default: 0 },
+    badges: [{ type: String }],
+  },
   decks: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Deck'
   }],
- 
   preferences: {
     type: Object,
     default: {},
@@ -52,7 +66,21 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ['daily_writing', 'finish_novel', 'improve_skills', 'publish_book', 'other'],
   }],
-  
+  notificationHistory: [{
+    message: String,
+    type: String,
+    timestamp: Date,
+  }],
+  notificationPreferences: {
+    email: {
+      type: Boolean,
+      default: true,
+    },
+    push: {
+      type: Boolean,
+      default: true,
+    },
+  },
   emailVerificationToken: String,
   emailVerificationExpires: Date,
   passwordResetToken: String,
@@ -60,14 +88,10 @@ const userSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now,
-  },
-  isEmailVerified: {
-    type: Boolean,
-    default: false, // Default to false until verified
-  },
+  }
 }, 
 {
-  timestamps: true, // Automatically manage createdAt and updatedAt
+  timestamps: true,
   toJSON: { virtuals: true },
   toObject: { virtuals: true }
 });
@@ -86,7 +110,6 @@ userSchema.methods.correctPassword = async function (candidatePassword, userPass
   return await bcrypt.compare(candidatePassword, userPassword);
 };
 
-// Add the generateAuthToken method to create a JWT for the user
 userSchema.methods.generateAuthToken = function() {
   return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
@@ -95,31 +118,24 @@ userSchema.methods.generateAuthToken = function() {
 
 userSchema.methods.createEmailVerificationToken = function() {
   const verificationToken = crypto.randomBytes(32).toString('hex');
-
   this.emailVerificationToken = crypto
     .createHash('sha256')
     .update(verificationToken)
     .digest('hex');
-
   this.emailVerificationExpires = Date.now() + 24 * 60 * 60 * 1000; // 24 hours
-
   return verificationToken;
 };
 
 userSchema.methods.createPasswordResetToken = function() {
   const resetToken = crypto.randomBytes(32).toString('hex');
-
   this.passwordResetToken = crypto
     .createHash('sha256')
     .update(resetToken)
     .digest('hex');
-
   this.passwordResetExpires = Date.now() + 10 * 60 * 1000; // 10 minutes
-
   return resetToken;
 };
 
-
 const User = mongoose.model('User', userSchema);
 
-module.exports =   User;
+module.exports = User;

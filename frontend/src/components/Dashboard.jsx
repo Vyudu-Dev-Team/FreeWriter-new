@@ -31,13 +31,13 @@ import {
 import { Link as RouterLink } from "react-router-dom";
 import { useAppContext } from "../contexts/AppContext";
 import axios from "axios";
-import Tutorials from './Tutorials';
-import api from '../services/api';
-import { motion } from 'framer-motion';
+import Tutorials from "./Tutorials";
+import { motion } from "framer-motion";
+import { storyAPI, aiAPI } from "../services/api";
 
 function DashboardComponent() {
   const { state, dispatch } = useAppContext();
-  const { stories, loading, error } = state;
+  const { stories = [], loading, error } = state;
 
   const [aiResponse, setAiResponse] = useState("");
   const [newStoryTitle, setNewStoryTitle] = useState("");
@@ -64,7 +64,7 @@ function DashboardComponent() {
 
     try {
       dispatch({ type: "SET_LOADING", payload: true });
-      const { data } = await axios.post("/api/stories", {
+      const { data } = await storyAPI.createStory({
         title: newStoryTitle,
         writingMode,
       });
@@ -88,30 +88,23 @@ function DashboardComponent() {
 
     try {
       setIsAiLoading(true);
-      const response = await api.post("/ai/prompt", { input: userInput });
-      
-      // Garantindo que a resposta seja um objeto JavaScript válido
-      let responseData;
-      if (typeof response.data === 'string') {
-        responseData = JSON.parse(response.data);
-      } else {
-        responseData = response.data;
-      }
+      const response = await aiAPI.generatePrompt({ input: userInput });
 
-      if (responseData.success) {
-        setAiResponse(responseData.response);
-        setChatHistory(prev => [...prev,
+      if (response.data.success) {
+        setAiResponse(response.data.response);
+        setChatHistory((prev) => [
+          ...prev,
           { sender: "User", text: userInput, timestamp: new Date() },
-          { sender: "AI", text: responseData.response, timestamp: new Date() }
+          { sender: "AI", text: response.data.response, timestamp: new Date() },
         ]);
         setUserInput("");
         setInputError(null);
       } else {
-        throw new Error("Response was not successful");
+        throw new Error(response.data.message || "Response was not successful");
       }
     } catch (err) {
       console.error("AI interaction error:", err);
-      setInputError("Failed to get AI response");
+      setInputError("Failed to get AI response. Please try again.");
     } finally {
       setIsAiLoading(false);
     }
@@ -121,40 +114,52 @@ function DashboardComponent() {
     setAnalysisLoading(true);
     setAnalysisError(null);
     try {
-      // Prepare user data for analysis
       const userData = {
         recentActivity: {
           storiesWritten: 10,
           totalWords: 5000,
-          averageWordsPerDay: 500
+          averageWordsPerDay: 500,
         },
         writingPatterns: {
-          preferredGenres: ['fantasy', 'sci-fi'],
-          averageSessionDuration: '45 minutes'
+          preferredGenres: ["fantasy", "sci-fi"],
+          averageSessionDuration: "45 minutes",
         },
         goals: {
           dailyWordCount: 1000,
-          weeklyStories: 2
-        }
+          weeklyStories: 2,
+        },
       };
 
-      const response = await api.post('/ai/dashboard-analysis', {
-        userData
-      });
+      const response = await aiAPI.dashboardAnalysis({ userData });
 
       if (response.data.success) {
         setAiAnalysis(response.data.analysis);
+      } else {
+        throw new Error(response.data.message || "Failed to load AI analysis");
       }
     } catch (error) {
-      setAnalysisError('Failed to load AI analysis');
+      setAnalysisError("Failed to load AI analysis");
     } finally {
       setAnalysisLoading(false);
     }
   };
 
   useEffect(() => {
+    const fetchStories = async () => {
+      try {
+        dispatch({ type: "SET_LOADING", payload: true });
+        const response = await storyAPI.getStories();
+        dispatch({ type: "SET_STORIES", payload: response.data });
+      } catch (error) {
+        dispatch({ type: "SET_ERROR", payload: "Failed to fetch stories" });
+      } finally {
+        dispatch({ type: "SET_LOADING", payload: false });
+      }
+    };
+
+    fetchStories();
     fetchAIAnalysis();
-  }, []); // Empty dependency array means this runs once on mount
+  }, [dispatch]);
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4, px: isMobile ? 2 : 3 }}>
@@ -176,7 +181,7 @@ function DashboardComponent() {
           sx={{
             mb: 2,
             backgroundColor: theme.palette.primary.main,
-            '&:hover': {
+            "&:hover": {
               backgroundColor: theme.palette.primary.dark,
               boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
             },
@@ -192,56 +197,57 @@ function DashboardComponent() {
         <Container sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
           <CircularProgress />
         </Container>
-      ) : stories.length === 0 ? (
+      ) : Array.isArray(stories) && stories.length === 0 ? (
         <Typography variant="body1" sx={{ mt: 2 }}>
           No stories yet. Create your first story to get started!
         </Typography>
       ) : (
         <Grid container spacing={3}>
-          {stories.map((story) => (
-            <Grid item xs={12} sm={6} md={4} key={story._id}>
-              <Card
-                sx={{
-                  height: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  transition: "transform 0.3s ease",
-                  "&:hover": { transform: "scale(1.02)" },
-                }}
-              >
-                <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography variant="h6" gutterBottom>
-                    {story.title}
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary">
-                    {story.createdAt
-                      ? new Date(story.createdAt).toLocaleDateString()
-                      : "Date unavailable"}
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Tooltip title="Continue writing your story">
-                    <Button
-                      size="small"
-                      component={RouterLink}
-                      to={`/write/${story._id}`}
-                    >
-                      Write
-                    </Button>
-                  </Tooltip>
-                  <Tooltip title="View and edit your story's structure">
-                    <Button
-                      size="small"
-                      component={RouterLink}
-                      to={`/story-map/${story._id}`}
-                    >
-                      Story Map
-                    </Button>
-                  </Tooltip>
-                </CardActions>
-              </Card>
-            </Grid>
-          ))}
+          {Array.isArray(stories) &&
+            stories.map((story) => (
+              <Grid item xs={12} sm={6} md={4} key={story._id}>
+                <Card
+                  sx={{
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    transition: "transform 0.3s ease",
+                    "&:hover": { transform: "scale(1.02)" },
+                  }}
+                >
+                  <CardContent sx={{ flexGrow: 1 }}>
+                    <Typography variant="h6" gutterBottom>
+                      {story.title}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary">
+                      {story.createdAt
+                        ? new Date(story.createdAt).toLocaleDateString()
+                        : "Date unavailable"}
+                    </Typography>
+                  </CardContent>
+                  <CardActions>
+                    <Tooltip title="Continue writing your story">
+                      <Button
+                        size="small"
+                        component={RouterLink}
+                        to={`/write/${story._id}`}
+                      >
+                        Write
+                      </Button>
+                    </Tooltip>
+                    <Tooltip title="View and edit your story's structure">
+                      <Button
+                        size="small"
+                        component={RouterLink}
+                        to={`/story-map/${story._id}`}
+                      >
+                        Story Map
+                      </Button>
+                    </Tooltip>
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))}
         </Grid>
       )}
 
@@ -371,24 +377,22 @@ function DashboardComponent() {
   );
 }
 
-export default function Dashboard(){
-  const [tutorialCompleted, setTutorialCompleted] = useState('true');
-  
+export default function Dashboard() {
+  const [tutorialCompleted, setTutorialCompleted] = useState("true");
 
   useEffect(() => {
-    const completed = localStorage.getItem('tutorialsCompleted');
-    setTutorialCompleted(completed === 'true');
+    const completed = localStorage.getItem("tutorialsCompleted");
+    setTutorialCompleted(completed === "true");
   }, []);
 
   const handleSkipTutorial = () => {
-    localStorage.setItem('tutorialsCompleted', 'true');
+    localStorage.setItem("tutorialsCompleted", "true");
     setTutorialCompleted(true);
   };
-  return(
-    tutorialCompleted ? ( 
-      <DashboardComponent />
-    ) : ( 
-      <Tutorials handleSkipTutorial={handleSkipTutorial} />
-    )
-  )
+
+  return tutorialCompleted ? (
+    <DashboardComponent />
+  ) : (
+    <Tutorials handleSkipTutorial={handleSkipTutorial} />
+  );
 }

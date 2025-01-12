@@ -10,47 +10,81 @@ const EmailVerification = () => {
   const [verificationStatus, setVerificationStatus] = useState({
     loading: true,
     success: false,
-    message: 'Verifying your email...'
+    message: 'Verifying your email...',
   });
+
+  // Decode token function
+  const decodeToken = (encodedToken) => {
+    if (!encodedToken) {
+      throw new Error('No token provided');
+    }
+  
+    try {
+      // Reverse base64URL encoding
+      let base64 = encodedToken
+        .replace(/-/g, '+')  // Convert '-' back to '+'
+        .replace(/_/g, '/'); // Convert '_' back to '/'
+  
+      // Add padding if needed
+      while (base64.length % 4) {
+        base64 += '=';
+      }
+  
+      // Decode the base64 string using atob
+      const decodedToken = atob(base64);
+  
+      return decodedToken;
+    } catch (error) {
+      throw new Error(`Failed to decode token: ${error.message}`);
+    }
+  };
 
   useEffect(() => {
     const verifyEmail = async () => {
       try {
-        dispatch({ type: 'SET_LOADING', payload: true });
+        const decodedToken = decodeToken(token);
+        console.log('Decoded token:', decodedToken);
 
-        const response = await userAPI.verifyEmail(token);
+        if (!decodedToken) {
+          throw new Error('Invalid verification token');
+        }
+
+        dispatch({ type: 'SET_LOADING', payload: true });
+        const response = await userAPI.verifyEmail(decodedToken);
 
         setVerificationStatus({
           loading: false,
           success: true,
-          message: response.data.message || 'Email verified successfully!'
+          message: response.data.message,
         });
 
-        // Redirect to login with success message
+        if (response.data.Token) {
+          localStorage.setItem('Token', response.data.Token);
+          setAuthToken(response.data.Token);
+        }
+
         setTimeout(() => {
-          navigate('/login', { 
-            state: { 
+          navigate('/login', {
+            state: {
               message: 'Email verified successfully! You can now log in.',
-              type: 'success'
-            } 
+              type: 'success',
+            },
           });
         }, 2000);
-
       } catch (error) {
         console.error('Email verification error:', error);
         setVerificationStatus({
           loading: false,
           success: false,
-          message: error.response?.data?.message || 'Email verification failed'
+          message: error.response?.data?.message || 'Email verification failed',
         });
 
-        // Redirect to login with error message
         setTimeout(() => {
-          navigate('/login', { 
-            state: { 
+          navigate('/login', {
+            state: {
               message: error.response?.data?.message || 'Email verification failed',
-              type: 'error'
-            } 
+              type: 'error',
+            },
           });
         }, 2000);
       } finally {
