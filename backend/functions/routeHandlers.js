@@ -54,8 +54,34 @@ const bcrypt = require("bcryptjs");
 const { v4: uuidv4 } = require("uuid");
 const { ObjectId } = require("mongodb");
 const OpenAI = require("openai");
-const openai = new OpenAI(process.env.OPENAI_API_KEY);
-const admin = require('firebase-admin');
+
+// Debug logs for OpenAI API Key
+console.log('Environment:', process.env.NODE_ENV);
+console.log('OpenAI API Key exists:', !!process.env.OPENAI_API_KEY);
+console.log('OpenAI API Key length:', process.env.OPENAI_API_KEY?.length);
+console.log('Env variables loaded:', Object.keys(process.env));
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
+// Test OpenAI connection
+const testOpenAIConnection = async () => {
+  try {
+    const response = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo",
+      messages: [{ role: "user", content: "Test connection" }],
+      max_tokens: 5
+    });
+    console.log('OpenAI connection successful:', response.choices[0].message);
+    return true;
+  } catch (error) {
+    console.error('OpenAI connection error:', error.message);
+    return false;
+  }
+};
+
+testOpenAIConnection();
 
 const initializeFirebase = () => {
   try {

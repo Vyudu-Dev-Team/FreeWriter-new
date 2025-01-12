@@ -40,6 +40,8 @@ import VirgilIntro from './components/A1_initialScreens/VigilIntro';
 import Introduction from './components/A1_initialScreens/Introduction';
 import UserPage from './components/UserPage';
 
+import MyStoryWorkspace from './components/writing-environment/MyStoryWorkspace';
+
 function App() {
   return (
     <AppProvider>
@@ -76,12 +78,15 @@ function App() {
             <Route path="/deck" element={<DeckManager />} />
 
             {/* Writing Environment */}
-            <Route path="/write/:storyId" element={<WritingWorkspace />} />
+            <Route path="/write/" element={<WritingWorkspace />} />
             <Route path="/text-editor" element={<TextEditor />} />
             <Route path="/writing-analytics" element={<WritingAnalytics />} />
             <Route path="/writing-prompts" element={<WritingPrompts />} />
             <Route path="/sketch" element={<SketchGenerator />} />
             <Route path="/ai-assistant" element={<AIAssistant />} />
+
+            {/* My Story Workspace */}
+            <Route path="/my-story" element={<MyStoryWorkspace />} />
 
             {/* Other Features */}
             <Route path="/badges" element={<BadgeDisplay />} />

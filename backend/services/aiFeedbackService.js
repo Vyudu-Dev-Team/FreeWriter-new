@@ -1,6 +1,6 @@
 // services/aiFeedbackService.js
 const Feedback = require( '../models/Feedback.js');
-const { updateAIModel } = require( '../services/aiService.js');
+const { updateAIModel } = require( '../Services/aiService.js');
 
 const analyzeFeedback = async () => {
   const feedbacks = await Feedback.find().populate('user', 'writingStyle').populate('prompt', 'genre');

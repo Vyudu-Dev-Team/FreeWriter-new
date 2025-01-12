@@ -7,15 +7,16 @@
     "backend"
   ],
   "scripts": {
-    "build": "npm run build:frontend",
+    "build": "npm run build:frontend && npm run build:backend",
     "build:frontend": "cd frontend && npm install && npm run build",
     "build:backend": "cd backend && npm install",
     "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
-    "start:frontend": "npm run dev --workspace=frontend",
-    "start:backend": "dotenv -e ./backend/.env netlify dev",
+    "start:frontend": "cd frontend && npm run dev",
+    "start:backend": "netlify dev",
+    "dev": "netlify dev",
     "test": "npm run test:frontend && npm run test:backend",
-    "test:frontend": "npm run test --workspace=frontend",
-    "test:backend": "npm run test --workspace=backend",
+    "test:frontend": "cd frontend && npm test",
+    "test:backend": "cd backend && npm test",
     "deploy": "netlify deploy --prod"
   },
   "devDependencies": {

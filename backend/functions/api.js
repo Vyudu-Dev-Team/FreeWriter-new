@@ -19,19 +19,25 @@ const connectDB = require("../config/database.js");
 const logger = require("../utils/logger.js");
 const { getCurrentUser } = require("./currentUser.js");
 
+// Debug environment variables loading
+console.log('Loading environment variables from:', path.resolve(__dirname, '../../.env'));
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
+console.log('Environment variables loaded:', {
+  nodeEnv: process.env.NODE_ENV,
+  hasOpenAIKey: !!process.env.OPENAI_API_KEY,
+  openAIKeyLength: process.env.OPENAI_API_KEY?.length,
+  envKeys: Object.keys(process.env)
+});
 
 const app = express();
 
-// CORS Configuration
+// CORS Configuration - Allow all origins
 const corsOptions = {
-  origin: process.env.NODE_ENV === 'production' 
-    ? process.env.PRODUCTION_CLIENT_URL 
-    : '*',
+  origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
-  maxAge: 600 // Cache preflight request for 10 minutes
+  maxAge: 600
 };
 
 app.use(cors(corsOptions));
@@ -84,6 +90,15 @@ app.post("/users/register", async (req, res) => {
 
 app.post("/users/login", async (req, res) => {
   try {
+    logger.info("Hit login route");
+
+    console.log('Loaded environment variables:', {
+      nodeEnv: process.env.NODE_ENV,
+      hasOpenAIKey: !!process.env.OPENAI_API_KEY,
+      openAIKeyLength: process.env.OPENAI_API_KEY?.length,
+      envKeys: Object.keys(process.env)
+    });
+    
     const response = await handleUserRoutes({
       httpMethod: "POST",
       path: "/login",
