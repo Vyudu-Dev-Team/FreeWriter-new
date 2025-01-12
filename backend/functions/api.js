@@ -19,25 +19,25 @@ const connectDB = require("../config/database.js");
 const logger = require("../utils/logger.js");
 const { getCurrentUser } = require("./currentUser.js");
 
-
-
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
-
 
 const app = express();
 
-// Configuração única do CORS
-app.use(cors({
-  origin: true, // Permite todas as origens em desenvolvimento
+// CORS Configuration
+const corsOptions = {
+  origin: process.env.NODE_ENV === 'production' 
+    ? process.env.PRODUCTION_CLIENT_URL 
+    : '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
-}));
+  credentials: true,
+  maxAge: 600 // Cache preflight request for 10 minutes
+};
 
-// Middleware para processar OPTIONS
-app.options('*', (req, res) => {
-  res.status(200).end();
-});
+app.use(cors(corsOptions));
+
+// Pre-flight requests
+app.options('*', cors(corsOptions));
 
 app.use(express.json());
 
