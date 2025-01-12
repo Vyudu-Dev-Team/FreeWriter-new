@@ -12,6 +12,7 @@ import Onboarding from './components/Onboarding';
 import Register from './components/commonComponents/Register';
 import EmailVerification from './components/EmailVerification';
 import FCMTest from './components/FCMTest';
+import DevNavigation from './components/DevNavigation';
 
 import Home from './components/Home';
 
@@ -22,18 +23,20 @@ import StoryMap from './components/story-mapping/StoryMap';
 import DeckManager from './components/DeckManager';
 import PromptPage from './components/PromptPage';
 
+// Writing Environment Components
 import WritingWorkspace from './components/writing-environment/WritingWorkspace';
+import TextEditor from './components/writing-environment/TextEditor';
+import WritingAnalytics from './components/writing-environment/WritingAnalytics';
+import WritingPrompts from './components/writing-environment/WritingPrompts';
 import SketchGenerator from './components/writing-environment/SketchGenerator';
-
-import PrivateRoute from './components/PrivateRoute';
-// import NotificationCenter from './components/NotificationCenter';
+import AIAssistant from './components/writing-environment/AIAssistant';
 
 import FeedbackForm from './components/FeedbackForm';
 
 import { AppProvider } from './contexts/AppContext';
 import ProfilePage from './components/profileSetup';
 
-import VirgilIntro from './components/VigilIntro';
+import VirgilIntro from './components/A1_initialScreens/VigilIntro';
 import Introduction from './components/A1_initialScreens/Introduction';
 import UserPage from './components/UserPage';
 
@@ -45,42 +48,52 @@ function App() {
         <Router>
           {/* <Navbar /> */}
           <Routes>
+            {/* Dev Navigation */}
+            <Route path="/dev" element={<DevNavigation />} />
 
             {/* INTRODUCTION */}
-              <Route path="/" element={<Introduction />} />
-              <Route path="/introduction" element={<Introduction />} />
-              <Route path="/virgil-intro" element={<VirgilIntro />} />
-
-            {/* END INTRODUCTION */}
-
-            
-            {/* <Route path="/home" element={<Home />} /> */}
+            <Route path="/" element={<Introduction />} />
+            <Route path="/introduction" element={<Introduction />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/virgil-intro" element={<VirgilIntro />} />
+
+            {/* Authentication */}
+            <Route path="/home" element={<Home />} />
             <Route path="/verify-email/:token" element={<EmailVerification />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
 
-            <Route path="/onboarding" element={<PrivateRoute><Onboarding /></PrivateRoute>} />
-            <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
+            {/* User Setup */}
+            <Route path="/onboarding" element={<Onboarding />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/userpage" element={<UserPage />} />
+
+            {/* Main Features */}
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/prompt" element={<PromptPage />} />
-            <Route path="/story-map" element={<PrivateRoute><StoryMapComponent /></PrivateRoute>} />
-            <Route path="/story-map/:storyId" element={<PrivateRoute><StoryMap /></PrivateRoute>} />
+            <Route path="/story-map" element={<StoryMapComponent />} />
+            <Route path="/story-map/:storyId" element={<StoryMap />} />
             <Route path="/deck" element={<DeckManager />} />
-            <Route path="/write/:storyId" element={<PrivateRoute><WritingWorkspace /></PrivateRoute>} />
-            {/* <Route path="/notifications" element={<PrivateRoute><NotificationCenter /></PrivateRoute>} /> */}
-            <Route path="/badges" element={<PrivateRoute><BadgeDisplay /></PrivateRoute>} />
-            <Route path="/sketch" element={<PrivateRoute><SketchGenerator /></PrivateRoute>} />
-            <Route path="/feedback" element={<PrivateRoute><FeedbackForm /></PrivateRoute>} />
-            <Route path="/fcm-test" element={<FCMTest />} />
-            <Route path="/userpage" element={<UserPage />} />
+
+            {/* Writing Environment */}
+            <Route path="/write/:storyId" element={<WritingWorkspace />} />
+            <Route path="/text-editor" element={<TextEditor />} />
+            <Route path="/writing-analytics" element={<WritingAnalytics />} />
+            <Route path="/writing-prompts" element={<WritingPrompts />} />
+            <Route path="/sketch" element={<SketchGenerator />} />
+            <Route path="/ai-assistant" element={<AIAssistant />} />
+
+            {/* Other Features */}
+            <Route path="/badges" element={<BadgeDisplay />} />
             
+            {/* Utilities */}
+            <Route path="/feedback" element={<FeedbackForm />} />
+            <Route path="/fcm-test" element={<FCMTest />} />
           </Routes>
         </Router>
       </ThemeProvider>
     </AppProvider>
   );
 }
-console.log(111111111111111111111111111111111111);
 
 export default App;
