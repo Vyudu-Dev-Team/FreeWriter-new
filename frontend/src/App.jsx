@@ -32,7 +32,10 @@ import FeedbackForm from './components/FeedbackForm';
 
 import { AppProvider } from './contexts/AppContext';
 import ProfilePage from './components/profileSetup';
-import TitleScreen from './components/SplashScreen';
+
+import VirgilIntro from './components/VigilIntro';
+import Introduction from './components/A1_initialScreens/Introduction';
+import UserPage from './components/UserPage';
 
 function App() {
   return (
@@ -40,10 +43,18 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Router>
-          <Navbar />
+          {/* <Navbar /> */}
           <Routes>
-            <Route path="/" element={<TitleScreen />} />
-            <Route path="/home" element={<Home />} />
+
+            {/* INTRODUCTION */}
+              <Route path="/" element={<Introduction />} />
+              <Route path="/introduction" element={<Introduction />} />
+              <Route path="/virgil-intro" element={<VirgilIntro />} />
+
+            {/* END INTRODUCTION */}
+
+            
+            {/* <Route path="/home" element={<Home />} /> */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/verify-email/:token" element={<EmailVerification />} />
@@ -62,6 +73,8 @@ function App() {
             <Route path="/sketch" element={<PrivateRoute><SketchGenerator /></PrivateRoute>} />
             <Route path="/feedback" element={<PrivateRoute><FeedbackForm /></PrivateRoute>} />
             <Route path="/fcm-test" element={<FCMTest />} />
+            <Route path="/userpage" element={<UserPage />} />
+            
           </Routes>
         </Router>
       </ThemeProvider>
