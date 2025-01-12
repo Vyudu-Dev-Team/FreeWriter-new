@@ -33,10 +33,10 @@ const app = express();
 
 // CORS Configuration - Allow all origins
 const corsOptions = {
-  origin: '*',
+  origin: 'http://localhost:5173/',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
+  credentials: false,
   maxAge: 600
 };
 
