@@ -8,7 +8,7 @@ const {
   awardPoints, 
   checkAndAwardBadge,
   getUserRewards
-} = require('../Services/notificationService.js');
+} = require('../services/notificationService.js');
 const { errorHandler } = require('../utils/errorHandler.js');
 const logger = require('../utils/logger.js');
 

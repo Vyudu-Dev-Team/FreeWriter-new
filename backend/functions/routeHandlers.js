@@ -19,7 +19,7 @@ const {
   updatePreferences,
   getPreferences,
   resetPreferences,
-} = require("../Services/preferencesService.js");
+} = require("../services/preferencesService.js");
 const {
   validateCardType,
   validateCustomization,
@@ -36,8 +36,8 @@ const logger = require("../utils/logger.js");
 const {
   generateAIFeedback,
   generateStoryPrompt,
-} = require("../Services/aiService.js");
-const { adjustAIParameters } = require("../Services/aiFeedbackService.js");
+} = require("../services/aiService.js");
+const { adjustAIParameters } = require("../services/aiFeedbackService.js");
 const { 
   subscribeToNotifications,
   sendEmailNotification,
@@ -47,7 +47,7 @@ const {
   checkAndAwardBadge,
   getUserRewards,
 
-} = require("../Services/notificationService.js");
+} = require("../services/notificationService.js");
   
 const crypto = require("crypto");
 const bcrypt = require("bcryptjs");

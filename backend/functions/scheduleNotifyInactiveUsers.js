@@ -1,4 +1,4 @@
-const { notifyInactiveUsers } = require('../Services/notificationService.js');
+const { notifyInactiveUsers } = require('../services/notificationService.js');
 const connectDB = require('../config/database.js');
 const logger = require('../utils/logger.js');
 
