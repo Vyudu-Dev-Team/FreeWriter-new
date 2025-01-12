@@ -177,7 +177,7 @@ function LoginComponent() {
     <ThemeProvider theme={theme}>
       <StyledContainer>
         <Link
-          href="#"
+          href="/introduction"
           color="inherit"
           sx={{
             position: "absolute",

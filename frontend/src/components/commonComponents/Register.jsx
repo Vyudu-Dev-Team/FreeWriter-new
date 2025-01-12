@@ -13,11 +13,11 @@ import {
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { useNavigate } from "react-router-dom";
-import { useAppContext } from "../contexts/AppContext";
+import { useAppContext } from "../../contexts/AppContext";
 import { ArrowBack } from "@mui/icons-material";
 import styled from "@mui/styled-engine";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { getFCMToken } from '../firebase/firebase';
+import { getFCMToken } from '../../firebase/firebase';
 
 const StyledContainer = styled(Container)({
   minHeight: "100vh",
@@ -230,7 +230,7 @@ function RegisterComponent() {
     <ThemeProvider theme={theme}>
       <StyledContainer>
         <Link
-          href="#"
+          href="/login"
           color="inherit"
           sx={{
             position: "absolute",
@@ -243,7 +243,7 @@ function RegisterComponent() {
           }}
           onClick={(e) => {
             e.preventDefault();
-            navigate("/");
+            navigate("/login");
           }}
         >
           <ArrowBack sx={{ mr: 1 }} />

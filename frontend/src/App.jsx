@@ -9,7 +9,7 @@ import Navbar from './components/commonComponents/Navbar';
 import Login from './components/commonComponents/Login';
 import ForgotPassword from './components/ForgotPassword';
 import Onboarding from './components/Onboarding';
-import Register from './components/Register';
+import Register from './components/commonComponents/Register';
 import EmailVerification from './components/EmailVerification';
 import FCMTest from './components/FCMTest';
 
