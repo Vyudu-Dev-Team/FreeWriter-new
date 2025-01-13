@@ -13,30 +13,37 @@ const {
   handleOutlineRoutes,
   handleWritingEnvironmentRoutes,
   handleStoryRoutes,
+  handleNotificationRoutes,
 } = require("./routeHandlers.js");
 const connectDB = require("../config/database.js");
 const logger = require("../utils/logger.js");
 const { getCurrentUser } = require("./currentUser.js");
 
-
-
+// Debug environment variables loading
+console.log('Loading environment variables from:', path.resolve(__dirname, '../../.env'));
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
-
+console.log('Environment variables loaded:', {
+  nodeEnv: process.env.NODE_ENV,
+  hasOpenAIKey: !!process.env.OPENAI_API_KEY,
+  openAIKeyLength: process.env.OPENAI_API_KEY?.length,
+  envKeys: Object.keys(process.env)
+});
 
 const app = express();
 
-// Configuração única do CORS
-app.use(cors({
-  origin: true, // Permite todas as origens em desenvolvimento
+// CORS Configuration - Allow all origins
+const corsOptions = {
+  origin: 'http://localhost:5173',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
-}));
+  credentials: false,
+  maxAge: 600
+};
 
-// Middleware para processar OPTIONS
-app.options('*', (req, res) => {
-  res.status(200).end();
-});
+app.use(cors(corsOptions));
+
+// Pre-flight requests
+app.options('*', cors(corsOptions));
 
 app.use(express.json());
 
@@ -83,6 +90,15 @@ app.post("/users/register", async (req, res) => {
 
 app.post("/users/login", async (req, res) => {
   try {
+    logger.info("Hit login route");
+
+    console.log('Loaded environment variables:', {
+      nodeEnv: process.env.NODE_ENV,
+      hasOpenAIKey: !!process.env.OPENAI_API_KEY,
+      openAIKeyLength: process.env.OPENAI_API_KEY?.length,
+      envKeys: Object.keys(process.env)
+    });
+    
     const response = await handleUserRoutes({
       httpMethod: "POST",
       path: "/login",
@@ -107,22 +123,20 @@ app.post("/users/login", async (req, res) => {
 // Current user route
 app.get("/users/current-user", getCurrentUser);
 
-app.all("/users/verify-email", async (req, res) => {
+app.post("/users/verify-email", async (req, res) => {
   try {
-    let token;
-    if (req.method === "GET") {
-      token = req.query.token;
-    } else {
-      token = req.body.token;
+    const { token } = req.body;
+    if (!token) {
+      return res.status(400).json({ message: "Verification token is required" });
     }
-
+    
     const response = await handleUserRoutes({
-      httpMethod: req.method,
+      httpMethod: 'POST',
       path: "/verify-email",
       body: JSON.stringify({ token }),
       headers: req.headers,
-      queryStringParameters: req.query,
     });
+    
     res.status(response.statusCode).json(JSON.parse(response.body));
   } catch (error) {
     logger.error("Verification error:", error);
@@ -292,6 +306,23 @@ app.post("/ai/generate-prompt", async (req, res) => {
     const response = await handleAIRoutes({
       httpMethod: "POST",
       path: "/generate-prompt",
+      body: JSON.stringify(req.body),
+      headers: req.headers,
+      queryStringParameters: req.query,
+    });
+    
+    res.status(response.statusCode).json(response.body);
+  } catch (error) {
+    logger.error("Generate prompt error:", error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.post("/ai/interaction", async (req, res) => {
+  try {
+    const response = await handleAIRoutes({
+      httpMethod: "POST",
+      path: "/interaction",
       body: JSON.stringify(req.body),
       headers: req.headers,
       queryStringParameters: req.query,
@@ -578,6 +609,22 @@ app.use("/writing-environment/sessions/:id", async (req, res) => {
     res.status(response.statusCode).json(JSON.parse(response.body));
   } catch (error) {
     logger.error("Writing environment session route error:", error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.use("/notifications", async (req, res) => {
+  try {
+    const response = await handleNotificationRoutes({
+      httpMethod: req.method,
+      path: req.path.replace(/^\/notifications/, ""),
+      body: req.body, 
+      headers: req.headers,
+      queryStringParameters: req.query,
+    });
+    res.status(response.statusCode).json(JSON.parse(response.body));
+  } catch (error) {
+    logger.error("Notification route error:", error);
     res.status(500).json({ message: error.message });
   }
 });

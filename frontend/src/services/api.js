@@ -39,8 +39,11 @@ api.interceptors.response.use(
 export const setAuthToken = (token) => {
   if (token) {
     api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    // Verify token is actually set
+    console.log("Token set:", api.defaults.headers.common["Authorization"]);
   } else {
     delete api.defaults.headers.common["Authorization"];
+    console.log("Token removed");
   }
 };
 
@@ -48,9 +51,15 @@ export const userAPI = {
   getCurrentUser: () => api.get("/users/current-user"),
   updateProfile: (profileData) => api.put("/users/profile", profileData),
   login: (email, password) => api.post("/users/login", { email, password }),
-  register: (username, email, password, writingMode) =>
-    api.post("/users/register", { username, email, password, writingMode }),
-  verifyEmail: (token) => api.post("/users/verify-email", { token }),
+  register: (username, email, password, writingMode, deviceToken) =>
+    api.post("/users/register", { 
+      username, 
+      email, 
+      password, 
+      writingMode,
+      deviceToken 
+    }),
+    verifyEmail: (token) => api.post('/users/verify-email', { token }),
   forgotPassword: (email) => api.post("/users/forgot-password", { email }),
   resetPassword: (token, newPassword) =>
     api.post("/users/reset-password", { token, newPassword }),
@@ -66,14 +75,16 @@ export const userAPI = {
 };
 
 export const storyAPI = {
-  // Add methods for story-related API calls
-  // Example:
-  // createStory: (storyData) => api.post('/stories', storyData),
-  // getStories: () => api.get('/stories'),
-  // updateStory: (storyId, storyData) => api.put(`/stories/${storyId}`, storyData),
-  // deleteStory: (storyId) => api.delete(`/stories/${storyId}`),
+  createStory: (data) => api.post('/stories', data),
+  updateStory: (id, data) => api.put(`/stories/${id}`, data),
+  deleteStory: (id) => api.delete(`/stories/${id}`),
+  getStories: () => api.get('/stories'),
 };
+
 export const deckAPI = {
+  getDecks: () => api.get("/decks"),
+  createDeck: (deckData) => api.post("/decks", deckData),
+  createCard: (deckId, cardData) => api.post(`/decks/${deckId}/cards`, cardData),
   saveCardContent: (data) => api.put(`/card/${data.title}`, data),
   getCardContent: (data) => api.get(`/card/${data.title}`, data),
 };
@@ -93,6 +104,12 @@ export const apiTest = async () => {
     console.error("API Test Failed:", error);
     alert("API Connection Failed");
   }
+};
+
+export const fcmAPI = {
+  testNotification: () => api.post("/notifications/test"),
+  getPermission: () => api.get("/notifications/permission"),
+  saveToken: (token) => api.post("/notifications/token", { token }),
 };
 
 export default api;

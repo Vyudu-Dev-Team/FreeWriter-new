@@ -1,8 +1,45 @@
 const OpenAI = require( "openai");
 const AppError = require( "../utils/appError.js");
+const logger = require("../utils/logger.js");
+require('dotenv').config();
+
+// Debug OpenAI key loading
+logger.info('Initializing OpenAI service with key:', {
+  exists: !!process.env.OPENAI_API_KEY,
+  length: process.env.OPENAI_API_KEY?.length,
+  keyStart: process.env.OPENAI_API_KEY?.substring(0, 5) + '...'
+});
+
+if (!process.env.OPENAI_API_KEY) {
+  logger.error('OpenAI API key is missing!');
+  throw new Error('OpenAI API key is required');
+}
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
+});
+
+// Test OpenAI service
+const testService = async () => {
+  try {
+    const completion = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo",
+      messages: [{ role: "user", content: "Test service" }],
+      max_tokens: 5
+    });
+    logger.info('AI Service test successful:', completion.choices[0].message);
+    return true;
+  } catch (error) {
+    logger.error('AI Service test failed:', error.message);
+    return false;
+  }
+};
+
+// Execute test on initialization
+testService().then(success => {
+  if (!success) {
+    logger.error('OpenAI service failed to initialize properly');
+  }
 });
 
 /**

@@ -9,7 +9,7 @@ import {
   CardContent,
   Container
 } from '@mui/material';
-import VigilIntro from './VigilIntro';
+import VigilIntro from './A1_initialScreens/VigilIntro';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import SettingsIcon from '@mui/icons-material/Settings';

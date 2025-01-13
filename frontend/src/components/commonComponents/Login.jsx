@@ -177,7 +177,7 @@ function LoginComponent() {
     <ThemeProvider theme={theme}>
       <StyledContainer>
         <Link
-          href="#"
+          href="/introduction"
           color="inherit"
           sx={{
             position: "absolute",
@@ -382,7 +382,7 @@ function LoginComponent() {
                   color: "rgba(73, 11, 244, 0.9)",
                 },
               }}
-              onClick={() => navigate("/write")}
+              onClick={() => navigate("/my-story")}
             >
               Write a Story Without an Account
             </Typography>
