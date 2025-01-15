@@ -54,6 +54,7 @@ const bcrypt = require("bcryptjs");
 const { v4: uuidv4 } = require("uuid");
 const { ObjectId } = require("mongodb");
 const OpenAI = require("openai");
+const Conversation = require("../models/Conversation.js");
 
 // Debug logs for OpenAI API Key
 console.log('Environment:', process.env.NODE_ENV);
@@ -1423,23 +1424,84 @@ const conversationInteractions = async (event) => {
       return userResponse;
     }
 
+    const userId = JSON.parse(userResponse.body).user.id;
     const { message } = JSON.parse(event.body);
-      const completion = await openai.chat.completions.create({
+
+    const conversation = await updateConversationHistory(userId, message);
+    
+    const messages = conversation.history.map(msg => ({
+      role: msg.role,
+      content: msg.content
+    }));
+
+    const completion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
-      messages: [{ role: "user", content: message }],
+      messages: messages,
+      max_tokens: 1000, 
+      temperature: 0.7 
     });
 
     const aiResponse = completion.choices[0].message.content.trim();
-    console.log("AI response:", aiResponse);
+    
+    const updatedConversation = await updateConversationHistory(userId, aiResponse, "assistant");
 
     return {
       statusCode: 200,
       body: JSON.stringify({
-        response: aiResponse
+        response: aiResponse,
+        conversation: updatedConversation
       }),
     }
   } catch (error) {
-    console.error("Error generating conversation interactions:", error);
+    console.error("Error in conversation interaction:", error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        message: "An error occurred while processing the conversation",
+        error: error.message
+      })
+    }
+  }
+};
+
+const updateConversationHistory = async (userId, message, role = "user") => {
+  try {
+    if (!message || message.trim() === '') {
+      throw new Error("No content");
+    }
+
+    let conversation = await Conversation.findOne({ user_id: userId });
+    
+    const newMessage = {
+      role: role,
+      content: message.trim(),
+      timestamp: new Date()
+    };
+
+    if (!conversation) {
+      conversation = new Conversation({
+        user_id: userId,
+        history: [newMessage],
+        last_update: new Date()
+      });
+    } else {
+      if (!Array.isArray(conversation.history)) {
+        conversation.history = [];
+      }
+      
+      conversation.history.push(newMessage);
+      conversation.last_update = new Date();
+    }
+
+    if (!conversation.history.every(msg => msg.content && msg.content.trim() !== '')) {
+      throw new Error("All messages must have valid content");
+    }
+
+    await conversation.save();
+    return conversation;
+  } catch (error) {
+    console.error("Error updating conversation history:", error);
+    throw error;
   }
 };
 
