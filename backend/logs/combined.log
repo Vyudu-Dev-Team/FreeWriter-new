@@ -14,3 +14,54 @@
 2025-01-12 01:07:40:740 [32minfo[39m: [32mAI Service test successful:[39m
 2025-01-12 01:33:20:3320 [32minfo[39m: [32mInitializing OpenAI service with key:[39m
 2025-01-12 01:33:20:3320 [32minfo[39m: [32mAI Service test successful:[39m
+2025-01-15 23:51:03:513 [32minfo[39m: [32mInitializing OpenAI service with key:[39m
+2025-01-15 23:51:04:514 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-15 23:51:05:515 [32minfo[39m: [32mHit login route[39m
+2025-01-15 23:51:06:516 [32minfo[39m: [32mAI Service test successful:[39m
+2025-01-15 23:51:06:516 [31merror[39m: [31mLogin error: Invalid email or password[39m
+2025-01-15 23:51:11:5111 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-15 23:51:11:5111 [32minfo[39m: [32mHit login route[39m
+2025-01-15 23:51:12:5112 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-15 23:51:12:5112 [32minfo[39m: [32mToken to verify:[39m
+2025-01-15 23:51:12:5112 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-15 23:51:12:5112 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-15 23:51:13:5113 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-15 23:51:13:5113 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-15 23:51:13:5113 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-15 23:51:13:5113 [32minfo[39m: [32mToken to verify:[39m
+2025-01-15 23:51:13:5113 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-15 23:51:13:5113 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-15 23:51:13:5113 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-15 23:51:13:5113 [32minfo[39m: [32mToken to verify:[39m
+2025-01-15 23:51:13:5113 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-15 23:51:13:5113 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-15 23:51:48:5148 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-15 23:51:48:5148 [32minfo[39m: [32mToken to verify:[39m
+2025-01-15 23:51:48:5148 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-15 23:51:48:5148 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-15 23:51:53:5153 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-15 23:51:53:5153 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-15 23:51:53:5153 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-15 23:51:53:5153 [32minfo[39m: [32mToken to verify:[39m
+2025-01-15 23:51:53:5153 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-15 23:51:53:5153 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-15 23:51:53:5153 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-15 23:51:53:5153 [32minfo[39m: [32mToken to verify:[39m
+2025-01-15 23:51:53:5153 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-15 23:51:53:5153 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-15 23:52:04:524 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-15 23:52:04:524 [32minfo[39m: [32mToken to verify:[39m
+2025-01-15 23:52:04:524 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-15 23:52:04:524 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-15 23:52:04:524 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-15 23:52:04:524 [32minfo[39m: [32mToken to verify:[39m
+2025-01-15 23:52:04:524 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-15 23:52:04:524 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-15 23:52:05:525 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-15 23:52:05:525 [32minfo[39m: [32mToken to verify:[39m
+2025-01-15 23:52:05:525 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-15 23:52:05:525 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-15 23:52:05:525 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-15 23:52:05:525 [32minfo[39m: [32mToken to verify:[39m
+2025-01-15 23:52:05:525 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-15 23:52:05:525 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
