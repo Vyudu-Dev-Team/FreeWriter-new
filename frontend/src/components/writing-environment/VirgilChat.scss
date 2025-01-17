@@ -1,0 +1,103 @@
+.virgil-chat {
+
+    background-image: url('/assets/backgrounds/backgroundGrid.webp');
+    background-size: cover;
+    background-position: center;
+
+    position: relative;
+
+    & > * {
+        font-family: PixelSplitter, monospace;
+    }
+
+    .chat-section, .cards-section, .right-section {
+        background-color: #000000D9;
+        color: #FFFFFF;
+        
+    }
+
+    .cards-section {
+        border-top-right-radius: 25px;
+    }
+
+    .right-section {
+        border-top-left-radius: 25px;
+        height: 88vh;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 461px;
+    }
+
+    .chat-section {
+        margin: 0px 15px;
+        background-image: url('/assets/backgrounds/virgilBackgroundBlack.webp');
+        background-size: cover;
+        background-position: center;
+
+        .chat{
+            background-color: #000000D9;
+            color: #FFFFFF;
+        }
+
+        .initial-message h2 {
+            margin-bottom: 10px;
+            color: white;
+        }
+        
+        .initial-message p {
+            color: white;
+        }
+    }
+
+    .right-section {
+        .writingPoints {
+                background-color: #490BF4;
+                width: 372px;
+                height: 43px;
+        }
+        .writerLevel{
+            background-color: #6600D2;
+            width: 372px;
+            height: 43px;
+        }
+        .writingSteps{
+            width: 372px;
+            height: 159px;
+            background-color: black;
+            border: 3px solid white;
+            border-radius: 13px;
+        }
+
+        .writingPoints, .writerLevel{
+            border-radius: 13px;
+            color: #D8F651;
+            font-size: 16px;
+            line-height: 20.13px;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            padding: 0px 15px;
+            align-items: center;
+        }
+
+        .statsContainer {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .starContainer {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            flex-direction: row;
+
+            p {
+                margin-top: 21px;
+            }	
+        }
+    }
+}

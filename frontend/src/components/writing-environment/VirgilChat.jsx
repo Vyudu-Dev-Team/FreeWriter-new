@@ -1,36 +1,46 @@
 import React, { useState } from 'react';
 import './VirgilChat.css';
+import './VirgilChat.scss';
+import ApiService from '../../services/ApiService';
 
 const VirgilChat = () => {
     const [message, setMessage] = useState('');
     const [hasMessages, setHasMessages] = useState(false);
+    const [messages, setMessages] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!message.trim()) return;
+        if (!message.trim() || isLoading) return;
 
         try {
-            const response = await fetch('/functions/api/ai/interaction', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ message }),
-            });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
+            setIsLoading(true);
+            // Add user message to chat
+            const userMessage = { type: 'user', content: message };
+            setMessages(prev => [...prev, userMessage]);
             setHasMessages(true);
+
+            // Call API
+            const response = await ApiService.aiInteraction(message);
+            
+            // Add AI response to chat
+            const aiMessage = { type: 'ai', content: response.message || response.response || 'No response received' };
+            setMessages(prev => [...prev, aiMessage]);
+            
+            // Clear input
             setMessage('');
         } catch (error) {
             console.error('Error sending message:', error);
+            // Add error message to chat
+            const errorMessage = { type: 'error', content: 'Sorry, there was an error processing your message.' };
+            setMessages(prev => [...prev, errorMessage]);
+        } finally {
+            setIsLoading(false);
         }
     };
 
     return (
-        <div className="writing-environment-container">
+        <div className="writing-environment-container virgil-chat">
             {/* Cards Section - 28% */}
             <div className="cards-section">
                 <p>Talk more with Virgil to start generating your story deck.</p>
@@ -46,9 +56,33 @@ const VirgilChat = () => {
                         </div>
                     )}
                     
-                    <div className="chatTalker">
-                        <img className="virgilImg" alt="Virgil" />
-                        <p>VIRGIL</p>
+                    <div className="chat-messages">
+                        {messages.map((msg, index) => (
+                            <div key={index} className={`message ${msg.type}`}>
+                                {msg.type === 'ai' && (
+                                    <div className="chatTalker">
+                                        <img className="virgilImg" alt="Virgil" />
+                                        <p>VIRGIL</p>
+                                    </div>
+                                )}
+                                <div className="message-content">
+                                    {msg.content}
+                                </div>
+                            </div>
+                        ))}
+                        {isLoading && (
+                            <div className="message ai">
+                                <div className="chatTalker">
+                                    <img className="virgilImg" alt="Virgil" />
+                                    <p>VIRGIL</p>
+                                </div>
+                                <div className="message-content typing">
+                                    <span className="dot"></span>
+                                    <span className="dot"></span>
+                                    <span className="dot"></span>
+                                </div>
+                            </div>
+                        )}
                     </div>
 
                     <div className="messageInput">
@@ -58,8 +92,11 @@ const VirgilChat = () => {
                                 value={message}
                                 onChange={(e) => setMessage(e.target.value)}
                                 placeholder="Type your message..."
+                                disabled={isLoading}
                             />
-                            <button type="submit">Send</button>
+                            <button type="submit" disabled={isLoading}>
+                                {isLoading ? 'Sending...' : 'Send'}
+                            </button>
                         </form>
                     </div>
                 </div>
@@ -67,7 +104,23 @@ const VirgilChat = () => {
 
             {/* Right Section - Remaining space */}
             <div className="right-section">
-                {/* This section will be used later */}
+                <h2>STORY STATS</h2>
+                <div className="statsContainer">
+                    <div className="writingPoints">
+                        <p>WRITING POINTS</p>
+                        <div className="starContainer">
+                            <img src="/assets/virgil-chat/star.svg" alt="Star" />
+                            <p>0</p>
+                        </div>
+                    </div>
+                    <div className="writerLevel">
+                        <p>LEVEL 1</p>
+                        <p>BEGINNER STORYTELLER</p>
+                    </div>
+                    <div className="writingSteps">
+                        {/* This section will be used later */}
+                    </div>
+                </div>
             </div>
         </div>
     );
