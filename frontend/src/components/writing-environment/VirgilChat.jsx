@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './VirgilChat.css';
 import './VirgilChat.scss';
@@ -9,7 +9,37 @@ const VirgilChat = () => {
     const [hasMessages, setHasMessages] = useState(false);
     const [messages, setMessages] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const chatMessagesRef = useRef(null);
     const navigate = useNavigate();
+
+    const scrollToBottom = () => {
+        if (chatMessagesRef.current) {
+            chatMessagesRef.current.scrollTop = chatMessagesRef.current.scrollHeight;
+        }
+    };
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
+
+    const processApiResponse = (response) => {
+        try {
+            const parsedResponse = typeof response === 'string' ? JSON.parse(response) : response;
+            
+            if (parsedResponse.conversation && parsedResponse.conversation.history) {
+                const formattedMessages = parsedResponse.conversation.history.map(msg => ({
+                    type: msg.role === 'user' ? 'user' : 'ai',
+                    content: msg.content,
+                    timestamp: new Date(msg.timestamp)
+                }));
+                
+                setMessages(formattedMessages);
+                setHasMessages(formattedMessages.length > 0);
+            }
+        } catch (error) {
+            console.error('Error processing API response:', error);
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -17,31 +47,17 @@ const VirgilChat = () => {
 
         try {
             setIsLoading(true);
-            // Add user message to chat
-            const userMessage = { type: 'user', content: message };
-            setMessages(prev => [...prev, userMessage]);
-            setHasMessages(true);
-
-            // Call API
             const response = await ApiService.aiInteraction(message);
-            
-            // Add AI response to chat
-            const aiMessage = { type: 'ai', content: response.message || response.response || 'No response received' };
-            setMessages(prev => [...prev, aiMessage]);
-            
-            // Clear input
+            processApiResponse(response);
             setMessage('');
         } catch (error) {
             console.error('Error sending message:', error);
             
-            // Handle authentication errors
             if (error.message.includes('Unauthorized')) {
-                // Redirecionar para o login
                 navigate('/login');
                 return;
             }
             
-            // Add error message to chat
             const errorMessage = { 
                 type: 'error', 
                 content: error.message === 'Unauthorized: Please log in again' 
@@ -71,7 +87,7 @@ const VirgilChat = () => {
                         </div>
                     )}
                     
-                    <div className="chat-messages">
+                    <div className="chat-messages" ref={chatMessagesRef}>
                         {messages.map((msg, index) => (
                             <div key={index} className={`message ${msg.type}`}>
                                 {msg.type === 'ai' && (
