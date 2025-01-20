@@ -45,11 +45,15 @@ const VirgilChat = () => {
         e.preventDefault();
         if (!message.trim() || isLoading) return;
 
+        const userMessage = { type: 'user', content: message.trim() };
+        setMessages(prev => [...prev, userMessage]);
+        setHasMessages(true);
+        setMessage('');
+        setIsLoading(true);
+
         try {
-            setIsLoading(true);
             const response = await ApiService.aiInteraction(message);
             processApiResponse(response);
-            setMessage('');
         } catch (error) {
             console.error('Error sending message:', error);
             
@@ -102,7 +106,7 @@ const VirgilChat = () => {
                             </div>
                         ))}
                         {isLoading && (
-                            <div className="message ai">
+                            <div className="message ai loading-message">
                                 <div className="chatTalker">
                                     <img className="virgilImg" alt="Virgil" src="/assets/virgil-chat/virgilPictureTopLeft.svg" />
                                     <p>VIRGIL</p>
