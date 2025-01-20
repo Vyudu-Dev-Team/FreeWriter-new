@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './VirgilChat.css';
 import './VirgilChat.scss';
 import ApiService from '../../services/ApiService';
+import { useAppContext } from '../../contexts/AppContext';
 
 const VirgilChat = () => {
     const [message, setMessage] = useState('');
@@ -11,6 +12,14 @@ const VirgilChat = () => {
     const [isLoading, setIsLoading] = useState(false);
     const chatMessagesRef = useRef(null);
     const navigate = useNavigate();
+    const { state } = useAppContext();
+    const username = state?.user?.data?.user?.username;
+
+    useEffect(() => {
+        if (state?.user) {
+            console.log('Current user state:', state.user);
+        }
+    }, [state?.user]);
 
     const scrollToBottom = () => {
         if (chatMessagesRef.current) {
@@ -94,12 +103,14 @@ const VirgilChat = () => {
                     <div className="chat-messages" ref={chatMessagesRef}>
                         {messages.map((msg, index) => (
                             <div key={index} className={`message ${msg.type}`}>
-                                {msg.type === 'ai' && (
-                                    <div className="chatTalker">
-                                        <img className="virgilImg" alt="Virgil" src="/assets/virgil-chat/virgilPictureTopLeft.svg" />
-                                        <p>VIRGIL</p>
-                                    </div>
-                                )}
+                                <div className="chatTalker">
+                                    <img 
+                                        className="virgilImg" 
+                                        alt={msg.type === 'ai' ? 'Virgil' : username} 
+                                        src={msg.type === 'ai' ? "/assets/virgil-chat/virgilPictureTopLeft.svg" : "/assets/virgil-chat/userPictureDefault.svg"} 
+                                    />
+                                    <p>{msg.type === 'ai' ? 'VIRGIL' : username?.toUpperCase()}</p>
+                                </div>
                                 <div className="message-content">
                                     {msg.content}
                                 </div>
