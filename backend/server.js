@@ -1,87 +1,97 @@
-import express from 'express';
-import mongoose from 'mongoose';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import helmet from 'helmet';
-import rateLimit from 'express-rate-limit';
-import { errorHandler, notFound } from './middleware/errorMiddleware.js';
-import userRoutes from './routes/users.js';
-import storyRoutes from './routes/stories.js';
-import aiRoutes from './routes/aiRoutes.js';
-import morgan from 'morgan';
-import mongoSanitize from 'express-mongo-sanitize';
-import xss from 'xss-clean';
-import hpp from 'hpp';
-import connectDB from './config/database.js';
-import profileRoutes from './routes/profile.js'; // Updated to use import
-
+const serverless = require("serverless-http");
+const cors = require("cors");
+const dotenv = require("dotenv");
+const { notFound, errorHandler } = require('./utils/errorHandler.js');
+const { handleUserRoutes, handleAIRoutes, handleNotificationRoutes } = require('./functions/routeHandlers.js');
+const mongoose = require("mongoose");
+const helmet = require("helmet");
+const connectDB = require('./config/database.js');
+const OpenAI = require("openai");
+const { scheduleNotificationTasks } = require('./utils/scheduledTasks.js');
 
 // Load environment variables
 dotenv.config();
 
-// Handle uncaught exceptions
-process.on('uncaughtException', (err) => {
-  console.error('UNCAUGHT EXCEPTION! 💥 Shutting down...');
-  console.error(err.name, err.message);
-  process.exit(1);
-});
-
 // Connect to the database
 connectDB();
 
-// Initialize Express app
-const app = express();
-
-// Security & Rate Limiting Middlewares
-app.use(helmet());
-app.use(cors({
-  origin: process.env.CLIENT_URL,
-  credentials: true,
-}));
-app.use(express.json({ limit: '10kb' }));
-app.use(express.urlencoded({ extended: true, limit: '10kb' }));
-app.use(mongoSanitize());
-app.use(xss());
-app.use(hpp());
-
-// Logging middleware in development mode
-if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'));
-}
-
-// Apply rate limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
-});
-app.use(limiter);
-
-// API Routes
-app.use('/api/users', userRoutes);
-app.use('/api/stories', storyRoutes);
-app.use('/api/ai', aiRoutes);
-app.use('/api/profile', profileRoutes);
-
-
-
-// Error handling middleware
-app.use(notFound);
-app.use(errorHandler);
-
-// Handle unhandled promise rejections
-process.on('unhandledRejection', (err) => {
-  console.error('UNHANDLED REJECTION! 💥 Shutting down...');
-  console.error(err.name, err.message);
-  server.close(() => {
-    process.exit(1);
-  });
+// Initialize the OpenAI client
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
 });
 
-// Start the server
-const PORT = process.env.PORT || 5000;
-const server = app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// Schedule notification tasks
+scheduleNotificationTasks();
 
-// Export the app for testing purposes
-export default app;
+const handler = async (event, context) => {
+  context.callbackWaitsForEmptyEventLoop = false;
+
+  const ALLOWED_ORIGINS = [
+    'http://localhost:5173',
+    'https://freewriter-develop-branch.netlify.app',
+    'https://www.freewriter.app',
+  ];
+
+  const origin = event.headers.origin || event.headers.Origin || '*';
+  const isAllowedOrigin = ALLOWED_ORIGINS.includes(origin);
+
+  const corsHeaders = {
+    "Access-Control-Allow-Origin": isAllowedOrigin ? origin : "*", // Default to '*' if origin is not allowed
+    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization, Accept",
+    "Access-Control-Max-Age": "86400",
+    "Vary": isAllowedOrigin ? "Origin" : "Origin", // Helps prevent caching issues
+  };
+
+  // Handle OPTIONS (CORS preflight requests)
+  if (event.httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers: corsHeaders,
+      body: JSON.stringify({ message: 'CORS preflight successful.' }),
+    };
+  }
+
+  try {
+    await connectDB(); // Ensure database connection
+
+    const path = event.path.replace('/.netlify/functions/api', '');
+    console.log(`Modified path: ${path}`); // Debug path rewriting
+    let response;
+
+    // Route Handling
+    if (path.startsWith('/users')) {
+      response = await handleUserRoutes(event);
+    } else if (path.startsWith('/ai')) {
+      response = await handleAIRoutes(event);
+    } else if (path.startsWith('/notifications')) {
+      response = await handleNotificationRoutes(event);
+    } else {
+      response = notFound(event);
+    }
+
+    return {
+      statusCode: response.statusCode,
+      headers: {
+        ...corsHeaders,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(response.body),
+    };
+  } catch (error) {
+    console.error('Error occurred:', error);
+    const errorResponse = errorHandler(error, event);
+
+    return {
+      ...errorResponse,
+      headers: {
+        ...corsHeaders,
+        ...errorResponse.headers,
+      },
+    };
+  }
+};
+
+module.exports = {
+  handler
+};

@@ -1,13 +1,13 @@
-import express from 'express';
-import mongoose from 'mongoose';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import helmet from 'helmet';
-import rateLimit from 'express-rate-limit';
-import { errorHandler, notFound } from './middleware/errorMiddleware.js';
-import userRoutes from './routes/users.js';
-import storyRoutes from './routes/stories.js';
-import profileRoutes from './routes/profile.js'; // Updated to use import
+const express = require( 'express');
+const mongoose = require( 'mongoose');
+const cors = require( 'cors');
+const dotenv = require( 'dotenv');
+const helmet = require( 'helmet');
+const rateLimit = require( 'express-rate-limit');
+const { errorHandler, notFound } = require( './middleware/errorMiddleware.js');
+const userRoutes = require( './routes/users.js');
+const storyRoutes = require( './routes/stories.js');
+const profileRoutes = require( './routes/profile.js'); 
 
 dotenv.config();
 
@@ -42,4 +42,4 @@ app.use('/api/profile', profileRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
-export default app;
+module.exports =  app;

@@ -1,0 +1,823 @@
+2024-11-30 18:00:35:035 [31merror[39m: [31mLogin error: Invalid email or password[39m
+2024-11-30 18:07:51:751 [31merror[39m: [31mLogin error: Invalid email or password[39m
+2024-11-30 18:08:03:83 [31merror[39m: [31mLogin error: Invalid email or password[39m
+2024-11-30 18:11:45:1145 [31merror[39m: [31mRegister error: getaddrinfo ENOTFOUND cluster0-shard-00-02.vv6jx.mongodb.net[39m
+2024-11-30 18:32:00:320 [31merror[39m: [31mError generating prompt: getaddrinfo ENOTFOUND cluster0-shard-00-02.vv6jx.mongodb.net[39m
+2024-11-30 18:33:00:330 [31merror[39m: [31mError generating prompt: User or Story not found[39m
+2024-11-30 23:06:03:63 [31merror[39m: [31mError generating prompt: User or Story not found[39m
+2024-12-01 10:08:36:836 [31merror[39m: [31mError in generateAndSaveStoryPrompt: "undefined" is not valid JSON[39m
+2024-12-01 10:21:15:2115 [31merror[39m: [31mError in generateAndSaveStoryPrompt: Invalid token[39m
+2024-12-01 11:27:22:2722 [31merror[39m: [31mError in generateAndSaveStoryPrompt: Invalid token[39m
+2024-12-01 11:34:13:3413 [31merror[39m: [31mError in generateAndSaveStoryPrompt: extractTokenFromRequest is not defined[39m
+2024-12-01 12:27:24:2724 [31merror[39m: [31mError in generateAndSaveStoryPrompt: Invalid token[39m
+2024-12-01 12:28:36:2836 [31merror[39m: [31mError in generateAndSaveStoryPrompt: Invalid token[39m
+2024-12-01 12:34:27:3427 [31merror[39m: [31mError in generateAndSaveStoryPrompt: logger is not defined[39m
+2024-12-01 12:37:26:3726 [31merror[39m: [31mError in generateAndSaveStoryPrompt:[39m
+2024-12-01 12:38:58:3858 [31merror[39m: [31mAuthorization header is missing or improperly formatted.[39m
+2024-12-01 12:38:58:3858 [31merror[39m: [31mError in generateAndSaveStoryPrompt:[39m
+2024-12-01 12:41:43:4143 [31merror[39m: [31mAuthorization header is missing or improperly formatted.[39m
+2024-12-01 12:41:43:4143 [31merror[39m: [31mError in generateAndSaveStoryPrompt:[39m
+2024-12-01 12:50:51:5051 [31merror[39m: [31mAuthorization header is missing or improperly formatted.[39m
+2024-12-01 12:50:51:5051 [31merror[39m: [31mError in generateAndSaveStoryPrompt:[39m
+2024-12-01 12:56:01:561 [31merror[39m: [31mToken is missing from the event.[39m
+2024-12-01 12:56:01:561 [31merror[39m: [31mError in generateAndSaveStoryPrompt:[39m
+2024-12-01 12:59:22:5922 [31merror[39m: [31mError in generateAndSaveStoryPrompt:[39m
+2024-12-01 13:01:39:139 [31merror[39m: [31mToken verification failed:[39m
+2024-12-01 13:01:39:139 [31merror[39m: [31mError verifying token from event:[39m
+2024-12-01 13:01:39:139 [31merror[39m: [31mError in generateAndSaveStoryPrompt:[39m
+2024-12-01 13:05:26:526 [31merror[39m: [31mFull token verification error: jwt malformed[39m
+2024-12-01 13:05:26:526 [31merror[39m: [31mSpecific error type: JsonWebTokenError, Message: Invalid token signature[39m
+2024-12-01 13:05:26:526 [31merror[39m: [31mComprehensive token verification error: Invalid token signature[39m
+2024-12-01 13:05:26:526 [31merror[39m: [31mError in generateAndSaveStoryPrompt:[39m
+2024-12-01 13:07:43:743 [31merror[39m: [31mError in generateAndSaveStoryPrompt:[39m
+2024-12-01 13:20:01:201 [31merror[39m: [31mRequest body is missing or undefined.[39m
+2024-12-01 13:20:01:201 [31merror[39m: [31mError in generateAndSaveStoryPrompt:[39m
+2024-12-01 13:38:43:3843 [31merror[39m: [31mEvent body is undefined.[39m
+2024-12-01 13:38:43:3843 [31merror[39m: [31mError in generateAndSaveStoryPrompt:[39m
+2024-12-01 13:38:49:3849 [31merror[39m: [31mEvent body is undefined.[39m
+2024-12-01 13:38:49:3849 [31merror[39m: [31mError in generateAndSaveStoryPrompt:[39m
+2024-12-01 13:43:06:436 [31merror[39m: [31mEvent body is undefined. Full event:[39m
+2024-12-01 13:43:06:436 [31merror[39m: [31mError in generateAndSaveStoryPrompt:[39m
+2024-12-01 22:21:25:2125 [31merror[39m: [31mError in generateAndSaveStoryPrompt: "undefined" is not valid JSON[39m
+2024-12-01 22:37:15:3715 [31merror[39m: [31mError in generateAndSaveStoryPrompt: "undefined" is not valid JSON[39m
+2024-12-01 22:39:35:3935 [31merror[39m: [31mError in generateAndSaveStoryPrompt: Cannot read properties of undefined (reading 'body')[39m
+2024-12-01 22:47:14:4714 [31merror[39m: [31mGet current user error: Cannot read properties of undefined (reading 'authorization')[39m
+2024-12-01 22:47:14:4714 [31merror[39m: [31mGet or create story error: Cannot read properties of undefined (reading 'body')[39m
+2024-12-01 22:50:48:5048 [31merror[39m: [31mGet current user error: Cannot read properties of undefined (reading 'authorization')[39m
+2024-12-01 22:50:48:5048 [31merror[39m: [31mGet or create story error: Cannot read properties of undefined (reading 'body')[39m
+2024-12-01 22:55:43:5543 [31merror[39m: [31mGet current user error: Cannot read properties of undefined (reading 'authorization')[39m
+2024-12-01 22:55:43:5543 [31merror[39m: [31mGet or create story error: Cannot read properties of undefined (reading 'body')[39m
+2024-12-02 07:07:35:735 [31merror[39m: [31mLogin error: Please provide email and password[39m
+2024-12-02 07:07:42:742 [31merror[39m: [31mLogin error: Please provide email and password[39m
+2024-12-02 07:15:40:1540 [31merror[39m: [31mLogin error: Please provide email and password[39m
+2024-12-02 07:19:01:191 [31merror[39m: [31mGenerate story prompt error: body is not defined[39m
+2024-12-02 08:10:24:1024 [31merror[39m: [31mGet or create story error: Cannot read properties of undefined (reading 'body')[39m
+2024-12-02 08:47:12:4712 [31merror[39m: [31mGet current user error: Cannot access 'token' before initialization[39m
+2024-12-02 09:22:50:2250 [31merror[39m: [31mGet or create story error: Cannot read properties of undefined (reading 'body')[39m
+2024-12-02 09:22:50:2250 [31merror[39m: [31mError generating prompt: openai2.createCompletion is not a function[39m
+2024-12-02 11:58:03:583 [31merror[39m: [31mCreate deck error: Validation failed: userId: Path `userId` is required.[39m
+2024-12-02 12:12:05:125 [31merror[39m: [31mCreate deck error: Validation failed: userId: Path `userId` is required.[39m
+2024-12-02 12:15:47:1547 [31merror[39m: [31mCreate deck error: Validation failed: userId: Path `userId` is required.[39m
+2024-12-02 12:39:39:3939 [31merror[39m: [31mDeck route error: "[object Object]" is not valid JSON[39m
+2024-12-02 12:43:30:4330 [31merror[39m: [31mDeck route error: "[object Object]" is not valid JSON[39m
+2024-12-02 12:48:30:4830 [31merror[39m: [31mDeck route error: "[object Object]" is not valid JSON[39m
+2024-12-02 12:54:48:5448 [31merror[39m: [31mDeck route error: "[object Object]" is not valid JSON[39m
+2024-12-02 12:56:16:5616 [31merror[39m: [31mDeck route error: "[object Object]" is not valid JSON[39m
+2024-12-02 12:59:55:5955 [31merror[39m: [31mDeck route error: "[object Object]" is not valid JSON[39m
+2024-12-02 13:23:31:2331 [31merror[39m: [31mDeck route error: Cannot read properties of undefined (reading 'match')[39m
+2024-12-02 13:26:44:2644 [31merror[39m: [31mDeck route error: Cannot read properties of undefined (reading 'match')[39m
+2024-12-02 13:54:44:5444 [31merror[39m: [31mGet deck error: Invalid deck ID[39m
+2024-12-02 13:55:16:5516 [31merror[39m: [31mGet deck error: Invalid deck ID[39m
+2024-12-02 14:00:51:051 [31merror[39m: [31mGet deck error: Deck not found[39m
+2024-12-02 14:08:19:819 [31merror[39m: [31mGet deck error: Invalid deck or user ID[39m
+2024-12-02 14:13:45:1345 [31merror[39m: [31mGet deck error: Invalid deck or user ID[39m
+2024-12-02 15:42:52:4252 [31merror[39m: [31mGet current user error: Cannot read properties of undefined (reading 'headers')[39m
+2024-12-02 15:45:59:4559 [31merror[39m: [31mStory mapping route error: "[object Object]" is not valid JSON[39m
+2024-12-02 15:49:31:4931 [31merror[39m: [31mStory mapping route error: "[object Object]" is not valid JSON[39m
+2024-12-02 15:52:56:5256 [31merror[39m: [31mGet current user error: Cannot read properties of undefined (reading 'headers')[39m
+2024-12-02 15:56:41:5641 [31merror[39m: [31mCreate story map error: data is not defined[39m
+2024-12-02 17:20:16:2016 [31merror[39m: [31mCreate story map error: mongoose is not defined[39m
+2024-12-02 17:23:04:234 [31merror[39m: [31mCreate story map error: UserId is not defined[39m
+2024-12-02 17:25:28:2528 [31merror[39m: [31mCreate story map error: Validation failed: elements.0.type: `chapter` is not a valid enum value for path `type`., elements.1.type: `scene` is not a valid enum value for path `type`.[39m
+2024-12-02 17:33:29:3329 [31merror[39m: [31mCreate story map error: Validation failed: elements.0.type: `chapter` is not a valid enum value for path `type`., elements.1.type: `scene` is not a valid enum value for path `type`.[39m
+2024-12-02 20:45:22:4522 [31merror[39m: [31mOutline route error: "[object Object]" is not valid JSON[39m
+2024-12-02 20:52:28:5228 [31merror[39m: [31mOutline route error: "[object Object]" is not valid JSON[39m
+2024-12-02 22:10:01:101 [31merror[39m: [31mCreate outline error:[39m
+2024-12-02 22:10:22:1022 [31merror[39m: [31mCreate outline error:[39m
+2024-12-02 22:23:20:2320 [31merror[39m: [31mCreate outline error: Validation failed: sections.0.id: Cast to string failed for value "{[39m
+[31m  '0': 251,[39m
+[31m  '1': 202,[39m
+[31m  '2': 184,[39m
+[31m  '3': 31,[39m
+[31m  '4': 65,[39m
+[31m  '5': 77,[39m
+[31m  '6': 74,[39m
+[31m  '7': 134,[39m
+[31m  '8': 167,[39m
+[31m  '9': 100,[39m
+[31m  '10': 89,[39m
+[31m  '11': 31,[39m
+[31m  '12': 236,[39m
+[31m  '13': 73,[39m
+[31m  '14': 71,[39m
+[31m  '15': 190,[39m
+[31m  original: undefined,[39m
+[31m  prefs: {[39m
+[31m    abortEarly: false,[39m
+[31m    allowUnknown: false,[39m
+[31m    artifacts: false,[39m
+[31m    cache: true,[39m
+[31m    context: null,[39m
+[31m    convert: true,[39m
+[31m    dateFormat: 'iso',[39m
+[31m    errors: {[39m
+[31m      escapeHtml: false,[39m
+[31m      label: 'path',[39m
+[31m      language: null,[39m
+[31m      render: true,[39m
+[31m      stack: false,[39m
+[31m      wrap: [Object][39m
+[31m    },[39m
+[31m    externals: true,[39m
+[31m    messages: {},[39m
+[31m    nonEnumerables: false,[39m
+[31m    noDefaults: false,[39m
+[31m    presence: 'optional',[39m
+[31m    skipFunctions: false,[39m
+[31m    stripUnknown: false,[39m
+[31m    warnings: false[39m
+[31m  },[39m
+[31m  schema: {[39m
+[31m    type: 'string',[39m
+[31m    '$_root': {[39m
+[31m      _types: [Set],[39m
+[31m      alternatives: [Function (anonymous)],[39m
+[31m      any: [Function (anonymous)],[39m
+[31m      array: [Function (anonymous)],[39m
+[31m      boolean: [Function (anonymous)],[39m
+[31m      date: [Function (anonymous)],[39m
+[31m      function: [Function (anonymous)],[39m
+[31m      link: [Function (anonymous)],[39m
+[31m      number: [Function (anonymous)],[39m
+[31m      object: [Function (anonymous)],[39m
+[31m      string: [Function (anonymous)],[39m
+[31m      symbol: [Function (anonymous)],[39m
+[31m      binary: [Function (anonymous)],[39m
+[31m      allow: [Function (anonymous)],[39m
+[31m      custom: [Function (anonymous)],[39m
+[31m      disallow: [Function (anonymous)],[39m
+[31m      equal: [Function (anonymous)],[39m
+[31m      exist: [Function (anonymous)],[39m
+[31m      forbidden: [Function (anonymous)],[39m
+[31m      invalid: [Function (anonymous)],[39m
+[31m      not: [Function (anonymous)],[39m
+[31m      only: [Function (anonymous)],[39m
+[31m      optional: [Function (anonymous)],[39m
+[31m      options: [Function (anonymous)],[39m
+[31m      prefs: [Function (anonymous)],[39m
+[31m      preferences: [Function (anonymous)],[39m
+[31m      required: [Function (anonymous)],[39m
+[31m      strip: [Function (anonymous)],[39m
+[31m      valid: [Function (anonymous)],[39m
+[31m      when: [Function (anonymous)],[39m
+[31m      ValidationError: [class (anonymous) extends Error],[39m
+[31m      version: '17.13.3',[39m
+[31m      cache: [Object],[39m
+[31m      assert: [Function: assert],[39m
+[31m      attempt: [Function: attempt],[39m
+[31m      build: [Function: build],[39m
+[31m      checkPreferences: [Function: checkPreferences],[39m
+[31m      compile: [Function: compile],[39m
+[31m      defaults: [Function: defaults],[39m
+[31m      expression: [Function: expression],[39m
+[31m      extend: [Function: extend],[39m
+[31m      isError: [Function: isError],[39m
+[31m      isExpression: [Function: isTemplate],[39m
+[31m      isRef: [Function (anonymous)],[39m
+[31m      isSchema: [Function (anonymous)],[39m
+[31m      in: [Function: in],[39m
+[31m      override: Symbol(override),[39m
+[31m      ref: [Function: ref],[39m
+[31m      types: [Function: types],[39m
+[31m      alt: [Function (anonymous)],[39m
+[31m      bool: [Function (anonymous)],[39m
+[31m      func: [Function (anonymous)],[39m
+[31m      x: [Function: expression],[39m
+[31m      trace: [Function: trace],[39m
+[31m      untrace: [Function (anonymous)],[39m
+[31m      [Symbol(@hapi/lab/coverage/initialize)]: [Function: trace][39m
+[31m    },[39m
+[31m    '$_temp': { ruleset: false, whens: {} },[39m
+[31m    _ids: { _byId: Map(0) {}, _byKey: Map(0) {}, _schemaChain: false },[39m
+[31m    _preferences: null,[39m
+[31m    _valids: null,[39m
+[31m    _invalids: null,[39m
+[31m    _rules: [],[39m
+[31m    _singleRules: Map(0) {},[39m
+[31m    _refs: { refs: [] },[39m
+[31m    _flags: { default: [Function: v42] },[39m
+[31m    _cache: null,[39m
+[31m    '$_terms': {[39m
+[31m      alterations: null,[39m
+[31m      examples: null,[39m
+[31m      externals: null,[39m
+[31m      metas: [],[39m
+[31m      notes: [],[39m
+[31m      shared: null,[39m
+[31m      tags: [],[39m
+[31m      whens: null,[39m
+[31m      replacements: null[39m
+[31m    },[39m
+[31m    '$_super': {}[39m
+[31m  },[39m
+[31m  state: {[39m
+[31m    path: [ 'sections', 0, 'id' ],[39m
+[31m    ancestors: [ [Object], [Array], [Object] ],[39m
+[31m    mainstay: {[39m
+[31m      externals: [],[39m
+[31m      warnings: [],[39m
+[31m      tracer: [Object],[39m
+[31m      debug: null,[39m
+[31m      links: Map(0) {},[39m
+[31m      shadow: null,[39m
+[31m      artifacts: null,[39m
+[31m      _snapshots: [][39m
+[31m    },[39m
+[31m    schemas: [ [Object], [Object], [Object], [Object] ],[39m
+[31m    debug: null[39m
+[31m  },[39m
+[31m  error: [Function: createError],[39m
+[31m  errorsArray: [Function (anonymous)],[39m
+[31m  warn: [Function: warn],[39m
+[31m  message: [Function: message][39m
+[31m}" (type Object) at path "id", sections.1.id: Cast to string failed for value "{[39m
+[31m  '0': 92,[39m
+[31m  '1': 78,[39m
+[31m  '2': 104,[39m
+[31m  '3': 251,[39m
+[31m  '4': 41,[39m
+[31m  '5': 243,[39m
+[31m  '6': 67,[39m
+[31m  '7': 140,[39m
+[31m  '8': 168,[39m
+[31m  '9': 73,[39m
+[31m  '10': 146,[39m
+[31m  '11': 211,[39m
+[31m  '12': 88,[39m
+[31m  '13': 192,[39m
+[31m  '14': 91,[39m
+[31m  '15': 212,[39m
+[31m  original: undefined,[39m
+[31m  prefs: {[39m
+[31m    abortEarly: false,[39m
+[31m    allowUnknown: false,[39m
+[31m    artifacts: false,[39m
+[31m    cache: true,[39m
+[31m    context: null,[39m
+[31m    convert: true,[39m
+[31m    dateFormat: 'iso',[39m
+[31m    errors: {[39m
+[31m      escapeHtml: false,[39m
+[31m      label: 'path',[39m
+[31m      language: null,[39m
+[31m      render: true,[39m
+[31m      stack: false,[39m
+[31m      wrap: [Object][39m
+[31m    },[39m
+[31m    externals: true,[39m
+[31m    messages: {},[39m
+[31m    nonEnumerables: false,[39m
+[31m    noDefaults: false,[39m
+[31m    presence: 'optional',[39m
+[31m    skipFunctions: false,[39m
+[31m    stripUnknown: false,[39m
+[31m    warnings: false[39m
+[31m  },[39m
+[31m  schema: {[39m
+[31m    type: 'string',[39m
+[31m    '$_root': {[39m
+[31m      _types: [Set],[39m
+[31m      alternatives: [Function (anonymous)],[39m
+[31m      any: [Function (anonymous)],[39m
+[31m      array: [Function (anonymous)],[39m
+[31m      boolean: [Function (anonymous)],[39m
+[31m      date: [Function (anonymous)],[39m
+[31m      function: [Function (anonymous)],[39m
+[31m      link: [Function (anonymous)],[39m
+[31m      number: [Function (anonymous)],[39m
+[31m      object: [Function (anonymous)],[39m
+[31m      string: [Function (anonymous)],[39m
+[31m      symbol: [Function (anonymous)],[39m
+[31m      binary: [Function (anonymous)],[39m
+[31m      allow: [Function (anonymous)],[39m
+[31m      custom: [Function (anonymous)],[39m
+[31m      disallow: [Function (anonymous)],[39m
+[31m      equal: [Function (anonymous)],[39m
+[31m      exist: [Function (anonymous)],[39m
+[31m      forbidden: [Function (anonymous)],[39m
+[31m      invalid: [Function (anonymous)],[39m
+[31m      not: [Function (anonymous)],[39m
+[31m      only: [Function (anonymous)],[39m
+[31m      optional: [Function (anonymous)],[39m
+[31m      options: [Function (anonymous)],[39m
+[31m      prefs: [Function (anonymous)],[39m
+[31m      preferences: [Function (anonymous)],[39m
+[31m      required: [Function (anonymous)],[39m
+[31m      strip: [Function (anonymous)],[39m
+[31m      valid: [Function (anonymous)],[39m
+[31m      when: [Function (anonymous)],[39m
+[31m      ValidationError: [class (anonymous) extends Error],[39m
+[31m      version: '17.13.3',[39m
+[31m      cache: [Object],[39m
+[31m      assert: [Function: assert],[39m
+[31m      attempt: [Function: attempt],[39m
+[31m      build: [Function: build],[39m
+[31m      checkPreferences: [Function: checkPreferences],[39m
+[31m      compile: [Function: compile],[39m
+[31m      defaults: [Function: defaults],[39m
+[31m      expression: [Function: expression],[39m
+[31m      extend: [Function: extend],[39m
+[31m      isError: [Function: isError],[39m
+[31m      isExpression: [Function: isTemplate],[39m
+[31m      isRef: [Function (anonymous)],[39m
+[31m      isSchema: [Function (anonymous)],[39m
+[31m      in: [Function: in],[39m
+[31m      override: Symbol(override),[39m
+[31m      ref: [Function: ref],[39m
+[31m      types: [Function: types],[39m
+[31m      alt: [Function (anonymous)],[39m
+[31m      bool: [Function (anonymous)],[39m
+[31m      func: [Function (anonymous)],[39m
+[31m      x: [Function: expression],[39m
+[31m      trace: [Function: trace],[39m
+[31m      untrace: [Function (anonymous)],[39m
+[31m      [Symbol(@hapi/lab/coverage/initialize)]: [Function: trace][39m
+[31m    },[39m
+[31m    '$_temp': { ruleset: false, whens: {} },[39m
+[31m    _ids: { _byId: Map(0) {}, _byKey: Map(0) {}, _schemaChain: false },[39m
+[31m    _preferences: null,[39m
+[31m    _valids: null,[39m
+[31m    _invalids: null,[39m
+[31m    _rules: [],[39m
+[31m    _singleRules: Map(0) {},[39m
+[31m    _refs: { refs: [] },[39m
+[31m    _flags: { default: [Function: v42] },[39m
+[31m    _cache: null,[39m
+[31m    '$_terms': {[39m
+[31m      alterations: null,[39m
+[31m      examples: null,[39m
+[31m      externals: null,[39m
+[31m      metas: [],[39m
+[31m      notes: [],[39m
+[31m      shared: null,[39m
+[31m      tags: [],[39m
+[31m      whens: null,[39m
+[31m      replacements: null[39m
+[31m    },[39m
+[31m    '$_super': {}[39m
+[31m  },[39m
+[31m  state: {[39m
+[31m    path: [ 'sections', 1, 'id' ],[39m
+[31m    ancestors: [ [Object], [Array], [Object] ],[39m
+[31m    mainstay: {[39m
+[31m      externals: [],[39m
+[31m      warnings: [],[39m
+[31m      tracer: [Object],[39m
+[31m      debug: null,[39m
+[31m      links: Map(0) {},[39m
+[31m      shadow: null,[39m
+[31m      artifacts: null,[39m
+[31m      _snapshots: [][39m
+[31m    },[39m
+[31m    schemas: [ [Object], [Object], [Object], [Object] ],[39m
+[31m    debug: null[39m
+[31m  },[39m
+[31m  error: [Function: createError],[39m
+[31m  errorsArray: [Function (anonymous)],[39m
+[31m  warn: [Function: warn],[39m
+[31m  message: [Function: message][39m
+[31m}" (type Object) at path "id"[39m
+2024-12-02 22:25:04:254 [31merror[39m: [31mCreate outline error: Validation failed: sections.0.id: Cast to string failed for value "{[39m
+[31m  '0': 105,[39m
+[31m  '1': 58,[39m
+[31m  '2': 104,[39m
+[31m  '3': 143,[39m
+[31m  '4': 148,[39m
+[31m  '5': 131,[39m
+[31m  '6': 74,[39m
+[31m  '7': 27,[39m
+[31m  '8': 149,[39m
+[31m  '9': 144,[39m
+[31m  '10': 8,[39m
+[31m  '11': 134,[39m
+[31m  '12': 214,[39m
+[31m  '13': 85,[39m
+[31m  '14': 21,[39m
+[31m  '15': 46,[39m
+[31m  original: undefined,[39m
+[31m  prefs: {[39m
+[31m    abortEarly: false,[39m
+[31m    allowUnknown: false,[39m
+[31m    artifacts: false,[39m
+[31m    cache: true,[39m
+[31m    context: null,[39m
+[31m    convert: true,[39m
+[31m    dateFormat: 'iso',[39m
+[31m    errors: {[39m
+[31m      escapeHtml: false,[39m
+[31m      label: 'path',[39m
+[31m      language: null,[39m
+[31m      render: true,[39m
+[31m      stack: false,[39m
+[31m      wrap: [Object][39m
+[31m    },[39m
+[31m    externals: true,[39m
+[31m    messages: {},[39m
+[31m    nonEnumerables: false,[39m
+[31m    noDefaults: false,[39m
+[31m    presence: 'optional',[39m
+[31m    skipFunctions: false,[39m
+[31m    stripUnknown: false,[39m
+[31m    warnings: false[39m
+[31m  },[39m
+[31m  schema: {[39m
+[31m    type: 'string',[39m
+[31m    '$_root': {[39m
+[31m      _types: [Set],[39m
+[31m      alternatives: [Function (anonymous)],[39m
+[31m      any: [Function (anonymous)],[39m
+[31m      array: [Function (anonymous)],[39m
+[31m      boolean: [Function (anonymous)],[39m
+[31m      date: [Function (anonymous)],[39m
+[31m      function: [Function (anonymous)],[39m
+[31m      link: [Function (anonymous)],[39m
+[31m      number: [Function (anonymous)],[39m
+[31m      object: [Function (anonymous)],[39m
+[31m      string: [Function (anonymous)],[39m
+[31m      symbol: [Function (anonymous)],[39m
+[31m      binary: [Function (anonymous)],[39m
+[31m      allow: [Function (anonymous)],[39m
+[31m      custom: [Function (anonymous)],[39m
+[31m      disallow: [Function (anonymous)],[39m
+[31m      equal: [Function (anonymous)],[39m
+[31m      exist: [Function (anonymous)],[39m
+[31m      forbidden: [Function (anonymous)],[39m
+[31m      invalid: [Function (anonymous)],[39m
+[31m      not: [Function (anonymous)],[39m
+[31m      only: [Function (anonymous)],[39m
+[31m      optional: [Function (anonymous)],[39m
+[31m      options: [Function (anonymous)],[39m
+[31m      prefs: [Function (anonymous)],[39m
+[31m      preferences: [Function (anonymous)],[39m
+[31m      required: [Function (anonymous)],[39m
+[31m      strip: [Function (anonymous)],[39m
+[31m      valid: [Function (anonymous)],[39m
+[31m      when: [Function (anonymous)],[39m
+[31m      ValidationError: [class (anonymous) extends Error],[39m
+[31m      version: '17.13.3',[39m
+[31m      cache: [Object],[39m
+[31m      assert: [Function: assert],[39m
+[31m      attempt: [Function: attempt],[39m
+[31m      build: [Function: build],[39m
+[31m      checkPreferences: [Function: checkPreferences],[39m
+[31m      compile: [Function: compile],[39m
+[31m      defaults: [Function: defaults],[39m
+[31m      expression: [Function: expression],[39m
+[31m      extend: [Function: extend],[39m
+[31m      isError: [Function: isError],[39m
+[31m      isExpression: [Function: isTemplate],[39m
+[31m      isRef: [Function (anonymous)],[39m
+[31m      isSchema: [Function (anonymous)],[39m
+[31m      in: [Function: in],[39m
+[31m      override: Symbol(override),[39m
+[31m      ref: [Function: ref],[39m
+[31m      types: [Function: types],[39m
+[31m      alt: [Function (anonymous)],[39m
+[31m      bool: [Function (anonymous)],[39m
+[31m      func: [Function (anonymous)],[39m
+[31m      x: [Function: expression],[39m
+[31m      trace: [Function: trace],[39m
+[31m      untrace: [Function (anonymous)],[39m
+[31m      [Symbol(@hapi/lab/coverage/initialize)]: [Function: trace][39m
+[31m    },[39m
+[31m    '$_temp': { ruleset: false, whens: {} },[39m
+[31m    _ids: { _byId: Map(0) {}, _byKey: Map(0) {}, _schemaChain: false },[39m
+[31m    _preferences: null,[39m
+[31m    _valids: null,[39m
+[31m    _invalids: null,[39m
+[31m    _rules: [],[39m
+[31m    _singleRules: Map(0) {},[39m
+[31m    _refs: { refs: [] },[39m
+[31m    _flags: { default: [Function: v42] },[39m
+[31m    _cache: null,[39m
+[31m    '$_terms': {[39m
+[31m      alterations: null,[39m
+[31m      examples: null,[39m
+[31m      externals: null,[39m
+[31m      metas: [],[39m
+[31m      notes: [],[39m
+[31m      shared: null,[39m
+[31m      tags: [],[39m
+[31m      whens: null,[39m
+[31m      replacements: null[39m
+[31m    },[39m
+[31m    '$_super': {}[39m
+[31m  },[39m
+[31m  state: {[39m
+[31m    path: [ 'sections', 0, 'id' ],[39m
+[31m    ancestors: [ [Object], [Array], [Object] ],[39m
+[31m    mainstay: {[39m
+[31m      externals: [],[39m
+[31m      warnings: [],[39m
+[31m      tracer: [Object],[39m
+[31m      debug: null,[39m
+[31m      links: Map(0) {},[39m
+[31m      shadow: null,[39m
+[31m      artifacts: null,[39m
+[31m      _snapshots: [][39m
+[31m    },[39m
+[31m    schemas: [ [Object], [Object], [Object], [Object] ],[39m
+[31m    debug: null[39m
+[31m  },[39m
+[31m  error: [Function: createError],[39m
+[31m  errorsArray: [Function (anonymous)],[39m
+[31m  warn: [Function: warn],[39m
+[31m  message: [Function: message][39m
+[31m}" (type Object) at path "id", sections.1.id: Cast to string failed for value "{[39m
+[31m  '0': 134,[39m
+[31m  '1': 124,[39m
+[31m  '2': 235,[39m
+[31m  '3': 68,[39m
+[31m  '4': 255,[39m
+[31m  '5': 80,[39m
+[31m  '6': 66,[39m
+[31m  '7': 248,[39m
+[31m  '8': 149,[39m
+[31m  '9': 105,[39m
+[31m  '10': 124,[39m
+[31m  '11': 39,[39m
+[31m  '12': 229,[39m
+[31m  '13': 112,[39m
+[31m  '14': 151,[39m
+[31m  '15': 83,[39m
+[31m  original: undefined,[39m
+[31m  prefs: {[39m
+[31m    abortEarly: false,[39m
+[31m    allowUnknown: false,[39m
+[31m    artifacts: false,[39m
+[31m    cache: true,[39m
+[31m    context: null,[39m
+[31m    convert: true,[39m
+[31m    dateFormat: 'iso',[39m
+[31m    errors: {[39m
+[31m      escapeHtml: false,[39m
+[31m      label: 'path',[39m
+[31m      language: null,[39m
+[31m      render: true,[39m
+[31m      stack: false,[39m
+[31m      wrap: [Object][39m
+[31m    },[39m
+[31m    externals: true,[39m
+[31m    messages: {},[39m
+[31m    nonEnumerables: false,[39m
+[31m    noDefaults: false,[39m
+[31m    presence: 'optional',[39m
+[31m    skipFunctions: false,[39m
+[31m    stripUnknown: false,[39m
+[31m    warnings: false[39m
+[31m  },[39m
+[31m  schema: {[39m
+[31m    type: 'string',[39m
+[31m    '$_root': {[39m
+[31m      _types: [Set],[39m
+[31m      alternatives: [Function (anonymous)],[39m
+[31m      any: [Function (anonymous)],[39m
+[31m      array: [Function (anonymous)],[39m
+[31m      boolean: [Function (anonymous)],[39m
+[31m      date: [Function (anonymous)],[39m
+[31m      function: [Function (anonymous)],[39m
+[31m      link: [Function (anonymous)],[39m
+[31m      number: [Function (anonymous)],[39m
+[31m      object: [Function (anonymous)],[39m
+[31m      string: [Function (anonymous)],[39m
+[31m      symbol: [Function (anonymous)],[39m
+[31m      binary: [Function (anonymous)],[39m
+[31m      allow: [Function (anonymous)],[39m
+[31m      custom: [Function (anonymous)],[39m
+[31m      disallow: [Function (anonymous)],[39m
+[31m      equal: [Function (anonymous)],[39m
+[31m      exist: [Function (anonymous)],[39m
+[31m      forbidden: [Function (anonymous)],[39m
+[31m      invalid: [Function (anonymous)],[39m
+[31m      not: [Function (anonymous)],[39m
+[31m      only: [Function (anonymous)],[39m
+[31m      optional: [Function (anonymous)],[39m
+[31m      options: [Function (anonymous)],[39m
+[31m      prefs: [Function (anonymous)],[39m
+[31m      preferences: [Function (anonymous)],[39m
+[31m      required: [Function (anonymous)],[39m
+[31m      strip: [Function (anonymous)],[39m
+[31m      valid: [Function (anonymous)],[39m
+[31m      when: [Function (anonymous)],[39m
+[31m      ValidationError: [class (anonymous) extends Error],[39m
+[31m      version: '17.13.3',[39m
+[31m      cache: [Object],[39m
+[31m      assert: [Function: assert],[39m
+[31m      attempt: [Function: attempt],[39m
+[31m      build: [Function: build],[39m
+[31m      checkPreferences: [Function: checkPreferences],[39m
+[31m      compile: [Function: compile],[39m
+[31m      defaults: [Function: defaults],[39m
+[31m      expression: [Function: expression],[39m
+[31m      extend: [Function: extend],[39m
+[31m      isError: [Function: isError],[39m
+[31m      isExpression: [Function: isTemplate],[39m
+[31m      isRef: [Function (anonymous)],[39m
+[31m      isSchema: [Function (anonymous)],[39m
+[31m      in: [Function: in],[39m
+[31m      override: Symbol(override),[39m
+[31m      ref: [Function: ref],[39m
+[31m      types: [Function: types],[39m
+[31m      alt: [Function (anonymous)],[39m
+[31m      bool: [Function (anonymous)],[39m
+[31m      func: [Function (anonymous)],[39m
+[31m      x: [Function: expression],[39m
+[31m      trace: [Function: trace],[39m
+[31m      untrace: [Function (anonymous)],[39m
+[31m      [Symbol(@hapi/lab/coverage/initialize)]: [Function: trace][39m
+[31m    },[39m
+[31m    '$_temp': { ruleset: false, whens: {} },[39m
+[31m    _ids: { _byId: Map(0) {}, _byKey: Map(0) {}, _schemaChain: false },[39m
+[31m    _preferences: null,[39m
+[31m    _valids: null,[39m
+[31m    _invalids: null,[39m
+[31m    _rules: [],[39m
+[31m    _singleRules: Map(0) {},[39m
+[31m    _refs: { refs: [] },[39m
+[31m    _flags: { default: [Function: v42] },[39m
+[31m    _cache: null,[39m
+[31m    '$_terms': {[39m
+[31m      alterations: null,[39m
+[31m      examples: null,[39m
+[31m      externals: null,[39m
+[31m      metas: [],[39m
+[31m      notes: [],[39m
+[31m      shared: null,[39m
+[31m      tags: [],[39m
+[31m      whens: null,[39m
+[31m      replacements: null[39m
+[31m    },[39m
+[31m    '$_super': {}[39m
+[31m  },[39m
+[31m  state: {[39m
+[31m    path: [ 'sections', 1, 'id' ],[39m
+[31m    ancestors: [ [Object], [Array], [Object] ],[39m
+[31m    mainstay: {[39m
+[31m      externals: [],[39m
+[31m      warnings: [],[39m
+[31m      tracer: [Object],[39m
+[31m      debug: null,[39m
+[31m      links: Map(0) {},[39m
+[31m      shadow: null,[39m
+[31m      artifacts: null,[39m
+[31m      _snapshots: [][39m
+[31m    },[39m
+[31m    schemas: [ [Object], [Object], [Object], [Object] ],[39m
+[31m    debug: null[39m
+[31m  },[39m
+[31m  error: [Function: createError],[39m
+[31m  errorsArray: [Function (anonymous)],[39m
+[31m  warn: [Function: warn],[39m
+[31m  message: [Function: message][39m
+[31m}" (type Object) at path "id"[39m
+2024-12-03 07:30:41:3041 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2024-12-03 11:01:11:111 [31merror[39m: [31mGenerate card error: "[object Object]" is not valid JSON[39m
+2024-12-03 11:06:15:615 [31merror[39m: [31mGenerate card error: Invalid card type. Must be one of: character, plot, setting, theme[39m
+2024-12-03 11:24:19:2419 [31merror[39m: [31mGenerate card error: card.toLowerCase is not a function[39m
+2024-12-03 11:26:04:264 [31merror[39m: [31mGenerate card error: Invalid card type. Must be one of: character, plot, setting, theme[39m
+2024-12-03 11:30:39:3039 [31merror[39m: [31mGenerate card error: Invalid card type. Must be one of: character, plot, setting, theme[39m
+2024-12-03 11:32:14:3214 [31merror[39m: [31mGenerate card error: Invalid card type. Must be one of: character, plot, setting, theme[39m
+2024-12-03 11:35:47:3547 [31merror[39m: [31mGenerate card error: openai2.createCompletion is not a function[39m
+2024-12-03 11:40:09:409 [31merror[39m: [31mGenerate card error: 400 Missing required parameter: 'messages'.[39m
+2024-12-03 12:03:54:354 [31merror[39m: [31mCustomize card error: Invalid customization keys: customization[39m
+2024-12-03 12:20:23:2023 [31merror[39m: [31mCustomize card error: Invalid customization keys: customization[39m
+2024-12-03 12:20:34:2034 [31merror[39m: [31mSet card rarity error: Card not found[39m
+2024-12-03 12:20:46:2046 [31merror[39m: [31mIntegrate card into story error: Invalid story ID[39m
+2024-12-03 12:21:38:2138 [31merror[39m: [31mCustomize card error: Card not found[39m
+2024-12-03 12:25:16:2516 [31merror[39m: [31mCustomize card error: Card not found[39m
+2024-12-03 12:28:51:2851 [31merror[39m: [31mCustomize card error: Cast to ObjectId failed for value "customize" (type string) at path "_id" for model "Card"[39m
+2024-12-03 12:35:47:3547 [31merror[39m: [31mIntegrate card into story error: Cannot read properties of undefined (reading 'push')[39m
+2024-12-03 12:39:25:3925 [31merror[39m: [31mIntegrate card into story error: Cannot read properties of undefined (reading 'includes')[39m
+2024-12-03 13:59:38:5938 [31merror[39m: [31mGet all outlines error: Cast to ObjectId failed for value "{[39m
+[31m  statusCode: 200,[39m
+[31m  body: '{"user":{"id":"674b2c3d00e80a4dbf3e55ca","username":"testuser12","email":"labannjoroge8292@gmail.com","isEmailVerified":false,"writingMode":"creative","goals":[]}}'[39m
+[31m}" (type Object) at path "userId" for model "Outline"[39m
+2024-12-03 14:29:03:293 [31merror[39m: [31mOutline route error: route is not defined[39m
+2024-12-03 16:26:25:2625 [31merror[39m: [31mGet outline error: mongoose is not defined[39m
+2024-12-03 16:28:34:2834 [31merror[39m: [31mUpdate outline error: "[object Object]" is not valid JSON[39m
+2024-12-03 16:47:17:4717 [31merror[39m: [31mUpdate outline error: Validation Error: "userId" is required[39m
+2024-12-03 16:47:17:4717 [31merror[39m: [31mGet outline error: deckId is not defined[39m
+2024-12-03 16:53:54:5354 [31merror[39m: [31mGet outline error: Invalid deck or user ID[39m
+2024-12-03 16:53:55:5355 [31merror[39m: [31mUpdate outline error: mongoose is not defined[39m
+2024-12-03 16:57:40:5740 [31merror[39m: [31mGet outline error: Invalid outline or user ID[39m
+2024-12-03 17:01:21:121 [31merror[39m: [31mGet outline error: Cannot access 'outline' before initialization[39m
+2024-12-03 17:04:10:410 [31merror[39m: [31mGet outline error: Cannot access 'outline' before initialization[39m
+2024-12-03 17:12:55:1255 [31merror[39m: [31mGet outline error: outline is not defined[39m
+2024-12-03 17:12:56:1256 [31merror[39m: [31mUpdate outline error: outline is not defined[39m
+2024-12-03 17:17:03:173 [31merror[39m: [31mGet outline error: Cast to ObjectId failed for value "{[39m
+[31m  statusCode: 200,[39m
+[31m  body: '{"user":{"id":"674b2c3d00e80a4dbf3e55ca","username":"testuser12","email":"labannjoroge8292@gmail.com","isEmailVerified":false,"writingMode":"creative","goals":[]}}'[39m
+[31m}" (type Object) at path "userId" for model "Outline"[39m
+2024-12-03 17:17:06:176 [31merror[39m: [31mUpdate outline error: Cast to ObjectId failed for value "{[39m
+[31m  statusCode: 200,[39m
+[31m  body: '{"user":{"id":"674b2c3d00e80a4dbf3e55ca","username":"testuser12","email":"labannjoroge8292@gmail.com","isEmailVerified":false,"writingMode":"creative","goals":[]}}'[39m
+[31m}" (type Object) at path "userId" for model "Outline"[39m
+2024-12-03 17:26:39:2639 [31merror[39m: [31mUpdate outline error: Invalid outline or user ID[39m
+2024-12-03 17:26:40:2640 [31merror[39m: [31mGet outline error: Invalid outline or user ID[39m
+2024-12-03 18:17:50:1750 [31merror[39m: [31mFull token verification error: jwt must be a string[39m
+2024-12-03 18:17:50:1750 [31merror[39m: [31mSpecific error type: JsonWebTokenError, Message: Invalid token signature[39m
+2024-12-03 18:17:50:1750 [31merror[39m: [31mGet story map error: Invalid token signature[39m
+2024-12-03 18:19:10:1910 [31merror[39m: [31mFull token verification error: jwt must be a string[39m
+2024-12-03 18:19:10:1910 [31merror[39m: [31mSpecific error type: JsonWebTokenError, Message: Invalid token signature[39m
+2024-12-03 18:19:10:1910 [31merror[39m: [31mUpdate story map error: Invalid token signature[39m
+2024-12-04 19:30:11:3011 [31merror[39m: [31mStory mapping route error: Cannot read properties of undefined (reading 'match')[39m
+2024-12-04 19:53:47:5347 [31merror[39m: [31mUpdate story map error: "[object Object]" is not valid JSON[39m
+2024-12-04 20:11:03:113 [31merror[39m: [31mFull token verification error: jwt must be a string[39m
+2024-12-04 20:11:03:113 [31merror[39m: [31mSpecific error type: JsonWebTokenError, Message: Invalid token signature[39m
+2024-12-04 20:11:03:113 [31merror[39m: [31mGet writing session error: Invalid token signature[39m
+2024-12-04 21:05:26:526 [31merror[39m: [31mGet current user error: Operation `users.findOne()` buffering timed out after 10000ms[39m
+2024-12-04 21:06:42:642 [31merror[39m: [31mGet writing session error: session is not defined[39m
+2024-12-04 21:06:43:643 [31merror[39m: [31mGet writing session error: session is not defined[39m
+2024-12-04 21:13:48:1348 [31merror[39m: [31mGet writing session error: session is not defined[39m
+2024-12-04 21:18:08:188 [31merror[39m: [31mFull token verification error: jwt expired[39m
+2024-12-04 21:18:08:188 [31merror[39m: [31mSpecific error type: TokenExpiredError, Message: Token has expired[39m
+2024-12-04 21:18:08:188 [31merror[39m: [31mGet current user error: Token has expired[39m
+2024-12-04 22:57:40:5740 [31merror[39m: [31mDatabase connection error: querySrv ETIMEOUT _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2024-12-16 13:15:37:1537 [31merror[39m: [31mLogin error: User2.findOne is not a function[39m
+2024-12-16 13:27:35:2735 [31merror[39m: [31mLogin error: User2.findOne is not a function[39m
+2024-12-16 15:02:30:230 [31merror[39m: [31mLogin error: User2.findOne is not a function[39m
+2024-12-16 15:31:56:3156 [31merror[39m: [31mLogin error: User2.findOne is not a function[39m
+2024-12-16 17:09:48:948 [31merror[39m: [31mLogin error: User2.findOne is not a function[39m
+2024-12-17 11:07:35:735 [31merror[39m: [31mStory route error: handleStoryRoutes is not defined[39m
+2024-12-17 11:09:13:913 [31merror[39m: [31mCreate story error: Validation failed: genre: `Fiction` is not a valid enum value for path `genre`.[39m
+2024-12-17 11:18:56:1856 [31merror[39m: [31mGet stories error: outlines is not defined[39m
+2024-12-17 11:21:22:2122 [31merror[39m: [31mGet story error: Unsupported BSON version, bson types must be from bson 5.x.x[39m
+2024-12-17 11:45:29:4529 [31merror[39m: [31mGet story error: Unsupported BSON version, bson types must be from bson 5.x.x[39m
+2024-12-17 11:50:34:5034 [31merror[39m: [31mUpdate story error: Unsupported BSON version, bson types must be from bson 5.x.x[39m
+2024-12-17 11:55:49:5549 [31merror[39m: [31mGet story error: Unsupported BSON version, bson types must be from bson 5.x.x[39m
+2024-12-17 12:16:38:1638 [31merror[39m: [31mGet story error: Unsupported BSON version, bson types must be from bson 5.x.x[39m
+2024-12-17 12:43:59:4359 [31merror[39m: [31mGet story error: Unsupported BSON version, bson types must be from bson 6.x.x[39m
+2024-12-17 12:44:41:4441 [31merror[39m: [31mUpdate story error: Unsupported BSON version, bson types must be from bson 6.x.x[39m
+2024-12-17 12:50:23:5023 [31merror[39m: [31mGet story error: Unsupported BSON version, bson types must be from bson 6.x.x[39m
+2024-12-17 15:20:28:2028 [31merror[39m: [31mGet story error: Unsupported BSON version, bson types must be from bson 6.x.x[39m
+2024-12-17 19:59:20:5920 [31merror[39m: [31mGet story error: Unsupported BSON version, bson types must be from bson 6.x.x[39m
+2024-12-17 20:18:59:1859 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2024-12-30 13:01:23:123 [31merror[39m: [31mFailed to generate FCM token: admin.messaging(...).getToken is not a function[39m
+2024-12-30 13:01:59:159 [31merror[39m: [31mRegister error: User already exists[39m
+2024-12-30 19:48:30:4830 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2024-12-31 11:45:48:4548 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2024-12-31 14:51:59:5159 [31merror[39m: [31mLogin error: Invalid email or password[39m
+2024-12-31 15:32:21:3221 [31merror[39m: [31mRegister error: User already exists[39m
+2024-12-31 15:47:28:4728 [31merror[39m: [31mRegister error: User already exists[39m
+2025-01-03 10:20:45:2045 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-03 10:31:32:3132 [31merror[39m: [31mDashboard AI Analysis error: Connection error.[39m
+2025-01-03 10:31:41:3141 [31merror[39m: [31mRegister error: Operation `users.findOne()` buffering timed out after 10000ms[39m
+2025-01-03 10:31:44:3144 [31merror[39m: [31mDashboard AI Analysis error: Connection error.[39m
+2025-01-03 10:31:45:3145 [31merror[39m: [31mDashboard AI Analysis error: Connection error.[39m
+2025-01-03 10:32:02:322 [31merror[39m: [31mDatabase connection error: querySrv ETIMEOUT _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-03 10:49:45:4945 [31merror[39m: [31mRegister error: read ECONNRESET[39m
+2025-01-03 14:57:07:577 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-03 16:11:54:1154 [31merror[39m: [31mDashboard AI Analysis error: Connection error.[39m
+2025-01-03 20:10:35:1035 [31merror[39m: [31mDashboard AI Analysis error: Connection error.[39m
+2025-01-03 20:11:05:115 [31merror[39m: [31mDatabase connection error: querySrv ETIMEOUT _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-03 22:41:14:4114 [31merror[39m: [31mFull token verification error: jwt malformed[39m
+2025-01-03 22:41:14:4114 [31merror[39m: [31mSpecific error type: JsonWebTokenError, Message: Invalid token signature[39m
+2025-01-03 22:41:15:4115 [31merror[39m: [31mVerification error: Invalid token signature[39m
+2025-01-03 22:41:15:4115 [31merror[39m: [31mVerification error: Invalid token signature[39m
+2025-01-03 22:41:15:4115 [31merror[39m: [31mFull token verification error: jwt malformed[39m
+2025-01-03 22:41:15:4115 [31merror[39m: [31mSpecific error type: JsonWebTokenError, Message: Invalid token signature[39m
+2025-01-03 22:41:15:4115 [31merror[39m: [31mVerification error: Invalid token signature[39m
+2025-01-03 22:41:15:4115 [31merror[39m: [31mVerification error: Invalid token signature[39m
+2025-01-05 11:35:14:3514 [31merror[39m: [31mDatabase connection error: querySrv ETIMEOUT _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-05 11:35:15:3515 [31merror[39m: [31mFull token verification error: jwt expired[39m
+2025-01-05 11:35:15:3515 [31merror[39m: [31mSpecific error type: TokenExpiredError, Message: Token has expired[39m
+2025-01-05 11:35:16:3516 [31merror[39m: [31mFull token verification error: jwt expired[39m
+2025-01-05 11:35:16:3516 [31merror[39m: [31mSpecific error type: TokenExpiredError, Message: Token has expired[39m
+2025-01-05 11:35:16:3516 [31merror[39m: [31mFull token verification error: jwt expired[39m
+2025-01-05 11:35:16:3516 [31merror[39m: [31mSpecific error type: TokenExpiredError, Message: Token has expired[39m
+2025-01-05 11:35:24:3524 [31merror[39m: [31mLogin error: Operation `users.findOne()` buffering timed out after 10000ms[39m
+2025-01-05 11:59:31:5931 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-05 13:04:02:42 [31merror[39m: [31mError sending push notification: "[object Object]" is not valid JSON[39m
+2025-01-05 13:20:15:2015 [31merror[39m: [31mError sending push notification: sendPushNotification is not defined[39m
+2025-01-05 14:04:53:453 [31merror[39m: [31mError sending push notification: Cast to ObjectId failed for value "dT6SYgqy-MCC6l8qBPVAz_:APA91bF9a5QTp62609IpwNgWLbPXonbUWTRKpHG76eMdejuY4I6sb7y5CRN3T_vYlIE60ITvR3hWSUsQMASOhzHvc11hWQ-Q4riK97VZwUCxM1Peh-f-bOg" (type string) at path "_id" for model "User"[39m
+2025-01-05 14:04:53:453 [31merror[39m: [31mError sending push notification: Cast to ObjectId failed for value "dT6SYgqy-MCC6l8qBPVAz_:APA91bF9a5QTp62609IpwNgWLbPXonbUWTRKpHG76eMdejuY4I6sb7y5CRN3T_vYlIE60ITvR3hWSUsQMASOhzHvc11hWQ-Q4riK97VZwUCxM1Peh-f-bOg" (type string) at path "_id" for model "User"[39m
+2025-01-05 14:16:58:1658 [31merror[39m: [31mError awarding points: "[object Object]" is not valid JSON[39m
+2025-01-05 14:37:23:3723 [31merror[39m: [31mError awarding points: Invalid reward type[39m
+2025-01-05 14:37:23:3723 [31merror[39m: [31mError sending push notification: Cast to ObjectId failed for value "dT6SYgqy-MCC6l8qBPVAz_:APA91bF9a5QTp62609IpwNgWLbPXonbUWTRKpHG76eMdejuY4I6sb7y5CRN3T_vYlIE60ITvR3hWSUsQMASOhzHvc11hWQ-Q4riK97VZwUCxM1Peh-f-bOg" (type string) at path "_id" for model "User"[39m
+2025-01-05 14:37:23:3723 [31merror[39m: [31mError sending push notification: Cast to ObjectId failed for value "dT6SYgqy-MCC6l8qBPVAz_:APA91bF9a5QTp62609IpwNgWLbPXonbUWTRKpHG76eMdejuY4I6sb7y5CRN3T_vYlIE60ITvR3hWSUsQMASOhzHvc11hWQ-Q4riK97VZwUCxM1Peh-f-bOg" (type string) at path "_id" for model "User"[39m
+2025-01-05 14:44:12:4412 [31merror[39m: [31mError sending push notification: Cast to ObjectId failed for value "dT6SYgqy-MCC6l8qBPVAz_:APA91bF9a5QTp62609IpwNgWLbPXonbUWTRKpHG76eMdejuY4I6sb7y5CRN3T_vYlIE60ITvR3hWSUsQMASOhzHvc11hWQ-Q4riK97VZwUCxM1Peh-f-bOg" (type string) at path "_id" for model "User"[39m
+2025-01-05 14:44:12:4412 [31merror[39m: [31mError sending push notification: Cast to ObjectId failed for value "dT6SYgqy-MCC6l8qBPVAz_:APA91bF9a5QTp62609IpwNgWLbPXonbUWTRKpHG76eMdejuY4I6sb7y5CRN3T_vYlIE60ITvR3hWSUsQMASOhzHvc11hWQ-Q4riK97VZwUCxM1Peh-f-bOg" (type string) at path "_id" for model "User"[39m
+2025-01-05 14:44:44:4444 [31merror[39m: [31mError awarding points: Invalid reward type[39m
+2025-01-05 15:02:56:256 [31merror[39m: [31mError sending push notification: "[object Object]" is not valid JSON[39m
+2025-01-05 15:04:53:453 [31merror[39m: [31mError sending push notification: "[object Object]" is not valid JSON[39m
+2025-01-05 15:07:06:76 [31merror[39m: [31mError sending push notification: Cannot read properties of undefined (reading 'id')[39m
+2025-01-05 15:21:40:2140 [31merror[39m: [31mError awarding points: "[object Object]" is not valid JSON[39m
+2025-01-05 15:45:55:4555 [31merror[39m: [31mError sending email notification: Cannot destructure property 'subject' of 'event.body.data' as it is undefined.[39m
+2025-01-05 22:51:11:5111 [31merror[39m: [31mDatabase connection error: querySrv ETIMEOUT _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-05 22:51:13:5113 [31merror[39m: [31mDashboard AI Analysis error: Connection error.[39m
+2025-01-05 22:51:19:5119 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-05 22:51:20:5120 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-05 22:51:20:5120 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-05 22:51:20:5120 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-05 22:51:20:5120 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-05 22:51:21:5121 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-05 22:51:21:5121 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-06 16:29:48:2948 [31merror[39m: [31mDatabase connection error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vv6jx.mongodb.net[39m
+2025-01-06 16:29:49:2949 [31merror[39m: [31mDashboard AI Analysis error: Connection error.[39m
+2025-01-06 16:29:49:2949 [31merror[39m: [31mDashboard AI Analysis error: Connection error.[39m
+2025-01-06 16:30:51:3051 [31merror[39m: [31mLogin error: Operation `users.findOne()` buffering timed out after 10000ms[39m
+2025-01-06 16:32:49:3249 [31merror[39m: [31mLogin error: Operation `users.findOne()` buffering timed out after 10000ms[39m
+2025-01-06 16:33:08:338 [31merror[39m: [31mLogin error: Operation `users.findOne()` buffering timed out after 10000ms[39m
+2025-01-06 16:34:00:340 [31merror[39m: [31mLogin error: Operation `users.findOne()` buffering timed out after 10000ms[39m
+2025-01-06 16:36:11:3611 [31merror[39m: [31mLogin error: Operation `users.findOne()` buffering timed out after 10000ms[39m
+2025-01-19 22:54:32:5432 [31merror[39m: [31mOpenAI API key is missing![39m

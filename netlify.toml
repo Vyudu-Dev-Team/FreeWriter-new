@@ -1,0 +1,73 @@
+[build]
+  command = "npm run build"
+  publish = "frontend/dist"
+
+[functions]
+  directory = "backend/functions"
+  node_bundler = "esbuild"
+  external_node_modules = ["crypto-browserify"]
+  included_files = ["services/notificationService.js", "config/database.js", "utils/logger.js"]
+
+[functions."*"]  # Applies to all functions
+  timeout = 30
+  
+[functions.scheduleNotifyInactiveUsers]
+  schedule = "0 0 * * *"
+
+# Redirect all API calls to the api function
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+  force = true
+
+# Redirect specific API routes
+[[redirects]]
+  from = "/auth/*"
+  to = "/.netlify/functions/api/auth/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/users/*"
+  to = "/.netlify/functions/api/users/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/stories/*"
+  to = "/.netlify/functions/api/stories/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/ai/*"
+  to = "/.netlify/functions/api/ai/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/api/verify-email"
+  to = "/.netlify/functions/verifyEmail"
+  status = 200
+  force = true
+
+# Global headers
+[[headers]]
+  for = "/*"
+    [headers.values]
+      Access-Control-Allow-Origin = "*"
+      Access-Control-Allow-Methods = "GET, POST, PUT, DELETE, OPTIONS"
+      Access-Control-Allow-Headers = "Content-Type, Authorization"
+      Access-Control-Allow-Credentials = "true"
+
+# Dev-specific settings
+[dev]
+  port = 8888
+  publish = "frontend/dist"
+

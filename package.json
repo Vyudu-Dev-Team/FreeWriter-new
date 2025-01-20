@@ -1,0 +1,33 @@
+{
+  "name": "freewriter",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "build": "npm run build:frontend && npm run build:backend",
+    "build:frontend": "cd frontend && npm install && npm run build",
+    "build:backend": "cd backend && npm install",
+    "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
+    "start:frontend": "cd frontend && npm run dev",
+    "start:backend": "netlify dev",
+    "dev": "netlify dev",
+    "test": "npm run test:frontend && npm run test:backend",
+    "test:frontend": "cd frontend && npm test",
+    "test:backend": "cd backend && npm test",
+    "deploy": "netlify deploy --prod"
+  },
+  "devDependencies": {
+    "concurrently": "^6.2.0",
+    "dotenv-cli": "^7.0.0",
+    "netlify-cli": "^12.0.0",
+    "sass": "^1.83.4",
+    "sass-embedded": "^1.83.4"
+  },
+  "dependencies": {
+    "migrate-mongo": "^11.0.0",
+    "uuid": "^11.0.3"
+  }
+}
