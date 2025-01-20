@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './VirgilChat.css';
 import './VirgilChat.scss';
 import ApiService from '../../services/ApiService';
@@ -8,6 +9,7 @@ const VirgilChat = () => {
     const [hasMessages, setHasMessages] = useState(false);
     const [messages, setMessages] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -31,8 +33,21 @@ const VirgilChat = () => {
             setMessage('');
         } catch (error) {
             console.error('Error sending message:', error);
+            
+            // Handle authentication errors
+            if (error.message.includes('Unauthorized')) {
+                // Redirecionar para o login
+                navigate('/login');
+                return;
+            }
+            
             // Add error message to chat
-            const errorMessage = { type: 'error', content: 'Sorry, there was an error processing your message.' };
+            const errorMessage = { 
+                type: 'error', 
+                content: error.message === 'Unauthorized: Please log in again' 
+                    ? 'Your session has expired. Please log in again.' 
+                    : 'Sorry, there was an error processing your message.' 
+            };
             setMessages(prev => [...prev, errorMessage]);
         } finally {
             setIsLoading(false);
@@ -61,7 +76,7 @@ const VirgilChat = () => {
                             <div key={index} className={`message ${msg.type}`}>
                                 {msg.type === 'ai' && (
                                     <div className="chatTalker">
-                                        <img className="virgilImg" alt="Virgil" />
+                                        <img className="virgilImg" alt="Virgil" src="/assets/virgil-chat/virgilPictureTopLeft.svg" />
                                         <p>VIRGIL</p>
                                     </div>
                                 )}
@@ -73,7 +88,7 @@ const VirgilChat = () => {
                         {isLoading && (
                             <div className="message ai">
                                 <div className="chatTalker">
-                                    <img className="virgilImg" alt="Virgil" />
+                                    <img className="virgilImg" alt="Virgil" src="/assets/virgil-chat/virgilPictureTopLeft.svg" />
                                     <p>VIRGIL</p>
                                 </div>
                                 <div className="message-content typing">
