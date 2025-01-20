@@ -583,3 +583,27 @@
 2025-01-19 23:30:58:3058 [32minfo[39m: [32mToken to verify:[39m
 2025-01-19 23:30:58:3058 [32minfo[39m: [32mJWT_SECRET exists:[39m
 2025-01-19 23:30:58:3058 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-19 23:35:23:3523 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-19 23:35:23:3523 [32minfo[39m: [32mToken to verify:[39m
+2025-01-19 23:35:23:3523 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-19 23:35:23:3523 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-19 23:35:23:3523 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-19 23:35:23:3523 [32minfo[39m: [32mToken to verify:[39m
+2025-01-19 23:35:23:3523 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-19 23:35:23:3523 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-19 23:35:23:3523 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-19 23:35:23:3523 [32minfo[39m: [32mToken to verify:[39m
+2025-01-19 23:35:23:3523 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-19 23:35:23:3523 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-19 23:35:23:3523 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-19 23:35:23:3523 [32minfo[39m: [32mToken to verify:[39m
+2025-01-19 23:35:23:3523 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-19 23:35:23:3523 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-19 23:35:25:3525 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-19 23:35:25:3525 [32minfo[39m: [32mToken to verify:[39m
+2025-01-19 23:35:25:3525 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-19 23:35:25:3525 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-19 23:41:07:417 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-19 23:41:07:417 [32minfo[39m: [32mToken to verify:[39m
+2025-01-19 23:41:07:417 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-19 23:41:07:417 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m

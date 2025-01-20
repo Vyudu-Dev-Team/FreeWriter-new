@@ -101,3 +101,117 @@
         }
     }
 }
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.chat-messages {
+    font-family: 'Quicksand', sans-serif;
+
+    .message {
+        &.user {
+            animation: slideInRight 0.3s ease-out forwards;
+            
+            .message-content {
+                font-weight: 500;
+            }
+        }
+
+        &.ai {
+            width: 100%;
+            background: black;
+            padding: 20px 30px;
+            border-radius: 13px;
+            box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.1);
+            max-width: unset;
+            animation: slideInLeft 0.3s ease-out forwards;
+            
+            .message-content {
+                background-color: unset;
+                font-weight: 400;
+                text-align: left;
+                color: white;
+            }
+        }
+
+        &.error {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+    }
+
+    .chatTalker {
+        p {
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+    }
+
+    .message-content {
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+}
+
+.initial-message {
+    font-family: 'Quicksand', sans-serif;
+    animation: fadeIn 0.4s ease-out;
+
+    h2 {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    p {
+        font-weight: 400;
+    }
+}
+
+.messageInput {
+    input {
+        font-family: 'Quicksand', sans-serif;
+        font-size: 1rem;
+        
+        &::placeholder {
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 400;
+        }
+    }
+
+    button {
+        font-family: 'Quicksand', sans-serif;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+    }
+}
