@@ -1,0 +1,253 @@
+.virgil-chat {
+
+    background-image: url('/assets/backgrounds/backgroundGrid.webp');
+    background-size: cover;
+    background-position: center;
+
+    position: relative;
+
+    & > * {
+        font-family: PixelSplitter, monospace;
+    }
+
+    .chat-section, .cards-section, .right-section {
+        background-color: #000000D9;
+        color: #FFFFFF;
+        
+    }
+
+    .cards-section {
+        border-top-right-radius: 25px;
+    }
+
+    .right-section {
+        border-top-left-radius: 25px;
+        height: 88vh;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 461px;
+    }
+
+    .chat-section {
+        margin: 0px 15px;
+        background-image: url('/assets/backgrounds/virgilBackgroundBlack.webp');
+        background-size: cover;
+        background-position: center;
+
+        .chat{
+            background-color: #000000D9;
+            color: #FFFFFF;
+        }
+
+        .initial-message h2 {
+            margin-bottom: 10px;
+            color: white;
+        }
+        
+        .initial-message p {
+            color: white;
+        }
+    }
+
+    .right-section {
+        .writingPoints {
+                background-color: #490BF4;
+                width: 372px;
+                height: 43px;
+        }
+        .writerLevel{
+            background-color: #6600D2;
+            width: 372px;
+            height: 43px;
+        }
+        .writingSteps{
+            width: 372px;
+            height: 159px;
+            background-color: black;
+            border: 3px solid white;
+            border-radius: 13px;
+        }
+
+        .writingPoints, .writerLevel{
+            border-radius: 13px;
+            color: #D8F651;
+            font-size: 16px;
+            line-height: 20.13px;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            padding: 0px 15px;
+            align-items: center;
+        }
+
+        .statsContainer {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .starContainer {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            flex-direction: row;
+
+            p {
+                margin-top: 21px;
+            }	
+        }
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.chat-messages {
+    font-family: 'Quicksand', sans-serif;
+
+    .message {
+        width: 100%;
+        padding: 20px 30px;
+        border-radius: 13px;
+        max-width: unset;
+        padding-top: 0px;
+        padding-left: 11px;
+        align-self: flex-start;
+
+        .chatTalker {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+
+            p {
+                font-family: 'Quicksand', sans-serif;
+                font-weight: 600;
+                font-size: 0.9rem;
+                letter-spacing: 0.5px;
+                color: white;
+            }
+
+            .virgilImg {
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                margin-right: 8px;
+            }
+        }
+
+        .message-content {
+            background-color: unset;
+            font-weight: 400;
+            text-align: left;
+            color: white;
+            font-size: 12.8px;
+            line-height: 1.5;
+            padding: 12px 16px;
+        }
+
+        &.user {
+            animation: slideInRight 0.3s ease-out forwards;
+        }
+
+        &.ai {
+            background: black;
+            box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.1);
+            animation: slideInLeft 0.3s ease-out forwards;
+
+            &.loading-message {
+                opacity: 0.8;
+                background: rgba(0, 0, 0, 0.7);
+                
+                .typing {
+                    min-width: 60px;
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+                    gap: 4px;
+                    padding: 12px !important;
+
+                    .dot {
+                        width: 8px;
+                        height: 8px;
+                        background-color: #fff;
+                        border-radius: 50%;
+                        animation: typing 1.4s infinite;
+                        opacity: 0.7;
+
+                        &:nth-child(2) { animation-delay: 0.2s; }
+                        &:nth-child(3) { animation-delay: 0.4s; }
+                    }
+                }
+            }
+        }
+
+        &.error {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+    }
+}
+
+.initial-message {
+    font-family: 'Quicksand', sans-serif;
+    animation: fadeIn 0.4s ease-out;
+
+    h2 {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    p {
+        font-weight: 400;
+    }
+}
+
+.messageInput {
+    input {
+        font-family: 'Quicksand', sans-serif;
+        font-size: 1rem;
+        
+        &::placeholder {
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 400;
+        }
+    }
+
+    button {
+        font-family: 'Quicksand', sans-serif;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+    }
+}

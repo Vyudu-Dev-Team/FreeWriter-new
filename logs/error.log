@@ -820,3 +820,4 @@
 2025-01-06 16:33:08:338 [31merror[39m: [31mLogin error: Operation `users.findOne()` buffering timed out after 10000ms[39m
 2025-01-06 16:34:00:340 [31merror[39m: [31mLogin error: Operation `users.findOne()` buffering timed out after 10000ms[39m
 2025-01-06 16:36:11:3611 [31merror[39m: [31mLogin error: Operation `users.findOne()` buffering timed out after 10000ms[39m
+2025-01-19 22:54:32:5432 [31merror[39m: [31mOpenAI API key is missing![39m

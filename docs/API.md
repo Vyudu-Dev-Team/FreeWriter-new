@@ -64,3 +64,47 @@ Authorization: Bearer YOUR_JWT_TOKEN
 - **Response**: Created story object
 
 ... (rest of the API documentation)
+
+#### Recovery password
+
+- **POST**: `/.netlify/functions/forgetPassword`
+- **Body**:
+```json
+{
+  "email": string
+}
+```
+
+#### IA conversation
+
+- **POST**: `.netlify/functions/api/ai/interaction`
+- **Body**:
+```json
+{
+  "message": string,
+}
+```
+
+#### Generating new prompt
+
+- **POST**: `.netlify/functions/api/ai/generate-Promt`
+- **Body**:
+```json
+{
+  "title": string,
+  "WritingMode": "Plotter | Pantser",
+}
+```
+
+#### New feedback
+- **POST**: `.netlify/functions/api/ai/submit-feedback`
+- **Body**:
+```json
+{
+  "storyId": string, 
+  "promptId": string, 
+  "guidanceId": string, 
+  "rating": number, 
+  "comments": string
+}
+```
