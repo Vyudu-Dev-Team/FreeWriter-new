@@ -318,11 +318,11 @@ app.post("/ai/generate-prompt", async (req, res) => {
   }
 });
 
-app.get("/ai/interaction", async (req, res) => {
+app.get("/ai/interaction/:id", async (req, res) => {
   try {
     const response = await handleAIRoutes({
       httpMethod: "GET",
-      path: "/interaction",
+      path: `/interaction/${req.params.id}`,
       headers: req.headers,
       queryStringParameters: req.query,
     });

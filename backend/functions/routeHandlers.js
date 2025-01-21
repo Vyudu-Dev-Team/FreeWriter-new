@@ -143,6 +143,7 @@ const handleUserRoutes = async (event) => {
 const handleAIRoutes = async (event) => {
   const { httpMethod, path } = event;
   const route = path.replace("/ai", "");
+  const conversationId = path.split("/").pop();
 
   switch (`${httpMethod} ${route}`) {
     case "POST /generate-story-prompt":
@@ -157,8 +158,8 @@ const handleAIRoutes = async (event) => {
       return dashboardAnalysis(event);
     case "POST /interaction":
       return conversationInteractions(event);
-    case "GET /interaction":
-      return getConversationHistory(event);
+    case `GET /interaction/${conversationId}`:
+      return getConversationHistory(event, conversationId);
     default:
       return {
         statusCode: 404,
@@ -1483,7 +1484,13 @@ const updateConversationHistory = async (userId, message, role = "user") => {
     if (!conversation) {
       conversation = new Conversation({
         user_id: userId,
-        history: [newMessage],
+        history: [
+          {
+            "role": "system",
+            "content": "You are FreeWrite Mind, a helpful assistant for writers all levels."
+          }, 
+          newMessage
+        ],
         last_update: new Date()
       });
     } else {
@@ -3313,8 +3320,17 @@ const getUserRewardsHandler = async (event) => {
   }
 };
 
-const getConversationHistory = async (event) => {
+const getConversationHistory = async (event, conversationId) => {
   try {
+    if (!ObjectId.isValid(conversationId)) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({
+          message: "Invalid conversation ID format"
+        })
+      };
+    }
+
     const userResponse = await getCurrentUser(event);
     console.log("User response:", userResponse);
 
@@ -3323,15 +3339,16 @@ const getConversationHistory = async (event) => {
     }
 
     const userId = JSON.parse(userResponse.body).user.id;
-    
-    const conversation = await Conversation.findOne({ user_id: userId });
+    const conversation = await Conversation.findOne({ 
+      _id: conversationId,
+      user_id: userId 
+    });
     
     if (!conversation) {
       return {
-        statusCode: 200,
+        statusCode: 404,
         body: JSON.stringify({
-          message: "No conversation history found",
-          history: []
+          message: "Conversation not found"
         })
       };
     }
@@ -3345,7 +3362,6 @@ const getConversationHistory = async (event) => {
     return {
       statusCode: 200,
       body: JSON.stringify({
-        message: "Conversation history retrieved successfully",
         history: formattedHistory
       })
     };
