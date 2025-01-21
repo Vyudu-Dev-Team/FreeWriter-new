@@ -157,6 +157,8 @@ const handleAIRoutes = async (event) => {
       return dashboardAnalysis(event);
     case "POST /interaction":
       return conversationInteractions(event);
+    case "GET /interaction":
+      return getConversationHistory(event);
     default:
       return {
         statusCode: 404,
@@ -3307,6 +3309,55 @@ const getUserRewardsHandler = async (event) => {
         message: "Error fetching user rewards",
         error: error.message 
       }),
+    };
+  }
+};
+
+const getConversationHistory = async (event) => {
+  try {
+    const userResponse = await getCurrentUser(event);
+    console.log("User response:", userResponse);
+
+    if (userResponse.statusCode !== 200) {
+      return userResponse;
+    }
+
+    const userId = JSON.parse(userResponse.body).user.id;
+    
+    const conversation = await Conversation.findOne({ user_id: userId });
+    
+    if (!conversation) {
+      return {
+        statusCode: 200,
+        body: JSON.stringify({
+          message: "No conversation history found",
+          history: []
+        })
+      };
+    }
+
+    const formattedHistory = conversation.history.map(msg => ({
+      role: msg.role,
+      content: msg.content,
+      timestamp: msg.timestamp
+    }));
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        message: "Conversation history retrieved successfully",
+        history: formattedHistory
+      })
+    };
+
+  } catch (error) {
+    console.error("Error fetching conversation history:", error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        message: "An error occurred while fetching conversation history",
+        error: error.message
+      })
     };
   }
 };

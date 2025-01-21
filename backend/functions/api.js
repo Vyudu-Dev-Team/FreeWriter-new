@@ -318,6 +318,21 @@ app.post("/ai/generate-prompt", async (req, res) => {
   }
 });
 
+app.get("/ai/interaction", async (req, res) => {
+  try {
+    const response = await handleAIRoutes({
+      httpMethod: "GET",
+      path: "/interaction",
+      headers: req.headers,
+      queryStringParameters: req.query,
+    });
+    res.status(response.statusCode).json(JSON.parse(response.body));
+  } catch (error) {
+    logger.error("Get conversation history error:", error);
+    res.status(error.statusCode || 500).json({ message: error.message });
+  }
+});
+
 app.post("/ai/interaction", async (req, res) => {
   try {
     const response = await handleAIRoutes({
