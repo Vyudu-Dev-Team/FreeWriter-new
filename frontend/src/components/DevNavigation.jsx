@@ -29,6 +29,7 @@ export default function DevNavigation() {
     
     // Writing Environment
     { path: '/write', name: 'Writing Workspace' },
+    { path: '/virgil-chat', name: 'Virgil Chat' },
     { path: '/text-editor', name: 'Text Editor' },
     { path: '/writing-analytics', name: 'Writing Analytics' },
     { path: '/writing-prompts', name: 'Writing Prompts' },

@@ -41,6 +41,7 @@ import Introduction from './components/A1_initialScreens/Introduction';
 import UserPage from './components/UserPage';
 
 import MyStoryWorkspace from './components/writing-environment/MyStoryWorkspace';
+import VirgilChat from './components/writing-environment/VirgilChat';
 
 function App() {
   return (
@@ -76,6 +77,8 @@ function App() {
             <Route path="/story-map" element={<StoryMapComponent />} />
             <Route path="/story-map/:storyId" element={<StoryMap />} />
             <Route path="/deck" element={<DeckManager />} />
+            <Route path="/virgil-chat" element={<VirgilChat />} />
+            <Route path="/my-story" element={<VirgilChat />} />
 
             {/* Writing Environment */}
             <Route path="/write/" element={<WritingWorkspace />} />

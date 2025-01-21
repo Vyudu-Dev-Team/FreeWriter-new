@@ -162,7 +162,7 @@ function LoginComponent() {
       }); // FIXED
 
       if (success) {
-        navigate("/dashboard");
+        navigate("/virgil-chat");
       }
     } finally {
       setIsLoading(false);

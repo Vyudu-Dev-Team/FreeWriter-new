@@ -2495,3 +2495,5 @@
 2025-01-06 19:59:11:5911 [32minfo[39m: [32mToken to verify:[39m
 2025-01-06 19:59:11:5911 [32minfo[39m: [32mJWT_SECRET exists:[39m
 2025-01-06 19:59:11:5911 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-19 22:54:32:5432 [32minfo[39m: [32mInitializing OpenAI service with key:[39m
+2025-01-19 22:54:32:5432 [31merror[39m: [31mOpenAI API key is missing![39m
