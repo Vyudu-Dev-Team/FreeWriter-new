@@ -55,6 +55,7 @@ const { v4: uuidv4 } = require("uuid");
 const { ObjectId } = require("mongodb");
 const OpenAI = require("openai");
 const Conversation = require("../models/Conversation.js");
+const { analyzeStoryCard } = require("../services/cardAnalyzer.js");
 const { generateTitleFromConversation } = require("../services/titleGenerator.js");
 
 // Debug logs for OpenAI API Key
@@ -1497,7 +1498,6 @@ const conversationInteractions = async (event) => {
       await conversation.save();
     }
 
-    // Adiciona a mensagem do usuário
     conversation.history.push({
       role: "user",
       content: message,
@@ -1506,7 +1506,6 @@ const conversationInteractions = async (event) => {
     conversation.last_update = new Date();
     await conversation.save();
 
-    // Gera resposta da IA
     const messages = conversation.history.map(msg => ({
       role: msg.role,
       content: msg.content
@@ -1521,7 +1520,6 @@ const conversationInteractions = async (event) => {
 
     const aiResponse = completion.choices[0].message.content.trim();
     
-    // Adiciona resposta da IA ao histórico
     conversation.history.push({
       role: "assistant",
       content: aiResponse,
@@ -1547,12 +1545,15 @@ const conversationInteractions = async (event) => {
       await story.save();
     }
 
+    const cardType = await analyzeStoryCard(aiResponse);
+
     return {
       statusCode: 200,
       body: JSON.stringify({
         response: aiResponse,
         conversationId: conversation._id,
-        title: story.title
+        title: story.title,
+        card: cardType
       })
     };
   } catch (error) {
