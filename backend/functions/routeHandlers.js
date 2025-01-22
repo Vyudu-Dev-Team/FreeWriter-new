@@ -1490,7 +1490,7 @@ const conversationInteractions = async (event) => {
         user_id: userId,
         history: [{
           role: "system",
-          content: "You are FreeWrite Mind, a helpful assistant for writers all levels."
+          content: "You are FreeWrite Mind, a helpful assistant for writers all levels with objectives to help the user write a story."
         }],
         last_update: new Date()
       });
