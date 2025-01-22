@@ -179,18 +179,21 @@ const getAllConversations = async (event) => {
     }
 
     const userId = JSON.parse(userResponse.body).user.id;
-    const conversations = await Conversation.find(
-      { user_id: userId },
-      '_id last_update'
-    ).sort({ last_update: -1 });
+    const stories = await Story.find(
+      { author: userId }, 
+      'conversation_id title createdAt'
+    ).sort({ createdAt: -1 });
+
+    const conversations = stories.map(story => ({
+      id: story.conversation_id || "no_conversation",
+      title: story.title || "Untitled Story",
+      lastUpdate: story.createdAt
+    }));
 
     return {
       statusCode: 200,
       body: JSON.stringify({
-        conversations: conversations.map(conv => ({
-          id: conv._id,
-          lastUpdate: conv.last_update
-        }))
+        conversations: conversations
       })
     };
 
@@ -1463,10 +1466,47 @@ const conversationInteractions = async (event) => {
     }
 
     const userId = JSON.parse(userResponse.body).user.id;
-    const { message } = JSON.parse(event.body);
+    const { message, conversationId } = JSON.parse(event.body);
+    let conversation;
 
-    const conversation = await updateConversationHistory(userId, message);
-    
+    if (conversationId && ObjectId.isValid(conversationId)) {
+      conversation = await Conversation.findOne({ 
+        _id: conversationId,
+        user_id: userId 
+      });
+      
+      if (!conversation) {
+        return {
+          statusCode: 404,
+          body: JSON.stringify({
+            message: "Conversation not found"
+          })
+        };
+      }
+    }
+
+    if (!conversation) {
+      conversation = new Conversation({
+        user_id: userId,
+        history: [{
+          role: "system",
+          content: "You are FreeWrite Mind, a helpful assistant for writers all levels."
+        }],
+        last_update: new Date()
+      });
+      await conversation.save();
+    }
+
+    // Adiciona a mensagem do usuário
+    conversation.history.push({
+      role: "user",
+      content: message,
+      timestamp: new Date()
+    });
+    conversation.last_update = new Date();
+    await conversation.save();
+
+    // Gera resposta da IA
     const messages = conversation.history.map(msg => ({
       role: msg.role,
       content: msg.content
@@ -1480,16 +1520,24 @@ const conversationInteractions = async (event) => {
     });
 
     const aiResponse = completion.choices[0].message.content.trim();
-    const updatedConversation = await updateConversationHistory(userId, aiResponse, "assistant");
+    
+    // Adiciona resposta da IA ao histórico
+    conversation.history.push({
+      role: "assistant",
+      content: aiResponse,
+      timestamp: new Date()
+    });
+    conversation.last_update = new Date();
+    await conversation.save();
 
-    let story = await Story.findOne({ conversation_id: updatedConversation._id });
+    let story = await Story.findOne({ conversation_id: conversation._id });
 
     if (!story) {
-      const title = await generateTitleFromConversation(updatedConversation.history);
+      const title = await generateTitleFromConversation(conversation.history);
       
       story = new Story({
         author: userId,
-        conversation_id: updatedConversation._id,
+        conversation_id: conversation._id,
         title: title,
         status_progress: "draft",
         createdAt: new Date(),
@@ -1503,7 +1551,7 @@ const conversationInteractions = async (event) => {
       statusCode: 200,
       body: JSON.stringify({
         response: aiResponse,
-        conversation: updatedConversation, // Remove it in future
+        conversationId: conversation._id,
         title: story.title
       })
     };
@@ -1515,53 +1563,6 @@ const conversationInteractions = async (event) => {
         error: error.message
       })
     };
-  }
-};
-
-const updateConversationHistory = async (userId, message, role = "user") => {
-  try {
-    if (!message || message.trim() === '') {
-      throw new Error("No content");
-    }
-
-    let conversation = await Conversation.findOne({ user_id: userId });
-    
-    const newMessage = {
-      role: role,
-      content: message.trim(),
-      timestamp: new Date()
-    };
-
-    if (!conversation) {
-      conversation = new Conversation({
-        user_id: userId,
-        history: [
-          {
-            "role": "system",
-            "content": "You are FreeWrite Mind, a helpful assistant for writers all levels."
-          }, 
-          newMessage
-        ],
-        last_update: new Date()
-      });
-    } else {
-      if (!Array.isArray(conversation.history)) {
-        conversation.history = [];
-      }
-      
-      conversation.history.push(newMessage);
-      conversation.last_update = new Date();
-    }
-
-    if (!conversation.history.every(msg => msg.content && msg.content.trim() !== '')) {
-      throw new Error("All messages must have valid content");
-    }
-
-    await conversation.save();
-    return conversation;
-  } catch (error) {
-    console.error("Error updating conversation history:", error);
-    throw error;
   }
 };
 
