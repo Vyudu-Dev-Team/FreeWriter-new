@@ -147,7 +147,7 @@ const handleAIRoutes = async (event) => {
 
   switch (`${httpMethod} ${route}`) {
     case "POST /generate-story-prompt":
-      return generateAndSaveStoryPrompt(event); // Pass the parsed body
+      return generateAndSaveStoryPrompt(event);
     case "POST /generate-prompt":
       return generatePrompt(event);
     case "POST /generate-guidance":
@@ -158,6 +158,8 @@ const handleAIRoutes = async (event) => {
       return dashboardAnalysis(event);
     case "POST /interaction":
       return conversationInteractions(event);
+    case "GET /interaction":
+      return getAllConversations(event);
     case `GET /interaction/${conversationId}`:
       return getConversationHistory(event, conversationId);
     default:
@@ -165,6 +167,40 @@ const handleAIRoutes = async (event) => {
         statusCode: 404,
         body: JSON.stringify({ message: "Not Found" }),
       };
+  }
+};
+
+const getAllConversations = async (event) => {
+  try {
+    const userResponse = await getCurrentUser(event);
+    if (userResponse.statusCode !== 200) {
+      return userResponse;
+    }
+
+    const userId = JSON.parse(userResponse.body).user.id;
+    const conversations = await Conversation.find(
+      { user_id: userId },
+      '_id last_update'
+    ).sort({ last_update: -1 });
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        conversations: conversations.map(conv => ({
+          id: conv._id,
+          lastUpdate: conv.last_update
+        }))
+      })
+    };
+
+  } catch (error) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        message: "Failed to retrieve conversations",
+        error: error.message
+      })
+    };
   }
 };
 
