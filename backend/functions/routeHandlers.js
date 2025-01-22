@@ -55,6 +55,7 @@ const { v4: uuidv4 } = require("uuid");
 const { ObjectId } = require("mongodb");
 const OpenAI = require("openai");
 const Conversation = require("../models/Conversation.js");
+const { generateTitleFromConversation } = require("../services/titleGenerator.js");
 
 // Debug logs for OpenAI API Key
 console.log('Environment:', process.env.NODE_ENV);
@@ -1457,8 +1458,6 @@ const generatePrompt = async (event) => {
 const conversationInteractions = async (event) => {
   try {
     const userResponse = await getCurrentUser(event);
-    console.log("User response:", userResponse);
-
     if (userResponse.statusCode !== 200) {
       return userResponse;
     }
@@ -1476,30 +1475,46 @@ const conversationInteractions = async (event) => {
     const completion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: messages,
-      max_tokens: 1000, 
-      temperature: 0.7 
+      max_tokens: 1000,
+      temperature: 0.7
     });
 
     const aiResponse = completion.choices[0].message.content.trim();
-    
     const updatedConversation = await updateConversationHistory(userId, aiResponse, "assistant");
+
+    let story = await Story.findOne({ conversation_id: updatedConversation._id });
+
+    if (!story) {
+      const title = await generateTitleFromConversation(updatedConversation.history);
+      
+      story = new Story({
+        author: userId,
+        conversation_id: updatedConversation._id,
+        title: title,
+        status_progress: "draft",
+        createdAt: new Date(),
+        content: ""
+      });
+      
+      await story.save();
+    }
 
     return {
       statusCode: 200,
       body: JSON.stringify({
         response: aiResponse,
-        conversation: updatedConversation
-      }),
-    }
+        conversation: updatedConversation, // Remove it in future
+        title: story.title
+      })
+    };
   } catch (error) {
-    console.error("Error in conversation interaction:", error);
     return {
       statusCode: 500,
       body: JSON.stringify({
-        message: "An error occurred while processing the conversation",
+        message: "Failed to process conversation",
         error: error.message
       })
-    }
+    };
   }
 };
 
