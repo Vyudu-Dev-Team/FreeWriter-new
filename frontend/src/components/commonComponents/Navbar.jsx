@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { AppBar, Toolbar, Typography, Button, Box, Avatar } from '@mui/material';
+// import { AppBar, Toolbar, Typography, Button, Box, Avatar } from '@mui/material';
+import { AppBar, Box, Typography, IconButton, TextField, Paper, Button } from '@mui/material';
+import SettingsIcon from '@mui/icons-material/Settings';
+import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import { useAppContext } from '../../contexts/AppContext';
 
 function Navbar() {
@@ -14,28 +17,35 @@ function Navbar() {
 
   return (
     <AppBar position="static">
-      <Toolbar>
-        <Avatar src="/assets/images/logo.svg" alt="freeWriter Logo" sx={{ mr: 2 }} />
-        <Typography variant="h6" sx={{ flexGrow: 1 }}>
-          freeWriter
-        </Typography>
-        <Box>
-          <Button color="inherit" component={RouterLink} to="/">Home</Button>
-          {isAuthenticated ? (
-            <>
-              <Button color="inherit" component={RouterLink} to="/dashboard">Dashboard</Button>
-              <Button color="inherit" component={RouterLink} to="/deck">Deck</Button>
-              <Button color="inherit" component={RouterLink} to="/feedback">Feedback</Button>
-              <Button color="inherit" onClick={logout}>Logout</Button>
-            </>
-          ) : (
-            <>
-              <Button color="inherit" component={RouterLink} to="/login">Login</Button>
-              <Button color="inherit" component={RouterLink} to="/register">Register</Button>
-            </>
-          )}
-        </Box>
-      </Toolbar>
+     <Box
+				sx={{
+					display: 'flex',
+					justifyContent: 'space-between',
+					alignItems: 'center',
+					p: 1,
+					width: '100%'
+				}}
+			>
+				<Typography
+					sx={{
+						color: '#D8F651',
+						fontFamily: 'PixelSplitter, monospace',
+						fontSize: '1.2rem',
+						pl: 4,
+						pt: 2
+					}}
+				>
+					FREE<span style={{color: 'blue'}}>WRITER</span>
+				</Typography>
+				<Box>
+					<IconButton sx={{ color: '#000',}}>
+						<QuestionMarkIcon sx={{border: '1px solid #000', borderRadius: 50, fontSize: '1rem'}} />
+					</IconButton>
+					<IconButton sx={{ color: '#000' }}>
+						<SettingsIcon sx={{fontSize: '1rem'}} />
+					</IconButton>
+				</Box>
+			</Box>
     </AppBar>
   );
 }
