@@ -16,7 +16,7 @@ function Navbar() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="fixed">
      <Box
 				sx={{
 					display: 'flex',
@@ -26,24 +26,36 @@ function Navbar() {
 					width: '100%'
 				}}
 			>
-				<Typography
-					sx={{
-						color: '#D8F651',
-						fontFamily: 'PixelSplitter, monospace',
-						fontSize: '1.2rem',
-						pl: 4,
-						pt: 2
-					}}
-				>
-					FREE<span style={{color: 'blue'}}>WRITER</span>
-				</Typography>
-				<Box>
-					<IconButton sx={{ color: '#000',}}>
-						<QuestionMarkIcon sx={{border: '1px solid #000', borderRadius: 50, fontSize: '1rem'}} />
-					</IconButton>
-					<IconButton sx={{ color: '#000' }}>
-						<SettingsIcon sx={{fontSize: '1rem'}} />
-					</IconButton>
+        <div>
+          
+        </div>
+				
+				<Box sx={{
+					display: 'flex',
+					justifyContent: 'space-between',
+					alignItems: 'center',
+					
+					alignContent: 'center',
+          flexDirection: 'row'
+				}}>
+          <Typography
+            sx={{
+              color: '#D8F651',
+              fontFamily: 'PixelSplitter, monospace',
+              fontSize: '1.2rem',
+              
+            }}
+          >
+            FREE<span style={{color: 'blue'}}>WRITER</span>
+          </Typography>
+          <div>
+            <IconButton sx={{ color: '#000',}}>
+              <QuestionMarkIcon sx={{border: '1px solid #000', borderRadius: 50, fontSize: '1rem'}} />
+            </IconButton>
+            <IconButton sx={{ color: '#000' }}>
+              <SettingsIcon sx={{fontSize: '1rem'}} />
+            </IconButton>
+          </div>
 				</Box>
 			</Box>
     </AppBar>
