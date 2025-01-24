@@ -182,11 +182,11 @@ const getAllConversations = async (event) => {
     const userId = JSON.parse(userResponse.body).user.id;
     const stories = await Story.find(
       { author: userId }, 
-      'conversation_id title createdAt'
+      '_id title createdAt'
     ).sort({ createdAt: -1 });
 
     const conversations = stories.map(story => ({
-      id: story.conversation_id || "no_conversation",
+      id: story._id || "no_conversation",
       title: story.title || "Untitled Story",
       lastUpdate: story.createdAt
     }));
