@@ -19,7 +19,7 @@ async function analyzeStoryCard(storyText) {
           CHARACTER - If the story focuses on personality, goals, abilities, or personal challenges
           WORLD - If the story emphasizes setting, environment, culture, or world-building
           CONFLICT - If the story centers on challenges, problems, or opposing forces
-          Return only one word: CHARACTER, WORLD, or CONFLICT`
+          Return all compatible card types in list javascript format: ["WORLD", "CONFLICT"]`
         },
         {
           role: "user",
@@ -27,16 +27,16 @@ async function analyzeStoryCard(storyText) {
         }
       ],
       temperature: 0.3,
-      max_tokens: 10
+      max_tokens: 50
     });
 
-    const cardType = completion.choices[0].message.content.trim();
+    const cardTypes = JSON.parse(completion.choices[0].message.content.trim());
     
-    if (!['CHARACTER', 'WORLD', 'CONFLICT'].includes(cardType)) {
-      throw new Error('Invalid card type returned from analysis');
+    if (!Array.isArray(cardTypes) || !cardTypes.every(type => ['CHARACTER', 'WORLD', 'CONFLICT'].includes(type))) {
+      throw new Error('Invalid card types returned from analysis');
     }
 
-    return cardType;
+    return cardTypes;
   } catch (error) {
     throw new Error(`Failed to analyze story card: ${error.message}`);
   }
