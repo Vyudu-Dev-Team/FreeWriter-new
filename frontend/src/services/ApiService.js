@@ -1,32 +1,38 @@
+import axios from 'axios';
+
 const BASE_URL = '/.netlify/functions';
 
-class ApiService {
-    static getAuthToken() {
-        return localStorage.getItem('token');
+// Create axios instance with default config
+const api = axios.create({
+    baseURL: BASE_URL,
+    withCredentials: true,
+});
+
+// Add request interceptor to add token
+api.interceptors.request.use((config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
     }
+    return config;
+});
 
-    static async aiInteraction(message) {
+class ApiService {
+    static async aiInteraction(message = null) {
         try {
-            const token = this.getAuthToken();
-            const response = await fetch(`${BASE_URL}/api/ai/interaction`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
-                body: JSON.stringify({ message }),
-            });
-
-            if (!response.ok) {
-                if (response.status === 401) {
-                    // Token inválido ou expirado
-                    throw new Error('Unauthorized: Please log in again');
-                }
-                throw new Error('Network response was not ok');
+            if (message === null) {
+                // GET request for history
+                const response = await api.get('/api/ai/interaction');
+                return response.data;
+            } else {
+                // POST request for new message
+                const response = await api.post('/api/ai/interaction', { message });
+                return response.data;
             }
-
-            return await response.json();
         } catch (error) {
+            if (error.response?.status === 401) {
+                throw new Error('Unauthorized: Please log in again');
+            }
             console.error('Error in AI interaction:', error);
             throw error;
         }

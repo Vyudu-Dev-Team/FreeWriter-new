@@ -10,16 +10,32 @@ const VirgilChat = () => {
     const [hasMessages, setHasMessages] = useState(false);
     const [messages, setMessages] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [cards, setCards] = useState([]);
+    const [conversationId, setConversationId] = useState(null);
+    const [conversationTitle, setConversationTitle] = useState('');
     const chatMessagesRef = useRef(null);
     const navigate = useNavigate();
     const { state } = useAppContext();
-    const username = state?.user?.data?.user?.username;
+    const username = state?.user?.user?.username || '';
 
     useEffect(() => {
-        if (state?.user) {
-            console.log('Current user state:', state.user);
+        console.log('Current user state:', state?.user);
+        fetchChatHistory();
+    }, []);
+
+    const fetchChatHistory = async () => {
+        try {
+            const response = await ApiService.aiInteraction();
+            if (response) {
+                processApiResponse(response, true);
+            }
+        } catch (error) {
+            console.error('Error fetching chat history:', error);
+            if (error.message.includes('Unauthorized')) {
+                navigate('/login');
+            }
         }
-    }, [state?.user]);
+    };
 
     const scrollToBottom = () => {
         if (chatMessagesRef.current) {
@@ -31,12 +47,10 @@ const VirgilChat = () => {
         scrollToBottom();
     }, [messages]);
 
-    const processApiResponse = (response) => {
+    const processApiResponse = (response, isHistory = false) => {
         try {
-            const parsedResponse = typeof response === 'string' ? JSON.parse(response) : response;
-            
-            if (parsedResponse.conversation && parsedResponse.conversation.history) {
-                const formattedMessages = parsedResponse.conversation.history.map(msg => ({
+            if (isHistory && response?.conversation?.history) {
+                const formattedMessages = response.conversation.history.map(msg => ({
                     type: msg.role === 'user' ? 'user' : 'ai',
                     content: msg.content,
                     timestamp: new Date(msg.timestamp)
@@ -44,6 +58,35 @@ const VirgilChat = () => {
                 
                 setMessages(formattedMessages);
                 setHasMessages(formattedMessages.length > 0);
+                
+                if (response.conversation._id) {
+                    setConversationId(response.conversation._id);
+                }
+            } else {
+                // Process new message response
+                if (response.response) {
+                    const newMessage = {
+                        type: 'ai',
+                        content: response.response,
+                        timestamp: new Date()
+                    };
+                    setMessages(prev => [...prev, newMessage]);
+                }
+
+                // Update conversation ID if provided
+                if (response.conversationId) {
+                    setConversationId(response.conversationId);
+                }
+
+                // Update title if provided
+                if (response.title) {
+                    setConversationTitle(response.title);
+                }
+
+                // Update cards if provided
+                if (response.card && Array.isArray(response.card)) {
+                    setCards(response.card);
+                }
             }
         } catch (error) {
             console.error('Error processing API response:', error);
@@ -87,7 +130,20 @@ const VirgilChat = () => {
         <div className="writing-environment-container virgil-chat">
             {/* Cards Section - 28% */}
             <div className="cards-section">
-                <p>Talk more with Virgil to start generating your story deck.</p>
+                {cards.length > 0 ? (
+                    <div className="cards-container">
+                        <h3>STORY CARDS</h3>
+                        <div className="cards-list">
+                            {cards.map((card, index) => (
+                                <div key={index} className="story-card">
+                                    {card}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                ) : (
+                    <p>Talk more with Virgil to start generating your story deck.</p>
+                )}
             </div>
 
             {/* Chat Section - 40% */}
