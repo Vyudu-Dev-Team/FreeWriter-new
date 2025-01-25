@@ -39,7 +39,9 @@ const VirgilChat = () => {
     }, [messages]);
 
     const getCardImage = (type) => {
-        switch(type.toUpperCase()) {
+        if (!type) return 'https://placehold.co/400x300';
+        
+        switch(type.toString().toUpperCase()) {
             case 'CHARACTER':
                 return '/assets/cards/cardCharacterBackgroundIcon.svg';
             case 'WORLD':
@@ -56,6 +58,34 @@ const VirgilChat = () => {
             const parsedResponse = typeof response === 'string' ? JSON.parse(response) : response;
             console.log('Resposta parseada:', parsedResponse);
             
+            // Se a resposta for um array, assume que são as cartas
+            if (Array.isArray(parsedResponse)) {
+                console.log('Cartas recebidas:', parsedResponse);
+                
+                // Mantém os dados originais e apenas atualiza a imageUrl se necessário
+                const processedCards = parsedResponse.map(card => {
+                    // Se a carta já tem imageUrl, mantém ela, senão gera uma nova baseada no Type
+                    // const imageUrl = card.imageUrl === '/assets/images/default-card.svg' 
+                    //     ? getCardImage(card.Type) 
+                    //     : card.imageUrl;
+
+                    const imageUrl = getCardImage(card.Type || card.type);
+                    
+                    return {
+                        ...card,
+                        imageUrl
+                    };
+                });
+
+                console.log('Cartas processadas:', processedCards);
+                setCards(processedCards);
+                if (processedCards.length > 0) {
+                    setSelectedCard(processedCards[0]);
+                }
+                return;
+            }
+            
+            // Se não for array, processa como antes
             const aiMessage = {
                 type: 'ai',
                 content: parsedResponse.response,
@@ -75,11 +105,12 @@ const VirgilChat = () => {
                 console.log('Cartas recebidas:', parsedResponse.card);
                 
                 const processedCards = parsedResponse.card.map(card => ({
-                    Type: card.type.toUpperCase(),
-                    Name: card.name,
-                    Description: card.description,
-                    Theme: card.theme,
-                    imageUrl: getCardImage(card.type)
+                    Type: card.Type || card.type?.toUpperCase() || 'UNDEFINED',
+                    Name: card.Name || card.name || 'Nome não definido',
+                    Description: card.Description || card.description || 'Descrição não definida',
+                    Theme: card.Theme || card.theme || 'Tema não definido',
+                    // imageUrl: card.imageUrl || getCardImage(card.Type || card.type)
+                    imageUrl: getCardImage(card.Type || card.type)
                 }));
 
                 console.log('Cartas processadas:', processedCards);

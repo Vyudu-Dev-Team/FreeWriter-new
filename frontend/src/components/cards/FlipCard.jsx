@@ -7,7 +7,9 @@ const FlipCard = ({ card }) => {
     if (!card) return null;
 
     const getCardImage = (type) => {
-        switch(type.toUpperCase()) {
+        if (!type) return 'https://placehold.co/400x300';
+        
+        switch(type.toString().toUpperCase()) {
             case 'CHARACTER':
                 return '/assets/cards/cardCharacterBackgroundIcon.svg';
             case 'WORLD':
@@ -15,11 +17,13 @@ const FlipCard = ({ card }) => {
             case 'CONFLICT':
                 return '/assets/cards/cardConflictBackgroundIcon.svg';
             default:
-                return 'https://placehold.co/400x250';
+                return 'https://placehold.co/400x300';
         }
     };
 
     const cardImage = getCardImage(card.Type);
+    const cardType = card.Type || 'UNDEFINED';
+    const isWorldCard = cardType === 'WORLD';
 
     return (
         <Box
@@ -48,8 +52,8 @@ const FlipCard = ({ card }) => {
                         width: '100%',
                         height: '100%',
                         backfaceVisibility: 'hidden',
-                        bgcolor: card.Type === 'WORLD' ? '#D8F651' : '#490BF4',
-                        color: card.Type === 'WORLD' ? 'black' : 'white',
+                        bgcolor: isWorldCard ? '#D8F651' : '#490BF4',
+                        color: isWorldCard ? 'black' : 'white',
                         p: 1,
                         display: 'flex',
                         flexDirection: 'column',
@@ -57,7 +61,7 @@ const FlipCard = ({ card }) => {
                     }}
                 >
                     <Typography variant="h5" sx={{ fontFamily: 'PixelSplitter', alignSelf: 'start' }}>
-                        {card.Type || 'Tipo não definido'}
+                        {cardType}
                     </Typography>
                     <Typography variant="h6" sx={{ fontFamily: 'PixelSplitter', alignSelf: 'start' }}>
                         {card.Name || 'Nome não definido'}
@@ -65,7 +69,7 @@ const FlipCard = ({ card }) => {
                     <Box
                         component="img"
                         src={cardImage}
-                        alt={card.Name}
+                        alt={card.Name || 'Card image'}
                         sx={{ width: '100%', height: '400px', mt: 1 }}
                     />
                 </Card>
@@ -78,8 +82,8 @@ const FlipCard = ({ card }) => {
                         height: '100%',
                         backfaceVisibility: 'hidden',
                         transform: 'rotateY(180deg)',
-                        bgcolor: card.Type === 'WORLD' ? '#D8F651' : '#490BF4',
-                        color: card.Type === 'WORLD' ? 'black' : 'white',
+                        bgcolor: isWorldCard ? '#D8F651' : '#490BF4',
+                        color: isWorldCard ? 'black' : 'white',
                         p: 3,
                         display: 'flex',
                         flexDirection: 'column',
@@ -88,16 +92,16 @@ const FlipCard = ({ card }) => {
                 >
                     <div>
                         <Typography variant="h6" sx={{ fontFamily: 'PixelSplitter', margin: 0, lineHeight: 1.25 }}>
-                            {card.Type || 'Tipo não definido'}
+                            {cardType}
                         </Typography>
                         <Typography variant="subtitle1" sx={{ fontFamily: 'Quicksand', margin: 0, lineHeight: 1.0 }}>
-                        {card.Name || 'Nome não definido'}
+                            {card.Name || 'Nome não definido'}
                         </Typography>
                     </div>
                     <Box
                         component="img"
                         src={cardImage}
-                        alt={card.Name}
+                        alt={card.Name || 'Card image'}
                         sx={{ width: '100%', height: '300px' }}
                     />
                     <Typography variant="body1" sx={{ flex: 1, fontFamily: 'Quicksand' }}>
