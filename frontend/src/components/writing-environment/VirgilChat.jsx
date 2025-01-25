@@ -17,11 +17,11 @@ const VirgilChat = () => {
     const chatMessagesRef = useRef(null);
     const navigate = useNavigate();
     const { state } = useAppContext();
-    const username = state?.user?.data?.user?.username;
-
+    const username = state?.user?.user?.username || 'User';
     useEffect(() => {
         if (state?.user) {
             console.log('Current user state:', state.user);
+            console.log('Current user state:', state.user.username);
         }
     }, [state?.user]);
 
