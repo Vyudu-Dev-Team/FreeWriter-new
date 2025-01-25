@@ -6,6 +6,21 @@ const FlipCard = ({ card }) => {
 
     if (!card) return null;
 
+    const getCardImage = (type) => {
+        switch(type.toUpperCase()) {
+            case 'CHARACTER':
+                return '/assets/cards/cardCharacterBackgroundIcon.svg';
+            case 'WORLD':
+                return '/assets/cards/cardWorldBackgroundIcon.svg';
+            case 'CONFLICT':
+                return '/assets/cards/cardConflictBackgroundIcon.svg';
+            default:
+                return 'https://placehold.co/400x250';
+        }
+    };
+
+    const cardImage = getCardImage(card.Type);
+
     return (
         <Box
             sx={{
@@ -49,9 +64,9 @@ const FlipCard = ({ card }) => {
                     </Typography>
                     <Box
                         component="img"
-                        src={'https://placehold.co/400x250'}
+                        src={cardImage}
                         alt={card.Name}
-                        sx={{ width: '100%', height: '300', my: 2 }}
+                        sx={{ width: '100%', height: '400px', mt: 1 }}
                     />
                 </Card>
 
@@ -79,9 +94,9 @@ const FlipCard = ({ card }) => {
                     </Typography>
                     <Box
                         component="img"
-                        src={'https://placehold.co/400x250'}
+                        src={cardImage}
                         alt={card.Name}
-                        sx={{ width: '100%', height: '300', my: 2 }}
+                        sx={{ width: '100%', height: '200px', my: 2 }}
                     />
                     <Typography variant="body1" sx={{ flex: 1, fontFamily: 'Quicksand' }}>
                         {card.Description || 'Descrição não definida'}
