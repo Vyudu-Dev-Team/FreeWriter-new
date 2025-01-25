@@ -4,39 +4,25 @@ import './VirgilChat.css';
 import './VirgilChat.scss';
 import ApiService from '../../services/ApiService';
 import { useAppContext } from '../../contexts/AppContext';
-import NavBar from '../commonComponents/Navbar.jsx';
 
 const VirgilChat = () => {
     const [message, setMessage] = useState('');
-    const [hasMessages, setHasMessages] = useState(false);
     const [messages, setMessages] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [cards, setCards] = useState([]);
+    const [hasMessages, setHasMessages] = useState(false);
     const [conversationId, setConversationId] = useState(null);
     const [conversationTitle, setConversationTitle] = useState('');
+    const [cards, setCards] = useState([]);
     const chatMessagesRef = useRef(null);
     const navigate = useNavigate();
     const { state } = useAppContext();
-    const username = state?.user?.user?.username || '';
+    const username = state?.user?.data?.user?.username;
 
     useEffect(() => {
-        console.log('Current user state:', state?.user);
-        fetchChatHistory();
-    }, []);
-
-    const fetchChatHistory = async () => {
-        try {
-            const response = await ApiService.aiInteraction();
-            if (response) {
-                processApiResponse(response, true);
-            }
-        } catch (error) {
-            console.error('Error fetching chat history:', error);
-            if (error.message.includes('Unauthorized')) {
-                navigate('/login');
-            }
+        if (state?.user) {
+            console.log('Current user state:', state.user);
         }
-    };
+    }, [state?.user]);
 
     const scrollToBottom = () => {
         if (chatMessagesRef.current) {
@@ -48,49 +34,30 @@ const VirgilChat = () => {
         scrollToBottom();
     }, [messages]);
 
-    const processApiResponse = (response, isHistory = false) => {
-        try {
-            if (isHistory && response?.conversation?.history) {
-                const formattedMessages = response.conversation.history.map(msg => ({
-                    type: msg.role === 'user' ? 'user' : 'ai',
-                    content: msg.content,
-                    timestamp: new Date(msg.timestamp)
-                }));
-                
-                setMessages(formattedMessages);
-                setHasMessages(formattedMessages.length > 0);
-                
-                if (response.conversation._id) {
-                    setConversationId(response.conversation._id);
-                }
-            } else {
-                // Process new message response
-                if (response.response) {
-                    const newMessage = {
-                        type: 'ai',
-                        content: response.response,
-                        timestamp: new Date()
-                    };
-                    setMessages(prev => [...prev, newMessage]);
-                }
+    const processApiResponse = (response) => {
+        if (response) {
+            // Adiciona a resposta do AI ao histórico de mensagens
+            const aiMessage = {
+                type: 'ai',
+                content: response.response,
+                timestamp: new Date()
+            };
+            setMessages(prev => [...prev, aiMessage]);
 
-                // Update conversation ID if provided
-                if (response.conversationId) {
-                    setConversationId(response.conversationId);
-                }
-
-                // Update title if provided
-                if (response.title) {
-                    setConversationTitle(response.title);
-                }
-
-                // Update cards if provided
-                if (response.card && Array.isArray(response.card)) {
-                    setCards(response.card);
-                }
+            // Atualiza o ID da conversa se for uma nova
+            if (response.conversationId) {
+                setConversationId(response.conversationId);
             }
-        } catch (error) {
-            console.error('Error processing API response:', error);
+
+            // Atualiza o título se fornecido
+            if (response.title) {
+                setConversationTitle(response.title);
+            }
+
+            // Atualiza os cards se fornecidos
+            if (response.card && Array.isArray(response.card)) {
+                setCards(response.card);
+            }
         }
     };
 
@@ -105,21 +72,38 @@ const VirgilChat = () => {
         setIsLoading(true);
 
         try {
-            const response = await ApiService.aiInteraction(message);
-            processApiResponse(response);
+            let response;
+            if (conversationId) {
+                // Continua conversa existente
+                response = await ApiService.continueInteraction(conversationId, message.trim());
+            } else {
+                // Inicia nova conversa
+                response = await ApiService.startNewInteraction(message.trim());
+                if (response.conversationId) {
+                    setConversationId(response.conversationId);
+                }
+            }
+
+            const aiMessage = {
+                type: 'ai',
+                content: response.response,
+                timestamp: new Date()
+            };
+            setMessages(prev => [...prev, aiMessage]);
+
+            if (response.title) {
+                setConversationTitle(response.title);
+            }
+
+            if (response.card && Array.isArray(response.card)) {
+                setCards(response.card);
+            }
+
         } catch (error) {
             console.error('Error sending message:', error);
-            
-            if (error.message.includes('Unauthorized')) {
-                navigate('/login');
-                return;
-            }
-            
-            const errorMessage = { 
-                type: 'error', 
-                content: error.message === 'Unauthorized: Please log in again' 
-                    ? 'Your session has expired. Please log in again.' 
-                    : 'Sorry, there was an error processing your message.' 
+            const errorMessage = {
+                type: 'error',
+                content: 'Desculpe, ocorreu um erro ao processar sua mensagem.'
             };
             setMessages(prev => [...prev, errorMessage]);
         } finally {
@@ -127,26 +111,27 @@ const VirgilChat = () => {
         }
     };
 
+    const fetchConversationHistory = async (id) => {
+        try {
+            const response = await ApiService.getInteractionHistory(id);
+            if (response.history) {
+                const formattedMessages = response.history.map(msg => ({
+                    type: msg.role === 'assistant' ? 'ai' : 'user',
+                    content: msg.content,
+                    timestamp: new Date(msg.timestamp)
+                }));
+                setMessages(formattedMessages);
+            }
+        } catch (error) {
+            console.error('Error fetching conversation history:', error);
+        }
+    };
+
     return (
-        <>
-        <NavBar />
         <div className="writing-environment-container virgil-chat">
             {/* Cards Section - 28% */}
             <div className="cards-section">
-                {cards.length > 0 ? (
-                    <div className="cards-container">
-                        <h3>STORY CARDS</h3>
-                        <div className="cards-list">
-                            {cards.map((card, index) => (
-                                <div key={index} className="story-card">
-                                    {card}
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                ) : (
-                    <p>Talk more with Virgil to start generating your story deck.</p>
-                )}
+                <p>Talk more with Virgil to start generating your story deck.</p>
             </div>
 
             {/* Chat Section - 40% */}
@@ -228,7 +213,6 @@ const VirgilChat = () => {
                 </div>
             </div>
         </div>
-        </>
     );
 };
 

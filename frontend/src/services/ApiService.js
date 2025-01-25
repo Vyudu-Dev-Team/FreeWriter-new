@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = '/.netlify/functions';
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 // Create axios instance with default config
 const api = axios.create({
@@ -18,24 +18,70 @@ api.interceptors.request.use((config) => {
 });
 
 class ApiService {
-    static async aiInteraction(message = null) {
+    static async startNewInteraction(message) {
         try {
-            if (message === null) {
-                // GET request for history
-                const response = await api.get('/api/ai/interaction');
-                return response.data;
-            } else {
-                // POST request for new message
-                const response = await api.post('/api/ai/interaction', { message });
-                return response.data;
-            }
+            const response = await api.post('/api/ai/interaction', { message });
+            return typeof response.data === 'string' ? JSON.parse(response.data) : response.data;
         } catch (error) {
-            if (error.response?.status === 401) {
-                throw new Error('Unauthorized: Please log in again');
+            this.handleError(error);
+        }
+    }
+
+    static async continueInteraction(conversationId, message) {
+        try {
+            const response = await api.post(`/api/ai/interaction/${conversationId}`, { message });
+            return typeof response.data === 'string' ? JSON.parse(response.data) : response.data;
+        } catch (error) {
+            this.handleError(error);
+        }
+    }
+
+    static async getInteractionHistory(conversationId) {
+        try {
+            const response = await api.get(`/api/ai/interaction/${conversationId}`);
+            return response.data;
+        } catch (error) {
+            this.handleError(error);
+        }
+    }
+
+    static async getAllInteractions() {
+        try {
+            const response = await api.get('/api/ai/interaction');
+            return response.data;
+        } catch (error) {
+            this.handleError(error);
+        }
+    }
+
+    static async fetchConversationHistory(conversationId) {
+        try {
+            const response = await fetch(`/api/ai/interaction/${conversationId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Falha ao buscar histórico da conversa');
             }
-            console.error('Error in AI interaction:', error);
+
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Erro ao buscar histórico:', error);
             throw error;
         }
+    }
+
+    static handleError(error) {
+        if (error.response?.status === 401) {
+            throw new Error('Unauthorized: Please log in again');
+        }
+        console.error('API Error:', error);
+        throw error;
     }
 }
 
