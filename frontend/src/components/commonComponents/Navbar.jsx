@@ -16,7 +16,7 @@ function Navbar() {
   };
 
   return (
-    <AppBar position="fixed">
+    <AppBar position="fixed" sx={{ background: 'none', boxShadow: 'none' }}>
      <Box
 				sx={{
 					display: 'flex',
@@ -36,24 +36,26 @@ function Navbar() {
 					alignItems: 'center',
 					
 					alignContent: 'center',
-          flexDirection: 'row'
+          flexDirection: 'row',
+          pt: 1.6
+
 				}}>
           <Typography
             sx={{
               color: '#D8F651',
               fontFamily: 'PixelSplitter, monospace',
-              fontSize: '1.2rem',
-              
+              fontSize: '2.2rem',
+              textShadow: '0 0 15px rgba(0, 0, 0, 0.5)',
             }}
           >
             FREE<span style={{color: 'blue'}}>WRITER</span>
           </Typography>
           <div>
             <IconButton sx={{ color: '#000',}}>
-              <QuestionMarkIcon sx={{border: '1px solid #000', borderRadius: 50, fontSize: '1rem'}} />
+              <QuestionMarkIcon sx={{border: '1px solid #000', borderRadius: 50, fontSize: '1.4rem'}} />
             </IconButton>
             <IconButton sx={{ color: '#000' }}>
-              <SettingsIcon sx={{fontSize: '1rem'}} />
+              <SettingsIcon sx={{fontSize: '1.4rem'}} />
             </IconButton>
           </div>
 				</Box>

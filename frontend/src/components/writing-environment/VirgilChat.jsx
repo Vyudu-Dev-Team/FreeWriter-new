@@ -4,6 +4,7 @@ import './VirgilChat.css';
 import './VirgilChat.scss';
 import ApiService from '../../services/ApiService';
 import { useAppContext } from '../../contexts/AppContext';
+import NavBar from '../../components/commonComponents/Navbar';
 
 const VirgilChat = () => {
     const [message, setMessage] = useState('');
@@ -128,6 +129,8 @@ const VirgilChat = () => {
     };
 
     return (
+        <>
+        <NavBar />
         <div className="writing-environment-container virgil-chat">
             {/* Cards Section - 28% */}
             <div className="cards-section">
@@ -213,6 +216,7 @@ const VirgilChat = () => {
                 </div>
             </div>
         </div>
+        </>
     );
 };
 

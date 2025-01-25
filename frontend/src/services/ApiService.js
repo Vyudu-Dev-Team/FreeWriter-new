@@ -29,7 +29,10 @@ class ApiService {
 
     static async continueInteraction(conversationId, message) {
         try {
-            const response = await api.post(`/api/ai/interaction/${conversationId}`, { message });
+            const response = await api.post('/api/ai/interaction', { 
+                message,
+                conversationId 
+            });
             return typeof response.data === 'string' ? JSON.parse(response.data) : response.data;
         } catch (error) {
             this.handleError(error);
