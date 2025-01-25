@@ -28,19 +28,32 @@
             justify-content: center;
             align-items: center;
             margin-top: 30px;
+            perspective: 1000px;
+            
+            .flip-card {
+                transition: transform 0.6s;
+                transform-style: preserve-3d;
+                
+                &.flipped {
+                    transform: rotateY(180deg);
+                }
+            }
         }
 
         .cards-deck {
             width: 532px;
             height: 380px;
-            // background-color: rgba(0, 0, 0, 0.8);
-            padding: 20px;
+            padding: 10px;
             overflow-x: scroll;
             overflow-y: hidden;
+            margin-top: 35px;
+        
             
             .cards-container {
-                height: 100%;
-                // overflow-x: auto;
+                justify-content: center;
+                display: flex;
+                align-items: center;
+                padding: 25px 0px 0px 270px;
                 
                 h3 {
                     color: #D8F651;
@@ -59,6 +72,16 @@
                         
                         &:hover {
                             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+                        }
+
+                        overflow: hidden;
+                        
+                        img {
+                            transition: transform 0.3s;
+                        }
+                        
+                        &:hover img {
+                            transform: scale(1.05);
                         }
                     }
                 }

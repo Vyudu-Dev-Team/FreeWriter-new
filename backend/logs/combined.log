@@ -1467,3 +1467,63 @@
 2025-01-25 15:33:26:3326 [32minfo[39m: [32mJWT_SECRET exists:[39m
 2025-01-25 15:33:26:3326 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
 2025-01-25 15:33:26:3326 [32minfo[39m: [32mAI Service test successful:[39m
+2025-01-25 15:37:09:379 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-25 15:37:09:379 [32minfo[39m: [32mToken to verify:[39m
+2025-01-25 15:37:09:379 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-25 15:37:09:379 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-25 15:37:32:3732 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-25 15:37:32:3732 [32minfo[39m: [32mToken to verify:[39m
+2025-01-25 15:37:32:3732 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-25 15:37:32:3732 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-25 15:39:08:398 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-25 15:39:08:398 [32minfo[39m: [32mToken to verify:[39m
+2025-01-25 15:39:08:398 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-25 15:39:08:398 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-25 15:41:18:4118 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-25 15:41:18:4118 [32minfo[39m: [32mToken to verify:[39m
+2025-01-25 15:41:18:4118 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-25 15:41:18:4118 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-25 15:41:19:4119 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-25 15:41:19:4119 [32minfo[39m: [32mToken to verify:[39m
+2025-01-25 15:41:19:4119 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-25 15:41:19:4119 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-25 15:41:19:4119 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-25 15:41:19:4119 [32minfo[39m: [32mToken to verify:[39m
+2025-01-25 15:41:19:4119 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-25 15:41:19:4119 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-25 15:41:19:4119 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-25 15:41:19:4119 [32minfo[39m: [32mToken to verify:[39m
+2025-01-25 15:41:19:4119 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-25 15:41:19:4119 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-25 15:41:50:4150 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-25 15:41:50:4150 [32minfo[39m: [32mToken to verify:[39m
+2025-01-25 15:41:50:4150 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-25 15:41:50:4150 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-25 15:56:12:5612 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-25 15:56:12:5612 [32minfo[39m: [32mToken to verify:[39m
+2025-01-25 15:56:12:5612 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-25 15:56:12:5612 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-25 15:56:31:5631 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-25 15:56:31:5631 [32minfo[39m: [32mToken to verify:[39m
+2025-01-25 15:56:31:5631 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-25 15:56:31:5631 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-25 16:03:46:346 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-25 16:03:46:346 [32minfo[39m: [32mToken to verify:[39m
+2025-01-25 16:03:46:346 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-25 16:03:46:346 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-25 16:03:46:346 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-25 16:03:46:346 [32minfo[39m: [32mToken to verify:[39m
+2025-01-25 16:03:46:346 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-25 16:03:46:346 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-25 16:03:46:346 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-25 16:03:46:346 [32minfo[39m: [32mToken to verify:[39m
+2025-01-25 16:03:46:346 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-25 16:03:46:346 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-25 16:03:46:346 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-25 16:03:46:346 [32minfo[39m: [32mToken to verify:[39m
+2025-01-25 16:03:46:346 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-25 16:03:46:346 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-25 16:03:52:352 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-25 16:03:52:352 [32minfo[39m: [32mToken to verify:[39m
+2025-01-25 16:03:52:352 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-25 16:03:52:352 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m

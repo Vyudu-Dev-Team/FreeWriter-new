@@ -6,6 +6,7 @@ import ApiService from '../../services/ApiService';
 import { useAppContext } from '../../contexts/AppContext';
 import NavBar from '../../components/commonComponents/Navbar';
 import { Box, Card, Typography } from '@mui/material';
+import FlipCard from '../../components/cards/FlipCard';
 
 const VirgilChat = () => {
     const [message, setMessage] = useState('');
@@ -39,40 +40,40 @@ const VirgilChat = () => {
 
     const processApiResponse = (response) => {
         if (response) {
-            // Log para debug
-            console.log('Resposta recebida:', response);
+            const parsedResponse = typeof response === 'string' ? JSON.parse(response) : response;
+            console.log('Resposta parseada:', parsedResponse);
             
             const aiMessage = {
                 type: 'ai',
-                content: response.response,
+                content: parsedResponse.response,
                 timestamp: new Date()
             };
             setMessages(prev => [...prev, aiMessage]);
 
-            if (response.conversationId) {
-                setConversationId(response.conversationId);
+            if (parsedResponse.conversationId) {
+                setConversationId(parsedResponse.conversationId);
             }
 
-            if (response.title) {
-                setConversationTitle(response.title);
+            if (parsedResponse.title) {
+                setConversationTitle(parsedResponse.title);
             }
 
-            // Verifica se há cartas e processa-as
-            if (response.card && Array.isArray(response.card)) {
-                console.log('Cartas recebidas:', response.card);
+            if (parsedResponse.card && Array.isArray(parsedResponse.card)) {
+                console.log('Cartas recebidas:', parsedResponse.card);
                 
-                // Processa as cartas normalizando as chaves
-                const processedCards = response.card.map(card => ({
-                    Type: card.type.toUpperCase(), // Normaliza o tipo para maiúsculas
+                const processedCards = parsedResponse.card.map(card => ({
+                    Type: card.type.toUpperCase(),
                     Name: card.name,
                     Description: card.description,
                     Theme: card.theme,
-                    imageUrl: card.imageUrl
+                    imageUrl: card.imageUrl || 'https://placehold.co/400x300'
                 }));
 
                 console.log('Cartas processadas:', processedCards);
                 setCards(processedCards);
-                setSelectedCard(processedCards[0]); // Seleciona a primeira carta
+                if (processedCards.length > 0) {
+                    setSelectedCard(processedCards[0]);
+                }
             }
         }
     };
@@ -156,40 +157,13 @@ const VirgilChat = () => {
                     <div className="cards-section">
                         {/* Área Superior - Carta Selecionada */}
                         <div className="selected-card-area">
-                            {selectedCard && (
-                                <Card 
-                                    sx={{ 
-                                        width: '403px',
-                                        height: '578px',
-                                        bgcolor: selectedCard.Type === 'WORLD' ? '#D8F651' : '#490BF4',
-                                        color: selectedCard.Type === 'WORLD' ? 'black' : 'white',
-                                        p: 3,
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        gap: 2,
-                                        mb: 4
-                                    }}
-                                >
-                                    <Typography variant="h5" sx={{ fontFamily: 'PixelSplitter' }}>
-                                        {selectedCard.Type}
-                                    </Typography>
-                                    <Typography variant="h6" sx={{ fontFamily: 'PixelSplitter' }}>
-                                        {selectedCard.Name}
-                                    </Typography>
-                                    <Typography variant="body1" sx={{ flex: 1 }}>
-                                        {selectedCard.Description}
-                                    </Typography>
-                                    <Typography variant="body2" sx={{ fontStyle: 'italic' }}>
-                                        Theme: {selectedCard.Theme}
-                                    </Typography>
-                                </Card>
-                            )}
+                            {selectedCard && <FlipCard card={selectedCard} />}
                         </div>
 
                         {/* Área Inferior - Deck de Cartas */}
                         <div className="cards-deck">
                             <div className="cards-container">
-                                <h3>STORY CARDS</h3>
+                                {/* <h3>STORY CARDS</h3> */}
                                 <div className="cards-list">
                                     {cards.map((card, index) => (
                                         <Card 
@@ -201,20 +175,27 @@ const VirgilChat = () => {
                                                 bgcolor: card.Type === 'WORLD' ? '#D8F651' : '#490BF4',
                                                 color: card.Type === 'WORLD' ? 'black' : 'white',
                                                 cursor: 'pointer',
-                                                p: 2,
+                                                p: 0,
                                                 transition: 'transform 0.2s',
                                                 '&:hover': {
                                                     transform: 'translateY(-5px)'
                                                 },
-                                                border: selectedCard === card ? '2px solid white' : 'none'
+                                                border: selectedCard === card ? '2px solid white' : 'none',
+                                                display: 'flex',
+                                                flexDirection: 'column'
                                             }}
                                         >
-                                            <Typography variant="subtitle1" sx={{ fontFamily: 'PixelSplitter' }}>
-                                                {card.Type}
-                                            </Typography>
-                                            <Typography variant="body2" sx={{ fontFamily: 'PixelSplitter' }}>
-                                                {card.Name}
-                                            </Typography>
+                                            <Box
+                                                component="img"
+                                                src={card.imageUrl || 'https://placehold.co/180x180'}
+                                                alt={card.Name}
+                                                sx={{ width: '100%', height: '180px', objectFit: 'cover' }}
+                                            />
+                                            <Box sx={{ p: 1 }}>
+                                                <Typography variant="subtitle2" sx={{ fontFamily: 'PixelSplitter' }}>
+                                                    {`${card.Type} - ${card.Name}`}
+                                                </Typography>
+                                            </Box>
                                         </Card>
                                     ))}
                                 </div>
