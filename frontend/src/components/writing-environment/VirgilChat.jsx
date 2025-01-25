@@ -38,6 +38,19 @@ const VirgilChat = () => {
         scrollToBottom();
     }, [messages]);
 
+    const getCardImage = (type) => {
+        switch(type.toUpperCase()) {
+            case 'CHARACTER':
+                return '/assets/cards/cardCharacterBackgroundIcon.svg';
+            case 'WORLD':
+                return '/assets/cards/cardWorldBackgroundIcon.svg';
+            case 'CONFLICT':
+                return '/assets/cards/cardConflictBackgroundIcon.svg';
+            default:
+                return 'https://placehold.co/400x300';
+        }
+    };
+
     const processApiResponse = (response) => {
         if (response) {
             const parsedResponse = typeof response === 'string' ? JSON.parse(response) : response;
@@ -66,7 +79,7 @@ const VirgilChat = () => {
                     Name: card.name,
                     Description: card.description,
                     Theme: card.theme,
-                    imageUrl: card.imageUrl || 'https://placehold.co/400x300'
+                    imageUrl: getCardImage(card.type)
                 }));
 
                 console.log('Cartas processadas:', processedCards);
@@ -96,25 +109,10 @@ const VirgilChat = () => {
             } else {
                 // Inicia nova conversa
                 response = await ApiService.startNewInteraction(message.trim());
-                if (response.conversationId) {
-                    setConversationId(response.conversationId);
-                }
             }
 
-            const aiMessage = {
-                type: 'ai',
-                content: response.response,
-                timestamp: new Date()
-            };
-            setMessages(prev => [...prev, aiMessage]);
-
-            if (response.title) {
-                setConversationTitle(response.title);
-            }
-
-            if (response.card && Array.isArray(response.card)) {
-                setCards(response.card);
-            }
+            // Processa a resposta usando processApiResponse
+            processApiResponse(response);
 
         } catch (error) {
             console.error('Error sending message:', error);
@@ -182,14 +180,15 @@ const VirgilChat = () => {
                                                 },
                                                 border: selectedCard === card ? '2px solid white' : 'none',
                                                 display: 'flex',
-                                                flexDirection: 'column'
+                                                flexDirection: 'column',
+                                                padding: '12px'
                                             }}
                                         >
                                             <Box
                                                 component="img"
-                                                src={card.imageUrl || 'https://placehold.co/180x180'}
+                                                src={card.imageUrl}
                                                 alt={card.Name}
-                                                sx={{ width: '100%', height: '180px', objectFit: 'cover' }}
+                                                sx={{ width: '100%', height: '180px', objectFit: 'cover', }}
                                             />
                                             <Box sx={{ p: 1 }}>
                                                 <Typography variant="subtitle2" sx={{ fontFamily: 'PixelSplitter' }}>

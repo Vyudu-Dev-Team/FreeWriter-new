@@ -86,17 +86,19 @@ const FlipCard = ({ card }) => {
                         gap: 2,
                     }}
                 >
-                    <Typography variant="h6" sx={{ fontFamily: 'PixelSplitter' }}>
-                        {card.Type || 'Tipo não definido'}
-                    </Typography>
-                    <Typography variant="subtitle1" sx={{ fontFamily: 'Quicksand' }}>
+                    <div>
+                        <Typography variant="h6" sx={{ fontFamily: 'PixelSplitter', margin: 0, lineHeight: 1.25 }}>
+                            {card.Type || 'Tipo não definido'}
+                        </Typography>
+                        <Typography variant="subtitle1" sx={{ fontFamily: 'Quicksand', margin: 0, lineHeight: 1.0 }}>
                         {card.Name || 'Nome não definido'}
-                    </Typography>
+                        </Typography>
+                    </div>
                     <Box
                         component="img"
                         src={cardImage}
                         alt={card.Name}
-                        sx={{ width: '100%', height: '200px', my: 2 }}
+                        sx={{ width: '100%', height: '300px' }}
                     />
                     <Typography variant="body1" sx={{ flex: 1, fontFamily: 'Quicksand' }}>
                         {card.Description || 'Descrição não definida'}
