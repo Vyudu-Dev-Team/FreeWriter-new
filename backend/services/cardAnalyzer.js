@@ -15,28 +15,33 @@ async function analyzeStoryCard(storyText) {
       messages: [
         {
           role: "system",
-          content: `Analyze the story text and determine which card type best represents its main focus:
-          CHARACTER - If the story focuses on personality, goals, abilities, or personal challenges
-          WORLD - If the story emphasizes setting, environment, culture, or world-building
-          CONFLICT - If the story centers on challenges, problems, or opposing forces
-          Return all compatible card types in list javascript format: ["WORLD", "CONFLICT"]`
+          content: `Analyze the story text and generate story cards with the following structure:
+          - Type (CHARACTER, WORLD, or CONFLICT)
+          - Name (a unique name for the card)
+          - Description (detailed description of the card element)
+          - Theme (brief explanation of how this element relates to the story)
+          
+          Return the cards in JSON format as an array of objects with these properties.
+          You can generate multiple cards of the same type if appropriate.`
         },
         {
           role: "user",
           content: storyText
         }
       ],
-      temperature: 0.3,
-      max_tokens: 50
+      temperature: 0.7,
+      max_tokens: 1000
     });
 
-    const cardTypes = JSON.parse(completion.choices[0].message.content.trim());
+    const cards = JSON.parse(completion.choices[0].message.content.trim());
     
-    if (!Array.isArray(cardTypes) || !cardTypes.every(type => ['CHARACTER', 'WORLD', 'CONFLICT'].includes(type))) {
-      throw new Error('Invalid card types returned from analysis');
-    }
+    // Adiciona imageUrl padrão para cada carta
+    const processedCards = cards.map(card => ({
+      ...card,
+      imageUrl: '/assets/images/default-card.svg'
+    }));
 
-    return cardTypes;
+    return processedCards;
   } catch (error) {
     throw new Error(`Failed to analyze story card: ${error.message}`);
   }
