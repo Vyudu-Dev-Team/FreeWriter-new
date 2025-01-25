@@ -15,14 +15,16 @@ async function analyzeStoryCard(storyText) {
       messages: [
         {
           role: "system",
-          content: `Analyze the story text and generate story cards with the following structure:
-          - Type (CHARACTER, WORLD, or CONFLICT)
-          - Name (a unique name for the card)
-          - Description (detailed description of the card element)
-          - Theme (brief explanation of how this element relates to the story)
-          
-          Return the cards in JSON format as an array of objects with these properties.
-          You can generate multiple cards of the same type if appropriate.`
+          content: `You are a story analyzer that generates story cards. Your response must be ONLY a valid JSON array containing objects with the following properties:
+- Type (must be exactly "CHARACTER", "WORLD", or "CONFLICT")
+- Name (string)
+- Description (string)
+- Theme (string)
+
+Do not include any markdown formatting, code blocks, or explanatory text. Return ONLY the JSON array.
+
+Example of valid response:
+[{"Type":"CHARACTER","Name":"John","Description":"A brave hero","Theme":"Courage"}]`
         },
         {
           role: "user",
@@ -33,16 +35,41 @@ async function analyzeStoryCard(storyText) {
       max_tokens: 1000
     });
 
-    const cards = JSON.parse(completion.choices[0].message.content.trim());
+    // Limpa qualquer formatação markdown ou texto extra que o GPT possa ter incluído
+    let content = completion.choices[0].message.content.trim();
     
-    // Adiciona imageUrl padrão para cada carta
-    const processedCards = cards.map(card => ({
-      ...card,
-      imageUrl: '/assets/images/default-card.svg'
-    }));
+    // Remove blocos de código markdown se presentes
+    content = content.replace(/```json\n?|\n?```/g, '');
+    
+    // Garante que o conteúdo começa com [ e termina com ]
+    content = content.trim();
+    if (!content.startsWith('[')) {
+      content = content.substring(content.indexOf('['));
+    }
+    if (!content.endsWith(']')) {
+      content = content.substring(0, content.lastIndexOf(']') + 1);
+    }
 
-    return processedCards;
+    const cards = JSON.parse(content);
+    
+    // Valida se cada carta tem os campos necessários e os tipos corretos
+    const validTypes = ['CHARACTER', 'WORLD', 'CONFLICT'];
+    const validatedCards = cards.map(card => {
+      if (!card.Type || !validTypes.includes(card.Type.toUpperCase())) {
+        card.Type = 'CHARACTER'; // Tipo padrão se inválido
+      }
+      return {
+        Type: card.Type.toUpperCase(),
+        Name: card.Name || 'Unnamed Card',
+        Description: card.Description || 'No description provided',
+        Theme: card.Theme || 'No theme provided',
+        imageUrl: '/assets/images/default-card.svg'
+      };
+    });
+
+    return validatedCards;
   } catch (error) {
+    console.error('Card analysis error:', error);
     throw new Error(`Failed to analyze story card: ${error.message}`);
   }
 }

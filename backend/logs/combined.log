@@ -1527,3 +1527,61 @@
 2025-01-25 16:03:52:352 [32minfo[39m: [32mToken to verify:[39m
 2025-01-25 16:03:52:352 [32minfo[39m: [32mJWT_SECRET exists:[39m
 2025-01-25 16:03:52:352 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-25 17:32:18:3218 [32minfo[39m: [32mInitializing OpenAI service with key:[39m
+2025-01-25 17:32:18:3218 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-25 17:32:19:3219 [32minfo[39m: [32mToken to verify:[39m
+2025-01-25 17:32:19:3219 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-25 17:32:19:3219 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-25 17:32:19:3219 [32minfo[39m: [32mAI Service test successful:[39m
+2025-01-25 17:34:15:3415 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-25 17:34:15:3415 [32minfo[39m: [32mToken to verify:[39m
+2025-01-25 17:34:15:3415 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-25 17:34:15:3415 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-25 17:35:31:3531 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-25 17:35:31:3531 [32minfo[39m: [32mToken to verify:[39m
+2025-01-25 17:35:31:3531 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-25 17:35:31:3531 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-25 17:36:07:367 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-25 17:36:07:367 [32minfo[39m: [32mToken to verify:[39m
+2025-01-25 17:36:07:367 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-25 17:36:07:367 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-25 17:36:08:368 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-25 17:36:08:368 [32minfo[39m: [32mToken to verify:[39m
+2025-01-25 17:36:08:368 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-25 17:36:08:368 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-25 17:36:08:368 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-25 17:36:08:368 [32minfo[39m: [32mToken to verify:[39m
+2025-01-25 17:36:08:368 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-25 17:36:08:368 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-25 17:36:08:368 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-25 17:36:08:368 [32minfo[39m: [32mToken to verify:[39m
+2025-01-25 17:36:08:368 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-25 17:36:08:368 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-25 17:36:13:3613 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-25 17:36:13:3613 [32minfo[39m: [32mToken to verify:[39m
+2025-01-25 17:36:13:3613 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-25 17:36:13:3613 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-25 17:38:05:385 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-25 17:38:05:385 [32minfo[39m: [32mToken to verify:[39m
+2025-01-25 17:38:05:385 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-25 17:38:05:385 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-25 17:43:17:4317 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-25 17:43:17:4317 [32minfo[39m: [32mToken to verify:[39m
+2025-01-25 17:43:17:4317 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-25 17:43:17:4317 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-25 17:44:13:4413 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-25 17:44:13:4413 [32minfo[39m: [32mToken to verify:[39m
+2025-01-25 17:44:13:4413 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-25 17:44:13:4413 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-25 17:49:05:495 [32minfo[39m: [32mInitializing OpenAI service with key:[39m
+2025-01-25 17:49:05:495 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-25 17:49:06:496 [32minfo[39m: [32mAI Service test successful:[39m
+2025-01-25 17:49:06:496 [32minfo[39m: [32mToken to verify:[39m
+2025-01-25 17:49:06:496 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-25 17:49:06:496 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
+2025-01-25 17:51:01:511 [32minfo[39m: [32mInitializing OpenAI service with key:[39m
+2025-01-25 17:51:01:511 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-25 17:51:02:512 [32minfo[39m: [32mProcessed Request:[39m
+2025-01-25 17:51:02:512 [32minfo[39m: [32mToken to verify:[39m
+2025-01-25 17:51:02:512 [32minfo[39m: [32mJWT_SECRET exists:[39m
+2025-01-25 17:51:02:512 [32minfo[39m: [32mToken verified successfully. Decoded payload:[39m
