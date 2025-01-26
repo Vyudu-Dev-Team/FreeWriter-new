@@ -40,25 +40,31 @@ const format = winston.format.combine(
 
 // Define which transports the logger must use
 const transports = [
-  // Write all logs with level 'error' and below to 'error.log'
-  new winston.transports.File({
-    filename: path.join('logs', 'error.log'),
-    level: 'error',
-  }),
-  // Write all logs with level 'info' and below to 'combined.log'
-  new winston.transports.File({ filename: path.join('logs', 'combined.log') }),
+  // Console transport is always included by default
+  new winston.transports.Console({
+    format: winston.format.combine(
+      winston.format.colorize(),
+      winston.format.simple()
+    ),
+  })
 ];
 
-// If we're not in production, log to the console as well
-if (process.env.NODE_ENV !== 'production') {
-  transports.push(
-    new winston.transports.Console({
-      format: winston.format.combine(
-        winston.format.colorize(),
-        winston.format.simple()
-      ),
-    })
-  );
+// Only add file transports if LOG_TO_FILE is set to 'true'
+if (process.env.LOG_TO_FILE === 'true') {
+  try {
+    transports.push(
+      new winston.transports.File({
+        filename: path.join('logs', 'error.log'),
+        level: 'error',
+      }),
+      new winston.transports.File({ 
+        filename: path.join('logs', 'combined.log') 
+      })
+    );
+    console.log('File logging enabled');
+  } catch (error) {
+    console.warn('Failed to setup file logging:', error.message);
+  }
 }
 
 // Create the logger
