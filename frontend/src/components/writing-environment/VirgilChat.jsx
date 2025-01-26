@@ -201,7 +201,7 @@ const VirgilChat = () => {
                                             sx={{ 
                                                 width: '180px',
                                                 height: '258px',
-                                                bgcolor: card.Type === 'WORLD' ? '#D8F651' : '#490BF4',
+                                                bgcolor: card.Type === 'WORLD' ? '#D8F651' : '#6600D2',
                                                 color: card.Type === 'WORLD' ? 'black' : 'white',
                                                 cursor: 'pointer',
                                                 p: 0,
@@ -212,7 +212,8 @@ const VirgilChat = () => {
                                                 border: selectedCard === card ? '2px solid white' : 'none',
                                                 display: 'flex',
                                                 flexDirection: 'column',
-                                                padding: '12px'
+                                                padding: '12px',
+                                                borderRadius: '6.02px'
                                             }}
                                         >
                                             <Box
@@ -235,7 +236,8 @@ const VirgilChat = () => {
 
                     {/* Chat Section - 40% */}
                     <div className="chat-section">
-                        <div className="chat">
+                        <div className="chat-container">
+                            <div className="chat">
                             {!hasMessages && (
                                 <div className="initial-message">
                                     <h2>CHAT WITH VIRGIL</h2>
@@ -276,7 +278,7 @@ const VirgilChat = () => {
 
                             <div className="messageInput">
                                 <form onSubmit={handleSubmit}>
-                                    <input
+                                    <textarea
                                         type="text"
                                         value={message}
                                         onChange={(e) => setMessage(e.target.value)}
@@ -284,9 +286,13 @@ const VirgilChat = () => {
                                         disabled={isLoading}
                                     />
                                     <button type="submit" disabled={isLoading}>
-                                        {isLoading ? 'Sending...' : 'Send'}
+                                        {isLoading ? 'Sending...' : (
+                                        <>
+                                            <img src="/assets/virgil-chat/sendButton.svg" alt="Send" />
+                                        </>)}
                                     </button>
                                 </form>
+                                </div>
                             </div>
                         </div>
                     </div>

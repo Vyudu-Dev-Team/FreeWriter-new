@@ -50,7 +50,7 @@
         
             
             .cards-container {
-                justify-content: center;
+                justify-content: start;
                 display: flex;
                 align-items: center;
                 padding: 25px 0px 0px 60px;
@@ -103,9 +103,10 @@
         background-image: url('/assets/backgrounds/virgilBackgroundBlack.webp');
         background-size: cover;
         background-position: center;
+        padding: unset;
 
         .chat{
-            background-color: #000000D9;
+            background-color: unset;
             color: #FFFFFF;
         }
 
@@ -304,13 +305,37 @@
 }
 
 .messageInput {
-    input {
+    border-top: unset;
+
+    form {
+        position: relative;
+        height: 165px;
+        outline: none;
+    }
+
+    textarea {
+        outline: none;
         font-family: 'Quicksand', sans-serif;
         font-size: 1rem;
+        overflow-x: auto;
+        position: relative;
+        background-color: black;
+        color: white;
+        height: 100%;
+        width: 100%;
+        padding-top: 18px;
+        padding-left: 18px;
+        resize: none;   
+        border: none;
+        border-radius: 20px;
         
         &::placeholder {
+            top: 18px;
+            left: 18px;
             font-family: 'Quicksand', sans-serif;
             font-weight: 400;
+            color: white;
+            position: absolute;
         }
     }
 
@@ -318,5 +343,15 @@
         font-family: 'Quicksand', sans-serif;
         font-weight: 500;
         letter-spacing: 0.5px;
+        position: absolute;
+        bottom: 18px;
+        right: 18px;
+        background-color: unset;
     }
+}
+
+.chat-container {
+   background-color: #222222c9;
+   padding: 20px;
+   max-height: 100vh;
 }
