@@ -178,7 +178,7 @@ const VirgilChat = () => {
     };
 
     return (
-        <Box sx={{ display: 'flex', height: '100vh' }}>
+        <Box sx={{ display: 'flex', height: '100vh', flexDirection: { xs: 'column', md: 'row' } }}>
             <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                 <NavBar />
                 <div className="writing-environment-container virgil-chat">
@@ -192,39 +192,109 @@ const VirgilChat = () => {
                         {/* Área Inferior - Deck de Cartas */}
                         <div className="cards-deck">
                             <div className="cards-container">
-                                {/* <h3>STORY CARDS</h3> */}
                                 <div className="cards-list">
                                     {cards.map((card, index) => (
                                         <Card 
                                             key={index}
                                             onClick={() => handleCardSelect(card)}
                                             sx={{ 
-                                                width: '180px',
-                                                height: '258px',
+                                                width: { 
+                                                    xs: '100px',
+                                                    sm: '120px',
+                                                    md: '140px',
+                                                    lg: '150px'
+                                                },
+                                                height: { 
+                                                    xs: '140px',
+                                                    sm: '170px',
+                                                    md: '200px',
+                                                    lg: '215px'
+                                                },
                                                 bgcolor: card.Type === 'WORLD' ? '#D8F651' : '#6600D2',
                                                 color: card.Type === 'WORLD' ? 'black' : 'white',
                                                 cursor: 'pointer',
                                                 p: 0,
-                                                transition: 'transform 0.2s',
+                                                transition: 'all 0.2s ease-in-out',
                                                 '&:hover': {
-                                                    transform: 'translateY(-5px)'
+                                                    transform: 'translateY(-5px)',
+                                                    boxShadow: '0 6px 12px rgba(0, 0, 0, 0.3)'
                                                 },
                                                 border: selectedCard === card ? '2px solid white' : 'none',
                                                 display: 'flex',
                                                 flexDirection: 'column',
-                                                padding: '12px',
+                                                padding: { 
+                                                    xs: '2.25px 8px 8px 8px',
+                                                    sm: '2.5px 10px 10px 10px',
+                                                    md: '2.75px 12px 12px 12px'
+                                                },
+                                                
                                                 borderRadius: '6.02px'
                                             }}
                                         >
+                                            <Box sx={{ 
+                                                
+                                                
+                                            }}>
+                                                <Typography 
+                                                    variant="subtitle2" 
+                                                    sx={{ 
+                                                        fontFamily: 'PixelSplitter',
+                                                        fontSize: { 
+                                                            xs: '0.4rem',
+                                                            sm: '0.5rem',
+                                                            md: '0.6rem',
+                                                            lg: '0.7rem'
+                                                        },
+                                                        lineHeight: 1.2,
+                                                        overflow: 'hidden',
+                                                        textOverflow: 'ellipsis',
+                                                        display: '-webkit-box',
+                                                        WebkitLineClamp: 2,
+                                                        WebkitBoxOrient: 'vertical'
+                                                    }}
+                                                >
+                                                    {`${card.Type}`}
+                                                </Typography>
+                                            </Box>
                                             <Box
                                                 component="img"
                                                 src={card.imageUrl}
                                                 alt={card.Name}
-                                                sx={{ width: '100%', height: '180px', objectFit: 'cover', }}
+                                                sx={{ 
+                                                    width: '100%',
+                                                    height: { 
+                                                        xs: '90px',
+                                                        sm: '120px',
+                                                        md: '140px',
+                                                        lg: '160px'
+                                                    },
+                                                    objectFit: 'cover',
+                                                    borderRadius: '4px'
+                                                }}
                                             />
-                                            <Box sx={{ p: 1 }}>
-                                                <Typography variant="subtitle2" sx={{ fontFamily: 'PixelSplitter' }}>
-                                                    {`${card.Type} - ${card.Name}`}
+                                            <Box sx={{ 
+                                                p: { xs: 0.5, sm: 1 },
+                                                mt: { xs: 0.5, sm: 1 }
+                                            }}>
+                                                <Typography 
+                                                    variant="subtitle2" 
+                                                    sx={{ 
+                                                        fontFamily: 'PixelSplitter',
+                                                        fontSize: { 
+                                                            xs: '0.6rem',
+                                                            sm: '0.7rem',
+                                                            md: '0.8rem',
+                                                            lg: '0.9rem'
+                                                        },
+                                                        lineHeight: 1.2,
+                                                        overflow: 'hidden',
+                                                        textOverflow: 'ellipsis',
+                                                        display: '-webkit-box',
+                                                        WebkitLineClamp: 2,
+                                                        WebkitBoxOrient: 'vertical'
+                                                    }}
+                                                >
+                                                    {`${card.Name}`}
                                                 </Typography>
                                             </Box>
                                         </Card>
@@ -234,70 +304,70 @@ const VirgilChat = () => {
                         </div>
                     </div>
 
-                    {/* Chat Section - 40% */}
+                    {/* Chat Section */}
                     <div className="chat-section">
                         <div className="chat-container">
                             <div className="chat">
-                            {!hasMessages && (
-                                <div className="initial-message">
-                                    <h2>CHAT WITH VIRGIL</h2>
-                                    <p>Talk with Virgil to obtain insights and feedbacks based on your messages.</p>
-                                </div>
-                            )}
-                            
-                            <div className="chat-messages" ref={chatMessagesRef}>
-                                {messages.map((msg, index) => (
-                                    <div key={index} className={`message ${msg.type}`}>
-                                        <div className="chatTalker">
-                                            <img 
-                                                className="virgilImg" 
-                                                alt={msg.type === 'ai' ? 'Virgil' : username} 
-                                                src={msg.type === 'ai' ? "/assets/virgil-chat/virgilPictureTopLeft.svg" : "/assets/virgil-chat/userPictureDefault.svg"} 
-                                            />
-                                            <p>{msg.type === 'ai' ? 'VIRGIL' : username?.toUpperCase()}</p>
-                                        </div>
-                                        <div className="message-content">
-                                            {msg.content}
-                                        </div>
-                                    </div>
-                                ))}
-                                {isLoading && (
-                                    <div className="message ai loading-message">
-                                        <div className="chatTalker">
-                                            <img className="virgilImg" alt="Virgil" src="/assets/virgil-chat/virgilPictureTopLeft.svg" />
-                                            <p>VIRGIL</p>
-                                        </div>
-                                        <div className="message-content typing">
-                                            <span className="dot"></span>
-                                            <span className="dot"></span>
-                                            <span className="dot"></span>
-                                        </div>
+                                {!hasMessages && (
+                                    <div className="initial-message">
+                                        <h2>CHAT WITH VIRGIL</h2>
+                                        <p>Talk with Virgil to obtain insights and feedbacks based on your messages.</p>
                                     </div>
                                 )}
-                            </div>
+                                
+                                <div className="chat-messages" ref={chatMessagesRef}>
+                                    {messages.map((msg, index) => (
+                                        <div key={index} className={`message ${msg.type}`}>
+                                            <div className="chatTalker">
+                                                <img 
+                                                    className="virgilImg" 
+                                                    alt={msg.type === 'ai' ? 'Virgil' : username} 
+                                                    src={msg.type === 'ai' ? "/assets/virgil-chat/virgilPictureTopLeft.svg" : "/assets/virgil-chat/userPictureDefault.svg"} 
+                                                />
+                                                <p>{msg.type === 'ai' ? 'VIRGIL' : username?.toUpperCase()}</p>
+                                            </div>
+                                            <div className="message-content">
+                                                {msg.content}
+                                            </div>
+                                        </div>
+                                    ))}
+                                    {isLoading && (
+                                        <div className="message ai loading-message">
+                                            <div className="chatTalker">
+                                                <img className="virgilImg" alt="Virgil" src="/assets/virgil-chat/virgilPictureTopLeft.svg" />
+                                                <p>VIRGIL</p>
+                                            </div>
+                                            <div className="message-content typing">
+                                                <span className="dot"></span>
+                                                <span className="dot"></span>
+                                                <span className="dot"></span>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
 
-                            <div className="messageInput">
-                                <form onSubmit={handleSubmit}>
-                                    <textarea
-                                        type="text"
-                                        value={message}
-                                        onChange={(e) => setMessage(e.target.value)}
-                                        placeholder="Type your message..."
-                                        disabled={isLoading}
-                                    />
-                                    <button type="submit" disabled={isLoading}>
-                                        {isLoading ? 'Sending...' : (
-                                        <>
-                                            <img src="/assets/virgil-chat/sendButton.svg" alt="Send" />
-                                        </>)}
-                                    </button>
-                                </form>
+                                <div className="messageInput">
+                                    <form onSubmit={handleSubmit}>
+                                        <textarea
+                                            type="text"
+                                            value={message}
+                                            onChange={(e) => setMessage(e.target.value)}
+                                            placeholder="Type your message..."
+                                            disabled={isLoading}
+                                        />
+                                        <button type="submit" disabled={isLoading}>
+                                            {isLoading ? 'Sending...' : (
+                                            <>
+                                                <img src="/assets/virgil-chat/sendButton.svg" alt="Send" />
+                                            </>)}
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    {/* Right Section - Remaining space */}
+                    {/* Right Section - Stats */}
                     <div className="right-section">
                         <h2>STORY STATS</h2>
                         <div className="statsContainer">
