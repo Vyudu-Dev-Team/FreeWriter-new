@@ -55,6 +55,8 @@ const { v4: uuidv4 } = require("uuid");
 const { ObjectId } = require("mongodb");
 const OpenAI = require("openai");
 const Conversation = require("../models/Conversation.js");
+const { analyzeStoryCard } = require("../services/cardAnalyzer.js");
+const { generateTitleFromConversation } = require("../services/titleGenerator.js");
 
 // Debug logs for OpenAI API Key
 console.log('Environment:', process.env.NODE_ENV);
@@ -143,10 +145,11 @@ const handleUserRoutes = async (event) => {
 const handleAIRoutes = async (event) => {
   const { httpMethod, path } = event;
   const route = path.replace("/ai", "");
+  const conversationId = path.split("/").pop();
 
   switch (`${httpMethod} ${route}`) {
     case "POST /generate-story-prompt":
-      return generateAndSaveStoryPrompt(event); // Pass the parsed body
+      return generateAndSaveStoryPrompt(event);
     case "POST /generate-prompt":
       return generatePrompt(event);
     case "POST /generate-guidance":
@@ -157,11 +160,52 @@ const handleAIRoutes = async (event) => {
       return dashboardAnalysis(event);
     case "POST /interaction":
       return conversationInteractions(event);
+    case "GET /interaction":
+      return getAllConversations(event);
+    case `GET /interaction/${conversationId}`:
+      return getConversationHistory(event, conversationId);
     default:
       return {
         statusCode: 404,
         body: JSON.stringify({ message: "Not Found" }),
       };
+  }
+};
+
+const getAllConversations = async (event) => {
+  try {
+    const userResponse = await getCurrentUser(event);
+    if (userResponse.statusCode !== 200) {
+      return userResponse;
+    }
+
+    const userId = JSON.parse(userResponse.body).user.id;
+    const stories = await Story.find(
+      { author: userId }, 
+      '_id title createdAt'
+    ).sort({ createdAt: -1 });
+
+    const conversations = stories.map(story => ({
+      id: story._id || "no_conversation",
+      title: story.title || "Untitled Story",
+      lastUpdate: story.createdAt
+    }));
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        conversations: conversations
+      })
+    };
+
+  } catch (error) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        message: "Failed to retrieve conversations",
+        error: error.message
+      })
+    };
   }
 };
 
@@ -1418,17 +1462,50 @@ const generatePrompt = async (event) => {
 const conversationInteractions = async (event) => {
   try {
     const userResponse = await getCurrentUser(event);
-    console.log("User response:", userResponse);
-
     if (userResponse.statusCode !== 200) {
       return userResponse;
     }
 
     const userId = JSON.parse(userResponse.body).user.id;
-    const { message } = JSON.parse(event.body);
+    const { message, conversationId } = JSON.parse(event.body);
+    let conversation;
 
-    const conversation = await updateConversationHistory(userId, message);
-    
+    if (conversationId && ObjectId.isValid(conversationId)) {
+      conversation = await Conversation.findOne({ 
+        _id: conversationId,
+        user_id: userId 
+      });
+      
+      if (!conversation) {
+        return {
+          statusCode: 404,
+          body: JSON.stringify({
+            message: "Conversation not found"
+          })
+        };
+      }
+    }
+
+    if (!conversation) {
+      conversation = new Conversation({
+        user_id: userId,
+        history: [{
+          role: "system",
+          content: "You are FreeWrite Mind, a helpful assistant for writers all levels with objectives to help the user write a story."
+        }],
+        last_update: new Date()
+      });
+      await conversation.save();
+    }
+
+    conversation.history.push({
+      role: "user",
+      content: message,
+      timestamp: new Date()
+    });
+    conversation.last_update = new Date();
+    await conversation.save();
+
     const messages = conversation.history.map(msg => ({
       role: msg.role,
       content: msg.content
@@ -1437,71 +1514,56 @@ const conversationInteractions = async (event) => {
     const completion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: messages,
-      max_tokens: 1000, 
-      temperature: 0.7 
+      max_tokens: 1000,
+      temperature: 0.7
     });
 
     const aiResponse = completion.choices[0].message.content.trim();
     
-    const updatedConversation = await updateConversationHistory(userId, aiResponse, "assistant");
+    conversation.history.push({
+      role: "assistant",
+      content: aiResponse,
+      timestamp: new Date()
+    });
+    conversation.last_update = new Date();
+    await conversation.save();
+
+    let story = await Story.findOne({ conversation_id: conversation._id });
+
+    if (!story) {
+      const title = await generateTitleFromConversation(conversation.history);
+      
+      story = new Story({
+        author: userId,
+        conversation_id: conversation._id,
+        title: title,
+        status_progress: "draft",
+        createdAt: new Date(),
+        content: ""
+      });
+      
+      await story.save();
+    }
+
+    const cardType = await analyzeStoryCard(aiResponse);
 
     return {
       statusCode: 200,
       body: JSON.stringify({
         response: aiResponse,
-        conversation: updatedConversation
-      }),
-    }
+        conversationId: conversation._id,
+        title: story.title,
+        card: cardType
+      })
+    };
   } catch (error) {
-    console.error("Error in conversation interaction:", error);
     return {
       statusCode: 500,
       body: JSON.stringify({
-        message: "An error occurred while processing the conversation",
+        message: "Failed to process conversation",
         error: error.message
       })
-    }
-  }
-};
-
-const updateConversationHistory = async (userId, message, role = "user") => {
-  try {
-    if (!message || message.trim() === '') {
-      throw new Error("No content");
-    }
-
-    let conversation = await Conversation.findOne({ user_id: userId });
-    
-    const newMessage = {
-      role: role,
-      content: message.trim(),
-      timestamp: new Date()
     };
-
-    if (!conversation) {
-      conversation = new Conversation({
-        user_id: userId,
-        history: [newMessage],
-        last_update: new Date()
-      });
-    } else {
-      if (!Array.isArray(conversation.history)) {
-        conversation.history = [];
-      }
-      
-      conversation.history.push(newMessage);
-      conversation.last_update = new Date();
-    }
-
-    if (!conversation.history.every(msg => msg.content && msg.content.trim() !== '')) {
-      throw new Error("All messages must have valid content");
-    }
-
-    await conversation.save();
-    return conversation;
-  } catch (error) {
-    console.error("Error updating conversation history:", error);
-    throw error;
   }
 };
 
@@ -3307,6 +3369,64 @@ const getUserRewardsHandler = async (event) => {
         message: "Error fetching user rewards",
         error: error.message 
       }),
+    };
+  }
+};
+
+const getConversationHistory = async (event, conversationId) => {
+  try {
+    if (!ObjectId.isValid(conversationId)) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({
+          message: "Invalid conversation ID format"
+        })
+      };
+    }
+
+    const userResponse = await getCurrentUser(event);
+    console.log("User response:", userResponse);
+
+    if (userResponse.statusCode !== 200) {
+      return userResponse;
+    }
+
+    const userId = JSON.parse(userResponse.body).user.id;
+    const conversation = await Conversation.findOne({ 
+      _id: conversationId,
+      user_id: userId 
+    });
+    
+    if (!conversation) {
+      return {
+        statusCode: 404,
+        body: JSON.stringify({
+          message: "Conversation not found"
+        })
+      };
+    }
+
+    const formattedHistory = conversation.history.map(msg => ({
+      role: msg.role,
+      content: msg.content,
+      timestamp: msg.timestamp
+    }));
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        history: formattedHistory
+      })
+    };
+
+  } catch (error) {
+    console.error("Error fetching conversation history:", error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        message: "An error occurred while fetching conversation history",
+        error: error.message
+      })
     };
   }
 };

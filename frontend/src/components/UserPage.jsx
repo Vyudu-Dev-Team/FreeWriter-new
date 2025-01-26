@@ -15,13 +15,14 @@ import {
     Edit,
     Share,
 } from "@mui/icons-material";
+import { useAppContext } from '../contexts/AppContext';
 
 const UserPage = () => {
-    const { userId } = useParams();
+    const { state } = useAppContext();
     const [userProfile, setUserProfile] = useState({
-        name: 'Jane Smith',
-        username: 'janesmith',
-        email: 'jane.smith@example.com',
+        name: state?.user?.user?.username,
+        username: state?.user?.user?.username,
+        email: state?.user?.user?.email,
         bio: 'Aspiring author with a passion for speculative fiction and creative storytelling.',
         genres: ['Science Fiction', 'Fantasy', 'Horror', 'Adventure'],
         wordCount: 175000,
@@ -37,7 +38,7 @@ const UserPage = () => {
             savedPrompts: 18,
             friends: 10,
         },
-        avatar: '/assets/images/avatar-2.svg',
+        avatar: '/assets/profile/defaultProfileIcon.svg',
         recentStories: [
             {
                 title: 'The Lost City',
@@ -54,48 +55,56 @@ const UserPage = () => {
 
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
-
+    
     useEffect(() => {
-        const fetchProfile = async () => {
-            try {
-                setLoading(true);
-                const response = await fetch(`/api/profile/${userId}`);
-                if (!response.ok) {
-                    throw new Error("Failed to fetch profile");
-                }
-                const data = await response.json();
-                setUserProfile(data);
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
+        setUserProfile({
+            name: state?.user?.user?.username,
+            username: state?.user?.user?.username,
+            email: state?.user?.user?.email,
+        });
+    }, [state?.user?.user?.username, state?.user?.user?.email]);
 
-        fetchProfile();
-    }, [userId]);
+    // useEffect(() => {
+    //     const fetchProfile = async () => {
+    //         try {
+    //             setLoading(true);
+    //             const response = await fetch(`/api/profile/${userId}`);
+    //             if (!response.ok) {
+    //                 throw new Error("Failed to fetch profile");
+    //             }
+    //             const data = await response.json();
+    //             setUserProfile(data);
+    //         } catch (err) {
+    //             setError(err.message);
+    //         } finally {
+    //             setLoading(false);
+    //         }
+    //     };
 
-    const handleUpdateProfile = async (updatedProfile) => {
-        try {
-            setLoading(true);
-            const response = await fetch(`/api/profile/${userId}`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(updatedProfile),
-            });
-            if (!response.ok) {
-                throw new Error("Failed to update profile");
-            }
-            const data = await response.json();
-            setUserProfile(data);
-        } catch (err) {
-            setError(err.message);
-        } finally {
-            setLoading(false);
-        }
-    };
+    //     fetchProfile();
+    // }, [userId]);
+
+    // const handleUpdateProfile = async (updatedProfile) => {
+    //     try {
+    //         setLoading(true);
+    //         const response = await fetch(`/api/profile/${userId}`, {
+    //             method: "POST",
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //             },
+    //             body: JSON.stringify(updatedProfile),
+    //         });
+    //         if (!response.ok) {
+    //             throw new Error("Failed to update profile");
+    //         }
+    //         const data = await response.json();
+    //         setUserProfile(data);
+    //     } catch (err) {
+    //         setError(err.message);
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
 
     if (loading) {
         return (
@@ -200,7 +209,7 @@ const UserPage = () => {
                         </Box>
                         <Box
                             component="img"
-                            src="/assets/images/avatar-1.svg"
+                            src='/assets/profile/defaultProfileIcon.svg'
                             alt="User Avatar"
                             sx={{ width: 120, height: 120, borderRadius: "5px", mb: 2 }}
                         />
@@ -325,7 +334,7 @@ const UserPage = () => {
                                     <Grid item xs={6} key={item}>
                                         <Box
                                             component="img"
-                                            src={`/assets/images/story-${item}.svg`}
+                                            src={`/assets/profile/story-${item}.svg`}
                                             alt={`Story Deck ${item}`}
                                             sx={{
                                                 width: "100%",
@@ -367,7 +376,7 @@ const UserPage = () => {
                                     <Grid item xs={4} key={item}>
                                         <Box
                                             component="img"
-                                            src={`/assets/images/badge-1.svg`}
+                                            src={`/assets/icons/badge.svg`}
                                             alt={`Badge ${item}`}
                                             sx={{
                                                 width: "100%",

@@ -46,7 +46,7 @@ import VirgilChat from './components/writing-environment/VirgilChat';
 function App() {
   return (
     <AppProvider>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={theme} sx={{ pb: 2 }}>
         <CssBaseline />
         <Router>
           {/* <Navbar /> */}
