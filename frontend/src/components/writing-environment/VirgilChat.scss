@@ -23,16 +23,18 @@
         justify-content: space-between;
         
         .selected-card-area {
-            height: 500px;
+            height: 420px;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-top: 30px;
+            margin-top: 20px;
             perspective: 1000px;
             
             .flip-card {
                 transition: transform 0.6s;
                 transform-style: preserve-3d;
+                width: 270px;
+                height: 380px;
                 
                 &.flipped {
                     transform: rotateY(180deg);
@@ -41,19 +43,20 @@
         }
 
         .cards-deck {
-            width: 532px;
-            height: 380px;
-            padding: 10px;
-            overflow-x: scroll;
+            width: 100%;
+            max-width: 532px;
+            height: 300px;
+            // padding: 10px;
+            overflow-x: auto;
             overflow-y: hidden;
-            margin-top: 35px;
+            // margin-top: 20px;
         
             
             .cards-container {
                 justify-content: start;
                 display: flex;
                 align-items: center;
-                padding: 25px 0px 0px 60px;
+                padding: 15px 0px 0px 30px;
                 
                 h3 {
                     color: #D8F651;
@@ -63,25 +66,17 @@
 
                 .cards-list {
                     display: flex;
-                    gap: 16px;
+                    gap: 12px;
                     padding-bottom: 16px;
                     
                     .MuiCard-root {
+                        width: 150px !important;
+                        height: 215px !important;
                         flex-shrink: 0;
                         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
                         
                         &:hover {
                             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-                        }
-
-                        overflow: hidden;
-                        
-                        img {
-                            transition: transform 0.3s;
-                        }
-                        
-                        &:hover img {
-                            transform: scale(1.05);
                         }
                     }
                 }
@@ -168,6 +163,158 @@
             p {
                 margin-top: 21px;
             }	
+        }
+    }
+
+    // Media queries for responsive layout
+    @media (max-width: 1200px) {
+        .cards-section {
+            .selected-card-area {
+                height: 380px;
+                
+                .flip-card {
+                    width: 240px;
+                    height: 340px;
+                }
+            }
+            
+            .cards-deck {
+                height: 250px;
+                
+                .cards-container {
+                    .cards-list {
+                        .MuiCard-root {
+                            width: 140px !important;
+                            height: 200px !important;
+                        }
+                    }
+                }
+            }
+        }
+
+        .chat-section {
+            width: 45%;
+        }
+
+        .right-section {
+            width: 20%;
+            min-width: 300px;
+        }
+    }
+
+    @media (max-width: 992px) {
+        .cards-section {
+            .selected-card-area {
+                height: 340px;
+                
+                .flip-card {
+                    width: 210px;
+                    height: 300px;
+                }
+            }
+            
+            .cards-deck {
+                height: 220px;
+                
+                .cards-container {
+                    .cards-list {
+                        .MuiCard-root {
+                            width: 130px !important;
+                            height: 185px !important;
+                        }
+                    }
+                }
+            }
+        }
+
+        .chat-section {
+            width: 60%;
+        }
+
+        .right-section {
+            display: none; // Hide stats on medium screens
+        }
+    }
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        
+        .cards-section {
+            max-height: 35vh;
+            
+            .selected-card-area {
+                height: 300px;
+                margin-top: 10px;
+                
+                .flip-card {
+                    width: 180px;
+                    height: 260px;
+                }
+            }
+            
+            .cards-deck {
+                height: 180px;
+                margin-top: 10px;
+                
+                .cards-container {
+                    padding: 10px 0px 0px 20px;
+                    
+                    .cards-list {
+                        gap: 10px;
+                        
+                        .MuiCard-root {
+                            width: 120px !important;
+                            height: 170px !important;
+                        }
+                    }
+                }
+            }
+        }
+
+        .chat-section {
+            width: 100%;
+            height: 60vh;
+            margin: 0;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .cards-section {
+            max-height: 30vh;
+            
+            .selected-card-area {
+                height: 240px;
+                
+                .flip-card {
+                    width: 150px;
+                    height: 220px;
+                }
+            }
+            
+            .cards-deck {
+                height: 150px;
+                
+                .cards-container {
+                    padding: 5px 0px 0px 15px;
+                    
+                    .cards-list {
+                        gap: 8px;
+                        
+                        .MuiCard-root {
+                            width: 100px !important;
+                            height: 140px !important;
+                        }
+                    }
+                }
+            }
+        }
+
+        .chat-section {
+            .messageInput {
+                form {
+                    height: 120px;
+                }
+            }
         }
     }
 }
@@ -348,6 +495,24 @@
         right: 18px;
         background-color: unset;
     }
+
+    // Update message input for better mobile view
+    @media (max-width: 768px) {
+        form {
+            height: 120px;
+        }
+        
+        textarea {
+            font-size: 14px;
+            padding-top: 12px;
+            padding-left: 12px;
+        }
+        
+        button {
+            bottom: 12px;
+            right: 12px;
+        }
+    }
 }
 
 .chat-container {
@@ -355,4 +520,10 @@
    padding: 20px;
    max-height: 100vh;
    height: 100vh;
+
+   // Update chat container for better mobile view
+   @media (max-width: 768px) {
+       max-height: 100%;
+       padding: 10px;
+   }
 }

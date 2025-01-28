@@ -28,8 +28,8 @@ const FlipCard = ({ card }) => {
     return (
         <Box
             sx={{
-                width: '403px',
-                height: '578px',
+                width: '300px',
+                height: '400px',
                 perspective: '1000px',
                 cursor: 'pointer',
             }}
@@ -58,24 +58,54 @@ const FlipCard = ({ card }) => {
                         display: 'flex',
                         flexDirection: 'column',
                         gap: 0.7,
-                        borderRadius: '18px',
+                        borderRadius: '12px',
                     }}
                 >
-                    <Typography variant="h5" sx={{ fontFamily: 'PixelSplitter', alignSelf: 'center', fontSize: '15px' }}>
+                    <Typography 
+                        variant="h5" 
+                        sx={{ 
+                            fontFamily: 'PixelSplitter', 
+                            alignSelf: 'center', 
+                            fontSize: '18px',
+                            
+                        }}
+                    >
                         {cardType}
                     </Typography>
 
-                    <Box sx={{ display: 'flex', justifyContent: 'center', width: '95%', alignSelf: 'center', backgroundColor: 'black', borderRadius: '17px', height: '100%' }}>
-                    
+                    <Box 
+                        sx={{ 
+                            display: 'flex', 
+                            justifyContent: 'center', 
+                            width: '95%', 
+                            alignSelf: 'center', 
+                            backgroundColor: 'black', 
+                            borderRadius: '14px', 
+                            height: '280px'
+                        }}
+                    >
                         <Box
                             component="img"
                             src={cardImage}
                             alt={card.Name || 'Card image'}
-                            sx={{ width: '100%', height: '450px', mt: 1 }}
+                            sx={{ 
+                                width: '100%', 
+                                height: '100%',
+                                objectFit: 'contain',
+                                p: 1
+                            }}
                         />
                     </Box>
                     
-                    <Typography variant="h6" sx={{ fontFamily: 'PixelSplitter', alignSelf: 'center' }}>
+                    <Typography 
+                        variant="h6" 
+                        sx={{ 
+                            fontFamily: 'PixelSplitter', 
+                            alignSelf: 'center',
+                            fontSize: '18px',
+                            mt: 1
+                        }}
+                    >
                         {card.Name || 'Nome não definido'}
                     </Typography>
                 </Card>
@@ -90,38 +120,108 @@ const FlipCard = ({ card }) => {
                         transform: 'rotateY(180deg)',
                         bgcolor: isWorldCard ? '#D8F651' : '#6600D2',
                         color: isWorldCard ? 'black' : 'white',
-                        p: 3,
+                        p: 2,
                         display: 'flex',
                         flexDirection: 'column',
-                        gap: 2,
+                        gap: 1.5,
+                        borderRadius: '12px',
                     }}
                 >
                     <div>
                         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start', mb: 1 }}>
-                            <Typography variant="h6" sx={{ fontFamily: 'PixelSplitter', margin: 0, lineHeight: 1.25 }}>
+                            <Typography 
+                                variant="h6" 
+                                sx={{ 
+                                    fontFamily: 'PixelSplitter', 
+                                    margin: 0, 
+                                    lineHeight: 1.25,
+                                    fontSize: '14px'
+                                }}
+                            >
                                 {cardType}
                             </Typography>
                         </Box>
-                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start', p: 1, backgroundColor: 'black', borderRadius: '9px', color: '#D8F651' }}>
-                            <Typography variant="subtitle1" sx={{ fontFamily: 'Quicksand', margin: 0, lineHeight: 1.0 }}>
+                        <Box 
+                            sx={{ 
+                                display: 'flex', 
+                                flexDirection: 'column', 
+                                alignItems: 'start', 
+                                p: 1, 
+                                backgroundColor: 'black', 
+                                borderRadius: '6px', 
+                                color: '#D8F651' 
+                            }}
+                        >
+                            <Typography 
+                                variant="subtitle1" 
+                                sx={{ 
+                                    fontFamily: 'Quicksand', 
+                                    margin: 0, 
+                                    lineHeight: 1.0,
+                                    fontSize: '12px'
+                                }}
+                            >
                                 {card.Name || 'Nome não definido'}
                             </Typography>
                         </Box>
                     </div>
-                    <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', alignSelf: 'center', backgroundColor: 'black', borderRadius: '17px', height: '250px', position: 'relative' }}>
+                    <Box 
+                        sx={{ 
+                            display: 'flex', 
+                            justifyContent: 'center', 
+                            width: '100%', 
+                            alignSelf: 'center', 
+                            backgroundColor: 'black', 
+                            borderRadius: '12px', 
+                            height: '160px', 
+                            position: 'relative' 
+                        }}
+                    >
                         <Box
                             component="img"
                             src={cardImage}
                             alt={card.Name || 'Card image'}
-                            sx={{ width: '100%', height: '100%' }}
+                            sx={{ 
+                                width: '100%', 
+                                height: '100%',
+                                objectFit: 'contain',
+                                p: 1
+                            }}
                         />
                     </Box>
-                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start', mb: 1, border: '3.75px solid black', width: '100%', borderRadius: '9.76px', p: '10px', height: '100%' }}>
-                        <Typography variant="body1" sx={{ flex: 1, fontFamily: 'Quicksand' }}>
+                    <Box 
+                        sx={{ 
+                            display: 'flex', 
+                            flexDirection: 'column', 
+                            alignItems: 'start', 
+                            mb: 1, 
+                            border: '2px solid black', 
+                            width: '100%', 
+                            borderRadius: '6px', 
+                            p: '8px', 
+                            height: '100%' 
+                        }}
+                    >
+                        <Typography 
+                            variant="body1" 
+                            sx={{ 
+                                flex: 1, 
+                                fontFamily: 'Quicksand',
+                                fontSize: '11px',
+                                lineHeight: 1.2
+                            }}
+                        >
                             {card.Description || 'Descrição não definida'}
                         </Typography>
                     </Box>
-                    <Typography variant="body2" sx={{ fontStyle: 'italic', fontFamily: 'Quicksand', fontSize: '11px' }}>
+                    <Typography 
+                        variant="body2" 
+                        sx={{ 
+                            fontStyle: 'italic', 
+                            fontFamily: 'Quicksand', 
+                            fontSize: '10px' 
+                        }}
+                    >
                         Theme: {card.Theme || 'Tema não definido'}
                     </Typography>
                 </Card>
