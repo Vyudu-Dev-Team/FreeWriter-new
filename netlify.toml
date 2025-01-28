@@ -14,46 +14,9 @@
 [functions.scheduleNotifyInactiveUsers]
   schedule = "0 0 * * *"
 
-# Redirect all API calls to the api function
 [[redirects]]
   from = "/api/*"
-  to = "/.netlify/functions/api/:splat"
-  status = 200
-  force = true
-
-# Redirect specific API routes
-[[redirects]]
-  from = "/auth/*"
-  to = "/.netlify/functions/api/auth/:splat"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/users/*"
-  to = "/.netlify/functions/api/users/:splat"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/stories/*"
-  to = "/.netlify/functions/api/stories/:splat"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/ai/*"
-  to = "/.netlify/functions/api/ai/:splat"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-
-[[redirects]]
-  from = "/api/verify-email"
-  to = "/.netlify/functions/verifyEmail"
+  to = "/.netlify/functions/:splat"
   status = 200
   force = true
 
