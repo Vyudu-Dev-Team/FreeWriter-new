@@ -14,6 +14,25 @@
 [functions.scheduleNotifyInactiveUsers]
   schedule = "0 0 * * *"
 
+# Redirecionar rotas específicas
+[[redirects]]
+  from = "/api/users/*"
+  to = "/.netlify/functions/users/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/auth/*"
+  to = "/.netlify/functions/auth/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/stories/*"
+  to = "/.netlify/functions/stories/:splat"
+  status = 200
+  force = true
+
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/:splat"
