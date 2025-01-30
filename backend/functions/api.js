@@ -18,6 +18,7 @@ const {
 const connectDB = require("../config/database.js");
 const logger = require("../utils/logger.js");
 const { getCurrentUser } = require("./currentUser.js");
+const { errorHandler } = require('../utils/errorHandler.js');
 
 // Debug environment variables loading
 console.log('Loading environment variables from:', path.resolve(__dirname, '../../.env'));
