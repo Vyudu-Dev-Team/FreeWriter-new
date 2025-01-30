@@ -8,19 +8,29 @@
   external_node_modules = ["crypto-browserify"]
   included_files = ["services/notificationService.js", "config/database.js", "utils/logger.js"]
 
-[functions."*"]  # Applies to all functions
+[functions."*"]
   timeout = 30
   
 [functions.scheduleNotifyInactiveUsers]
   schedule = "0 0 * * *"
 
-# Redirecionar rotas específicas
 [[redirects]]
   from = "/api/users/login"
   to = "/.netlify/functions/users/login"
   status = 200
   force = true
 
+[[redirects]]
+  from = "/api/users/register"
+  to = "/.netlify/functions/users/register"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/*"
+  status = 200
+  force = true
 
 # Global headers
 [[headers]]
@@ -31,7 +41,6 @@
       Access-Control-Allow-Headers = "Content-Type, Authorization"
       Access-Control-Allow-Credentials = "true"
 
-# Dev-specific settings
 [dev]
   port = 8888
   publish = "frontend/dist"
