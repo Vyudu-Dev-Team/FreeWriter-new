@@ -21,17 +21,6 @@
   status = 200
   force = true
 
-[[redirects]]
-  from = "/api/users/*"
-  to = "/.netlify/functions/users/:splat"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/:splat"
-  status = 200
-  force = true
 
 # Global headers
 [[headers]]
