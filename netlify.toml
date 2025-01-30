@@ -15,20 +15,8 @@
   schedule = "0 0 * * *"
 
 [[redirects]]
-  from = "/api/users/login"
-  to = "/.netlify/functions/api/users/login"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/api/users/register"
-  to = "/.netlify/functions/api/users/register"
-  status = 200
-  force = true
-
-[[redirects]]
   from = "/api/*"
-  to = "/.netlify/functions/*"
+  to = "/.netlify/functions/api/*"
   status = 200
   force = true
 
