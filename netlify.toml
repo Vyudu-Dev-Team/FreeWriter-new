@@ -16,13 +16,13 @@
 
 [[redirects]]
   from = "/api/users/login"
-  to = "/.netlify/functions/users/login"
+  to = "/.netlify/functions/api/users/login"
   status = 200
   force = true
 
 [[redirects]]
   from = "/api/users/register"
-  to = "/.netlify/functions/users/register"
+  to = "/.netlify/functions/api/users/register"
   status = 200
   force = true
 
