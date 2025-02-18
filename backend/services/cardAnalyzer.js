@@ -16,15 +16,18 @@ async function analyzeStoryCard(storyText) {
         {
           role: "system",
           content: `You are a story analyzer that generates story cards. Your response must be ONLY a valid JSON array containing objects with the following properties:
-- Type (must be exactly "CHARACTER", "WORLD", or "CONFLICT")
+- Type (must be exactly "CHARACTER", "WORLD", "CONFLICT", or "WILDCARD")
 - Name (string)
 - Description (string)
 - Theme (string)
 
+Use WILDCARD type only if the element strongly fits a unique category beyond the standard ones. If the element doesn't clearly fit any category, use one of the standard types that fits best.
+
 Do not include any markdown formatting, code blocks, or explanatory text. Return ONLY the JSON array.
 
 Example of valid response:
-[{"Type":"CHARACTER","Name":"John","Description":"A brave hero","Theme":"Courage"}]`
+[{"Type":"CHARACTER","Name":"John","Description":"A brave hero","Theme":"Courage"},
+{"Type":"WILDCARD","Name":"Time Loop","Description":"A mysterious temporal anomaly","Theme":"Destiny"}]`
         },
         {
           role: "user",
@@ -53,7 +56,7 @@ Example of valid response:
     const cards = JSON.parse(content);
     
     // Valida se cada carta tem os campos necessários e os tipos corretos
-    const validTypes = ['CHARACTER', 'WORLD', 'CONFLICT'];
+    const validTypes = ['CHARACTER', 'WORLD', 'CONFLICT', 'WILDCARD'];
     const validatedCards = cards.map(card => {
       if (!card.Type || !validTypes.includes(card.Type.toUpperCase())) {
         card.Type = 'CHARACTER'; // Tipo padrão se inválido
