@@ -208,7 +208,7 @@ const VirgilChat = () => {
                                                     xs: '140px',
                                                     sm: '170px',
                                                     md: '200px',
-                                                    lg: '215px'
+                                                    lg: '235px'
                                                 },
                                                 bgcolor: card.Type === 'WORLD' ? '#D8F651' : '#6600D2',
                                                 color: card.Type === 'WORLD' ? 'black' : 'white',
