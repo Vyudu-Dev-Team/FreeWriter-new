@@ -23,13 +23,15 @@
         justify-content: space-between;
         
         .selected-card-area {
-            height: 420px;
+            height: 320px;
             display: flex;
             justify-content: center;
             align-items: center;
             margin-top: 20px;
             perspective: 1000px;
-            
+            padding-top: 20px;
+            gap: 20px;
+
             .flip-card {
                 transition: transform 0.6s;
                 transform-style: preserve-3d;
@@ -45,7 +47,7 @@
         .cards-deck {
             width: 100%;
             max-width: 532px;
-            height: 300px;
+            height: fit-content;
             // padding: 10px;
             overflow-x: auto;
             overflow-y: hidden;
@@ -56,7 +58,8 @@
                 justify-content: start;
                 display: flex;
                 align-items: center;
-                padding: 15px 0px 0px 30px;
+                // padding: 15px 0px 0px 30px;
+                margin-top: 50px;
                 
                 h3 {
                     color: #D8F651;
@@ -66,17 +69,42 @@
 
                 .cards-list {
                     display: flex;
-                    gap: 12px;
-                    padding-bottom: 16px;
+                    gap: 10px;
+                    padding: 20px;
+                    overflow-x: auto;
+                    overflow-y: hidden;
+                    width: fit-content;
                     
+                    // Estilização moderna do scrollbar
+                    &::-webkit-scrollbar {
+                        height: 6px;
+                    }
+                    
+                    &::-webkit-scrollbar-track {
+                        background: rgba(102, 0, 210, 0.1);
+                        border-radius: 10px;
+                    }
+                    
+                    &::-webkit-scrollbar-thumb {
+                        background: #6600D2;
+                        border-radius: 10px;
+                    }
+
+                    // Efeito de deck nas cartas
                     .MuiCard-root {
-                        width: 150px !important;
-                        height: 215px !important;
-                        flex-shrink: 0;
-                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                        position: relative;
+                        margin-left: -30px;  // Sobreposição das cartas
+                        transition: transform 0.3s ease, margin-right 0.3s ease;
+                        width: 550px;
+                        
+                        &:first-child {
+                            margin-left: 0;
+                        }
                         
                         &:hover {
-                            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+                            transform: translateY(-10px) scale(1.05);
+                            margin-right: 20px;  // Espaço extra ao hover
+                            z-index: 10;  // Traz a carta para frente
                         }
                     }
                 }
