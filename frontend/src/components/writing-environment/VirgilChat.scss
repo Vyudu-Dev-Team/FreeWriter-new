@@ -20,18 +20,17 @@
         display: flex;
         flex-direction: column;
         height: 100%;
-        justify-content: center;
-        padding: 20px 20px 5px 20px;
+        justify-content: space-between;
         
         .selected-card-area {
-            height: fit-content;
+            height: 320px;
             display: flex;
             justify-content: center;
             align-items: center;
-            // margin-top: 20px;
+            margin-top: 20px;
             perspective: 1000px;
-            // padding-top: 20px;
-            gap: 10px;
+            padding-top: 20px;
+            gap: 20px;
 
             .flip-card {
                 transition: transform 0.6s;
@@ -53,25 +52,6 @@
             overflow-x: auto;
             overflow-y: hidden;
             // margin-top: 20px;
-            justify-content: center;
-            gap: 60px;
-       
-
-            // Estilização moderna do scrollbar
-            &::-webkit-scrollbar {
-                height: 6px;
-            }
-            
-            &::-webkit-scrollbar-track {
-                background: rgba(102, 0, 210, 0.1);
-                border-radius: 10px;
-                
-            }
-            
-            &::-webkit-scrollbar-thumb {
-                background: #6600D2;
-                border-radius: 10px;
-            }
         
             
             .cards-container {
@@ -79,38 +59,43 @@
                 display: flex;
                 align-items: center;
                 // padding: 15px 0px 0px 30px;
-                // margin-top: 50px;
-                height: 280px;
+                margin-top: 50px;
                 
                 h3 {
                     color: #D8F651;
                     margin-bottom: 16px;
                     font-family: 'PixelSplitter', monospace;
                 }
-                
-
-                
 
                 .cards-list {
                     display: flex;
                     gap: 10px;
-                    padding: 23px;
+                    padding: 20px;
                     overflow-x: auto;
                     overflow-y: hidden;
                     width: fit-content;
-                    min-width: min-content;
-
-
-                
+                    
+                    // Estilização moderna do scrollbar
+                    &::-webkit-scrollbar {
+                        height: 6px;
+                    }
+                    
+                    &::-webkit-scrollbar-track {
+                        background: rgba(102, 0, 210, 0.1);
+                        border-radius: 10px;
+                    }
+                    
+                    &::-webkit-scrollbar-thumb {
+                        background: #6600D2;
+                        border-radius: 10px;
+                    }
 
                     // Efeito de deck nas cartas
                     .MuiCard-root {
                         position: relative;
-                        margin-left: -50px;  // Sobreposição das cartas
+                        margin-left: -30px;  // Sobreposição das cartas
                         transition: transform 0.3s ease, margin-right 0.3s ease;
-                        border: 2px solid rgba(255, 255, 255, 0.5);
-                        box-shadow: 0px 2px 3px rgba(255, 255, 255, 0.5);
-                        // width: 550px;
+                        width: 550px;
                         
                         &:first-child {
                             margin-left: 0;
@@ -397,8 +382,6 @@
 
 .chat-messages {
     font-family: 'Quicksand', sans-serif;
-
-    
 
     .message {
         width: 100%;
