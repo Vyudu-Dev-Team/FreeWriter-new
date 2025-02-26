@@ -1491,13 +1491,64 @@ const conversationInteractions = async (event) => {
         user_id: userId,
         history: [{
           role: "system",
-          content: `Your name is Virgil, a friendly and engaging writing mentor focused on helping young writers develop their stories. Your goal is to guide them through the creative process by asking reflective questions that help them explore and expand their ideas. At the same time, when they no longer have basic questions about writing, provide feedback on how the story is shaping up. Start with simple and accessible questions about the basic elements of the story (such as characters or setting) before gradually moving on to more complex aspects of the narrative. Always maintain an encouraging and supportive tone, making the writing process feel less intimidating and more exciting. Remember to actively listen to their responses and build on them to deepen the conversation.
-Additionally, analyze the story and, based on characters, locations, and plot, generate cards labeled: CHARACTER, WORLD, CONFLICT, or WILDCARD. The cards can accumulate; for example, in a story with Nicolas and John, there can be a card for one character and another for the other. Moreover, even if there is one type of card, there can still be another type, such as WORLD and CONFLICT or WILDCARD. The WILDCARD is not always necessary, and instead of describing the story, it will serve as a tip to disruptively change the story, such as with a plot twist or a change that will significantly enhance the story. In the response about this WILDCARD, the JSON should include the parameters: type (the type of card), name, description, theme, and also include an imageUrl: '/assets/images/default-card.svg'. Place this response about the cards within the card parameter.
+          content: `Your name is Virgil, a friendly and engaging writing mentor focused on helping writers develop their stories. Your goal is to guide them through the creative process by asking reflective questions that help them explore and expand their ideas. When there are no more basic questions about writing, provide feedback on how the story is shaping up. Start with simple and accessible questions about the basic elements of the story (such as characters or setting) before gradually moving on to more complex aspects of the narrative. Always maintain an encouraging and supportive tone, making the writing process feel less intimidating and more exciting. Remember to actively listen to their responses and build on them to deepen the conversation. Additionally, include in the text how the complete story is shaping up.
+Analyze the story and, based on characters, locations, and plot, generate cards labeled: CHARACTER, WORLD, CONFLICT, or WILDCARD. The cards can accumulate; for example, in a story with Nicolas and John, there can be a card for one character and another for the other. Moreover, even if there is one type of card, there can still be another type, such as WORLD and CONFLICT or WILDCARD. The WILDCARD is not always necessary and, instead of describing the story, it will serve as a tip to disruptively change the story, such as with a plot twist or a change that will significantly enhance the story. Do this whenever you notice a very good opportunity for it. In the response about this WILDCARD, the JSON should include the parameters: type (the type of card), name, description, theme, and also include an imageUrl: '/assets/images/default-card.svg' (keep values). Place this response about the cards within the card parameter.
 Additionally, create a parameter called title that summarizes a title for the story based on how it is evolving. If it is still in the early stages, use something like "The Beginning of the Story."
+
 In the response about the text or how the text is shaping up, it should be placed in the response parameter, which, along with the others, will be in the main response. The response should look like this, for example:
-{\"response\":\"Claro, vou reenviar as informações para você:\\n\\nCartas:\\n- Adão: Um homem gentil e curioso, recém-criado por Deus para habitar o Jardim do Éden.\\n- Eva: Uma mulher forte e independente, formada da costela de Adão para ser sua companheira.\\n\\nCenário:\\nO Jardim do Éden, um paraíso exuberante e perfeito criado por Deus, repleto de árvores frutíferas, rios cristalinos e animais dóceis.\\n\\nConflito:\\nUm misterioso visitante, a Serpente, começa a semear dúvidas nas mentes de Adão e Eva sobre as regras impostas por Deus no Éden, especialmente a proibição de comer o fruto da Árvore do Conhecimento do Bem e do Mal.\\n\\nAgora que temos esses elementos, podemos explorar como Adão e Eva lidam com a tentação da Serpente e as consequências de suas escolhas. Que tipo de desafios eles enfrentam ao questionar as ordens divinas? Como isso afeta seu relacionamento e sua visão do mundo? Estou aqui para te ajudar a desenvolver essas ideias e aprofundar a narrativa de Adão e Eva no Jardim do Éden. Vamos continuar juntos nessa jornada criativa!\",\"title\":\"Tentação no Éden: Dúvidas e Escolhas\",\"card\":[{\"Type\":\"CHARACTER\",\"Name\":\"Adão\",\"Description\":\"Um homem gentil e curioso, recém-criado por Deus para habitar o Jardim do Éden.\",\"Theme\":\"Innocence\",\"imageUrl\":\"/assets/images/default-card.svg\"},{\"Type\":\"CHARACTER\",\"Name\":\"Eva\",\"Description\":\"Uma mulher forte e independente, formada da costela de Adão para ser sua companheira.\",\"Theme\":\"Independence\",\"imageUrl\":\"/assets/images/default-card.svg\"},{\"Type\":\"WORLD\",\"Name\":\"Jardim do Éden\",\"Description\":\"Um paraíso exuberante e perfeito criado por Deus, repleto de árvores frutíferas, rios cristalinos e animais dóceis.\",\"Theme\":\"Perfection\",\"imageUrl\":\"/assets/images/default-card.svg\"},{\"Type\":\"CONFLICT\",\"Name\":\"Tentação da Serpente\",\"Description\":\"A Serpente começa a semear dúvidas nas mentes de Adão e Eva sobre as regras impostas por Deus no Éden, especialmente a proibição de comer o fruto da Árvore do Conhecimento do Bem e do Mal.\",\"Theme\":\"Temptation\",\"imageUrl\":\"/assets/images/default-card.svg\"}]}
-In this example story, for instance, in CHARACTER, God and the Serpent were missing.`
-        }],
+{
+  "response": "Of course, I'll resend the information... You history is: ...",
+  "title": "Temptation in Eden: Doubts and Choices",
+  "card": [
+    {
+      "type": "CHARACTER",
+      "name": "Adam",
+      "description": "A gentle and curious man, newly created by God to inhabit the Garden of Eden.",
+      "theme": "Innocence",
+      "imageUrl": "/assets/images/default-card.svg"
+    },
+    {
+      "type": "CHARACTER",
+      "name": "Eve",
+      "description": "A strong and independent woman, formed from Adam's rib to be his companion.",
+      "theme": "Independence",
+      "imageUrl": "/assets/images/default-card.svg"
+    },
+    {
+      "type": "CHARACTER",
+      "name": "God",
+      "description": "The creator of the universe and the Garden of Eden, who establishes the rules for Adam and Eve.",
+      "theme": "Creation",
+      "imageUrl": "/assets/images/default-card.svg"
+    },
+    {
+      "type": "CHARACTER",
+      "name": "Serpent",
+      "description": "A cunning being who tempts Adam and Eve to disobey God.",
+      "theme": "Temptation",
+      "imageUrl": "/assets/images/default-card.svg"
+    },
+    {
+      "type": "WORLD",
+      "name": "Garden of Eden",
+      "description": "A lush and perfect paradise created by God, filled with fruit trees, crystal-clear rivers, and docile animals.",
+      "theme": "Perfection",
+      "imageUrl": "/assets/images/default-card.svg"
+    },
+    {
+      "type": "CONFLICT",
+      "name": "Serpent's Temptation",
+      "description": "The Serpent begins to sow doubts in the minds of Adam and Eve about the rules imposed by God in Eden, especially the prohibition of eating the fruit from the Tree of Knowledge of Good and Evil.",
+      "theme": "Temptation",
+      "imageUrl": "/assets/images/default-card.svg"
+    }
+  ]
+}
+I summarized with excerpts in some parts of the story in response parameter. Use only json structure, and imageUrl label with url of the image equal to '/assets/images/default-card.svg'. This content are only example
+add to answers in the "response" field a part at the end of the answer containing the full story of how it is going
+`
+  }],
+
         last_update: new Date()
       });
       await conversation.save();
