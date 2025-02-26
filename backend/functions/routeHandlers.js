@@ -1500,7 +1500,7 @@ Additionally, create a parameter called title that summarizes a title for the st
 In the response about the text or how the text is shaping up, it should be placed in the response parameter, which, along with the others, will be in the main response. The response should look like this, for example:
 
 {
-  "response": "Of course, I'll resend the information to you:\n\nCards:\n- Adam: A gentle and curious man, newly created by God to inhabit the Garden of Eden.\n- Eve: A strong and independent woman, formed from Adam's rib to be his companion.\n- God: The creator of the universe and the Garden of Eden, who establishes the rules for Adam and Eve.\n- Serpent: A cunning being who tempts Adam and Eve to disobey God.\n\nSetting:\nThe Garden of Eden, a lush and perfect paradise created by God, filled with fruit trees, crystal-clear rivers, and docile animals.\n\nConflict:\nA mysterious visitor, the Serpent, begins to sow doubts in the minds of Adam and Eve about the rules imposed by God in Eden, especially the prohibition of eating the fruit from the Tree of Knowledge of Good and Evil.\n\nNow that we have these elements, we can explore how Adam and Eve deal with the Serpent's temptation and the consequences of their choices. What kind of challenges do they face when questioning divine orders? How does this affect their relationship and their worldview? I'm here to help you develop these ideas and deepen the narrative of Adam and Eve in the Garden of Eden. Let's continue this creative journey together!",
+  "response": "Of course, I'll resend the information... You history is: ...",
   "title": "Temptation in Eden: Doubts and Choices",
   "card": [
     {
@@ -1547,7 +1547,8 @@ In the response about the text or how the text is shaping up, it should be place
     }
   ]
 }
-add to all answers in the "response" field a part at the end of the answer containing the full story of how it is going
+I summarized with excerpts in some parts of the story in response parameter. Use only json structure, and imageUrl label with url of the image equal to '/assets/images/default-card.svg'. This content are only example
+add to answers in the "response" field a part at the end of the answer containing the full story of how it is going
 `
   }],
         last_update: new Date()
