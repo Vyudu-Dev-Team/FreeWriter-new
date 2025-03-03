@@ -231,7 +231,7 @@ function RegisterComponent() {
     <ThemeProvider theme={theme}>
       <StyledContainer>
         <Link
-          href="/login"
+          href="#"
           color="inherit"
           sx={{
             position: "absolute",
