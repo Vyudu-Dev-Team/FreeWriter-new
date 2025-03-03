@@ -13,11 +13,118 @@
     .chat-section, .cards-section, .right-section {
         background-color: #000000D9;
         color: #FFFFFF;
-        
+
     }
 
     .cards-section {
-        border-top-right-radius: 25px;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        justify-content: center;
+        padding: 20px 20px 5px 20px;
+
+        .selected-card-area {
+            height: fit-content;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            // margin-top: 20px;
+            perspective: 1000px;
+            // padding-top: 20px;
+            gap: 10px;
+
+            .flip-card {
+                transition: transform 0.6s;
+                transform-style: preserve-3d;
+                width: 270px;
+                height: 380px;
+
+                &.flipped {
+                    transform: rotateY(180deg);
+                }
+            }
+        }
+
+        .cards-deck {
+            width: 100%;
+            max-width: 532px;
+            height: fit-content;
+            // padding: 10px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            // margin-top: 20px;
+            justify-content: center;
+            gap: 60px;
+       
+
+            // Estilização moderna do scrollbar
+            &::-webkit-scrollbar {
+                height: 6px;
+            }
+            
+            &::-webkit-scrollbar-track {
+                background: rgba(102, 0, 210, 0.1);
+                border-radius: 10px;
+                
+            }
+            
+            &::-webkit-scrollbar-thumb {
+                background: #6600D2;
+                border-radius: 10px;
+            }
+
+
+            .cards-container {
+                justify-content: start;
+                display: flex;
+                align-items: center;
+                // padding: 15px 0px 0px 30px;
+                // margin-top: 50px;
+                height: 280px;
+
+                h3 {
+                    color: #D8F651;
+                    margin-bottom: 16px;
+                    font-family: 'PixelSplitter', monospace;
+                }
+                
+
+                
+
+                .cards-list {
+                    display: flex;
+                    gap: 10px;
+                    padding: 23px;
+                    overflow-x: auto;
+                    overflow-y: hidden;
+                    width: fit-content;
+                    min-width: min-content;
+
+
+                
+
+                    // Efeito de deck nas cartas
+                    .MuiCard-root {
+                        position: relative;
+                        margin-left: -50px;  // Sobreposição das cartas
+                        transition: transform 0.3s ease, margin-right 0.3s ease;
+                        border: 2px solid rgba(255, 255, 255, 0.5);
+                        box-shadow: 0px 2px 3px rgba(255, 255, 255, 0.5);
+                        // width: 550px;
+                        
+                        &:first-child {
+                            margin-left: 0;
+                        }
+
+                        &:hover {
+                            transform: translateY(-10px) scale(1.05);
+                            margin-right: 20px;  // Espaço extra ao hover
+                            z-index: 10;  // Traz a carta para frente
+                        }
+                    }
+                }
+            }
+        }
     }
 
     .right-section {
@@ -34,9 +141,10 @@
         background-image: url('/assets/backgrounds/virgilBackgroundBlack.webp');
         background-size: cover;
         background-position: center;
+        padding: unset;
 
         .chat{
-            background-color: #000000D9;
+            background-color: unset;
             color: #FFFFFF;
         }
 
@@ -44,7 +152,7 @@
             margin-bottom: 10px;
             color: white;
         }
-        
+
         .initial-message p {
             color: white;
         }
@@ -63,10 +171,11 @@
         }
         .writingSteps{
             width: 372px;
-            height: 159px;
+            min-height: 159px;
             background-color: black;
             border: 3px solid white;
             border-radius: 13px;
+            padding: 10px;
         }
 
         .writingPoints, .writerLevel{
@@ -98,6 +207,158 @@
             p {
                 margin-top: 21px;
             }	
+        }
+    }
+
+    // Media queries for responsive layout
+    @media (max-width: 1200px) {
+        .cards-section {
+            .selected-card-area {
+                height: 380px;
+
+                .flip-card {
+                    width: 240px;
+                    height: 340px;
+                }
+            }
+
+            .cards-deck {
+                height: 250px;
+
+                .cards-container {
+                    .cards-list {
+                        .MuiCard-root {
+                            width: 140px !important;
+                            height: 200px !important;
+                        }
+                    }
+                }
+            }
+        }
+
+        .chat-section {
+            width: 45%;
+        }
+
+        .right-section {
+            width: 20%;
+            min-width: 300px;
+        }
+    }
+
+    @media (max-width: 992px) {
+        .cards-section {
+            .selected-card-area {
+                height: 340px;
+
+                .flip-card {
+                    width: 210px;
+                    height: 300px;
+                }
+            }
+
+            .cards-deck {
+                height: 220px;
+
+                .cards-container {
+                    .cards-list {
+                        .MuiCard-root {
+                            width: 130px !important;
+                            height: 185px !important;
+                        }
+                    }
+                }
+            }
+        }
+
+        .chat-section {
+            width: 60%;
+        }
+
+        .right-section {
+            display: none; // Hide stats on medium screens
+        }
+    }
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+
+        .cards-section {
+            max-height: 35vh;
+
+            .selected-card-area {
+                height: 300px;
+                margin-top: 10px;
+
+                .flip-card {
+                    width: 180px;
+                    height: 260px;
+                }
+            }
+
+            .cards-deck {
+                height: 180px;
+                margin-top: 10px;
+
+                .cards-container {
+                    padding: 10px 0px 0px 20px;
+
+                    .cards-list {
+                        gap: 10px;
+
+                        .MuiCard-root {
+                            width: 120px !important;
+                            height: 170px !important;
+                        }
+                    }
+                }
+            }
+        }
+
+        .chat-section {
+            width: 100%;
+            height: 60vh;
+            margin: 0;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .cards-section {
+            max-height: 30vh;
+
+            .selected-card-area {
+                height: 240px;
+
+                .flip-card {
+                    width: 150px;
+                    height: 220px;
+                }
+            }
+
+            .cards-deck {
+                height: 150px;
+
+                .cards-container {
+                    padding: 5px 0px 0px 15px;
+
+                    .cards-list {
+                        gap: 8px;
+
+                        .MuiCard-root {
+                            width: 100px !important;
+                            height: 140px !important;
+                        }
+                    }
+                }
+            }
+        }
+
+        .chat-section {
+            .messageInput {
+                form {
+                    height: 120px;
+                }
+            }
         }
     }
 }
@@ -137,6 +398,8 @@
 
 .chat-messages {
     font-family: 'Quicksand', sans-serif;
+
+    
 
     .message {
         width: 100%;
@@ -190,7 +453,7 @@
             &.loading-message {
                 opacity: 0.8;
                 background: rgba(0, 0, 0, 0.7);
-                
+
                 .typing {
                     min-width: 60px;
                     display: flex;
@@ -235,13 +498,37 @@
 }
 
 .messageInput {
-    input {
+    border-top: unset;
+
+    form {
+        position: relative;
+        height: 165px;
+        outline: none;
+    }
+
+    textarea {
+        outline: none;
         font-family: 'Quicksand', sans-serif;
         font-size: 1rem;
-        
+        overflow-x: auto;
+        position: relative;
+        background-color: black;
+        color: white;
+        height: 100%;
+        width: 100%;
+        padding-top: 18px;
+        padding-left: 18px;
+        resize: none;   
+        border: none;
+        border-radius: 20px;
+
         &::placeholder {
+            top: 18px;
+            left: 18px;
             font-family: 'Quicksand', sans-serif;
             font-weight: 400;
+            color: white;
+            position: absolute;
         }
     }
 
@@ -249,5 +536,40 @@
         font-family: 'Quicksand', sans-serif;
         font-weight: 500;
         letter-spacing: 0.5px;
+        position: absolute;
+        bottom: 18px;
+        right: 18px;
+        background-color: unset;
     }
+
+    // Update message input for better mobile view
+    @media (max-width: 768px) {
+        form {
+            height: 120px;
+        }
+
+        textarea {
+            font-size: 14px;
+            padding-top: 12px;
+            padding-left: 12px;
+        }
+
+        button {
+            bottom: 12px;
+            right: 12px;
+        }
+    }
+}
+
+.chat-container {
+   background-color: #222222c9;
+   padding: 20px;
+   max-height: 100vh;
+   height: 100vh;
+
+   // Update chat container for better mobile view
+   @media (max-width: 768px) {
+       max-height: 100%;
+       padding: 10px;
+   }
 }

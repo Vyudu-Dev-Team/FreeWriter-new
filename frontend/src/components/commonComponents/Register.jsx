@@ -107,6 +107,7 @@ function RegisterComponent() {
   });
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { register, state, dispatch } = useAppContext();
   const navigate = useNavigate();
@@ -179,12 +180,12 @@ function RegisterComponent() {
     }
 
     try {
+      setIsLoading(true);
       const deviceToken = await getFCMToken();
       console.log("Retrieved device token:", deviceToken);
 
       dispatch({ type: "SET_ERROR", payload: null });
 
-      // Add a try-catch around the register call with more logging
       try {
         const success = await register({
           username: formData.username.trim(),
@@ -197,7 +198,8 @@ function RegisterComponent() {
         console.log("Registration attempt result:", success);
 
         if (success) {
-          navigate("/dashboard");
+          alert("Registration successful! Kindly login to continue.");
+          navigate("/login");
         }
       } catch (registerError) {
         console.error("Detailed register error:", registerError);
@@ -221,6 +223,8 @@ function RegisterComponent() {
           submit: error.message || "Registration failed. Please try again.",
         }));
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -230,7 +234,7 @@ function RegisterComponent() {
     <ThemeProvider theme={theme}>
       <StyledContainer>
         <Link
-          href="/login"
+          href="#"
           color="inherit"
           sx={{
             position: "absolute",
@@ -530,7 +534,7 @@ function RegisterComponent() {
                 type="submit"
                 variant="contained"
                 fullWidth
-                disabled={state.loading}
+                disabled={isLoading}
                 sx={{
                   flex: 1,
                   color: "black",
@@ -540,7 +544,7 @@ function RegisterComponent() {
                   bgcolor: "rgba(216, 246, 81, 1)",
                 }}
               >
-                {state.loading ? "CREATING..." : "CREATE"}
+                {isLoading ? "CREATING..." : "CREATE"}
               </Button>
             </Box>
           </StyledForm>

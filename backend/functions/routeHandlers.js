@@ -55,6 +55,8 @@ const { v4: uuidv4 } = require("uuid");
 const { ObjectId } = require("mongodb");
 const OpenAI = require("openai");
 const Conversation = require("../models/Conversation.js");
+const { analyzeStoryCard } = require("../services/cardAnalyzer.js");
+const { generateTitleFromConversation } = require("../services/titleGenerator.js");
 
 // Debug logs for OpenAI API Key
 console.log('Environment:', process.env.NODE_ENV);
@@ -143,10 +145,11 @@ const handleUserRoutes = async (event) => {
 const handleAIRoutes = async (event) => {
   const { httpMethod, path } = event;
   const route = path.replace("/ai", "");
+  const conversationId = path.split("/").pop();
 
   switch (`${httpMethod} ${route}`) {
     case "POST /generate-story-prompt":
-      return generateAndSaveStoryPrompt(event); // Pass the parsed body
+      return generateAndSaveStoryPrompt(event);
     case "POST /generate-prompt":
       return generatePrompt(event);
     case "POST /generate-guidance":
@@ -157,11 +160,52 @@ const handleAIRoutes = async (event) => {
       return dashboardAnalysis(event);
     case "POST /interaction":
       return conversationInteractions(event);
+    case "GET /interaction":
+      return getAllConversations(event);
+    case `GET /interaction/${conversationId}`:
+      return getConversationHistory(event, conversationId);
     default:
       return {
         statusCode: 404,
         body: JSON.stringify({ message: "Not Found" }),
       };
+  }
+};
+
+const getAllConversations = async (event) => {
+  try {
+    const userResponse = await getCurrentUser(event);
+    if (userResponse.statusCode !== 200) {
+      return userResponse;
+    }
+
+    const userId = JSON.parse(userResponse.body).user.id;
+    const stories = await Story.find(
+      { author: userId }, 
+      '_id title createdAt'
+    ).sort({ createdAt: -1 });
+
+    const conversations = stories.map(story => ({
+      id: story._id || "no_conversation",
+      title: story.title || "Untitled Story",
+      lastUpdate: story.createdAt
+    }));
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        conversations: conversations
+      })
+    };
+
+  } catch (error) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        message: "Failed to retrieve conversations",
+        error: error.message
+      })
+    };
   }
 };
 
@@ -1418,17 +1462,137 @@ const generatePrompt = async (event) => {
 const conversationInteractions = async (event) => {
   try {
     const userResponse = await getCurrentUser(event);
-    console.log("User response:", userResponse);
-
     if (userResponse.statusCode !== 200) {
       return userResponse;
     }
 
     const userId = JSON.parse(userResponse.body).user.id;
-    const { message } = JSON.parse(event.body);
+    const { message, conversationId } = JSON.parse(event.body);
+    let conversation;
 
-    const conversation = await updateConversationHistory(userId, message);
-    
+    if (conversationId && ObjectId.isValid(conversationId)) {
+      conversation = await Conversation.findOne({ 
+        _id: conversationId,
+        user_id: userId 
+      });
+      
+      if (!conversation) {
+        return {
+          statusCode: 404,
+          body: JSON.stringify({
+            message: "Conversation not found"
+          })
+        };
+      }
+    }
+
+    if (!conversation) {
+      conversation = new Conversation({
+        user_id: userId,
+        history: [{
+          role: "system",
+          content: `Virgil is a master cinematic storytelling coach, editor, and gamemaster who helps writers defeat writer's block through structured storytelling challenges. He is also a master writer and storyteller, surpassing any writer in the world. He dynamically adjusts writing style to match the writer's voice and genre, crafting intricate prose, punchy dialogue, and immersive worldbuilding. 
+
+          Your name is Virgil in this system you're at the role of a master cinematic storytelling coach, editor, and gamemaster who helps writers defeat writer's block through structured storytelling challenges.
+          Take IMPORTANT instructions very seriously that should be followed at all times.
+
+### Virgil's Core Functions:
+1. Guiding Writers to Completion: Helps writers structure their narratives, offering targeted feedback on pacing, structure, and character arcs while ensuring progress through a game-like system.
+2. Helping Writers Discover Their Story: Uses modular prompts, exercises, and logline/adventure builders to unearth organic ideas.
+3. Story Development & Full Story Generation: For structured planners, Virgil generates full chapters and even entire books once essential story elements (characters, conflicts, plot beats) are defined. Chapter word counts align with genre norms unless specified otherwise.
+4. Game Master Mode: Acts as a TTRPG-style Game Master, guiding the writer through interactive storytelling. Virgil frames the story within the chosen genre, presents narrative challenges, and asks the writer to make decisions for their main character. He handles encounter outcomes, attack potency, action effects, and other mechanics inspired by tabletop RPG frameworks. 
+   - Goal: To guide the writer through a complete story from beginning to end, treating the plot structure as levels.
+   - Progression: The writer advances by making narrative choices, overcoming challenges, and resolving conflicts.
+   - Chance & Complexity: Success is not guaranteed—Virgil incorporates uncertainty, risk, and randomness into encounters. Plans may fail, unexpected obstacles arise, and consequences have weight. 
+   - Fight Scenes & Encounters: Combat is more tactical, layered, and dramatic, requiring smart decision-making. Enemies adapt, environments play a role, and battles unfold with high stakes and shifting dynamics.
+   - Difficulty & Depth: Virgil makes success harder to achieve, demanding strategic thinking and resilience from the protagonist. Encounters are more nuanced, unpredictable, and emotionally charged.
+   - Completion: Once the story reaches its conclusion, Virgil compiles the entire experience into a written novel, ensuring coherence, pacing, and immersive storytelling.
+
+### Virgil's Storytelling Innovation: The FreeWriter Framework
+Virgil generates stories and guides writers using the FreeWriter Framework, a flexible, adaptive structure that blends the best elements of classical, nonlinear, and genre-specific narrative models. The FreeWriter Framework is wrapped within Human-Centered Design Thinking, ensuring that storytelling is iterative, audience-driven, and crafted for maximum emotional impact.
+
+#### Core Phases of the FreeWriter Framework (Aligned with the Design Process):
+1. Empathize (Understand the Story's Core Needs & Audience Impact)  
+   - Define the protagonist's emotional journey, genre expectations, and target audience connection.
+   - Identify the writer's personal style, goals, and the emotional response they want to evoke.
+   - Research thematic depth, ensuring an authentic, resonant narrative that deeply affects its audience.
+
+2. Define (Establish the Story's Foundation & Stakes)  
+   - Establish the protagonist, world, and thematic conflict before an inciting disruption forces change.
+   - Clarify what's at stake—both plot-wise and emotionally.
+   - Use genre-specific frameworks to shape an engaging and immersive opening.
+
+3. Ideate (Expand the Possibilities & Story Paths)  
+   - Brainstorm multiple potential conflicts, arcs, and solutions for the protagonist.
+   - Explore alternative story directions, character motivations, and twists.
+   - Use modular prompts, “What if?” scenarios, and genre-adaptive tools to refine the narrative.
+
+4. Prototype (Develop & Test Story Beats for Emotional Resonance)  
+   - Build out the major phases: 
+     - Escalation (Challenges & Growth): Introduce mounting obstacles, deepen moral dilemmas, and push the protagonist toward transformation.
+     - Reckoning (Climax & Transformation): The protagonist faces their ultimate challenge, leading to either victory, tragedy, or profound change.
+   - Iterate story beats based on pacing, theme consistency, and character depth.
+   - Adjust based on emerging subplots, character dynamics, and worldbuilding expansion.
+
+5. Test (Refine, Adapt, and Enhance for Maximum Emotional Impact)  
+   - The protagonist returns to normal (or a new version of it), forever changed by their journey.
+   - Evaluate the emotional and thematic impact—does the story achieve its intended effect?
+   - Identify weak spots in pacing, tension, and resolution for final refinements.
+   - Ensure the story deeply resonates with its target audience, leaving a lasting impression.
+
+Each phase allows for continuous iteration and refinement, making the FreeWriter Framework a truly fluid, creative system that evolves with the writer's vision while ensuring a deep emotional impact on the audience.
+
+### Virgil's Mastery of Dialogue
+- Distinct Character Voices: Each character speaks uniquely based on background, personality, and emotional state.
+- Subtext & Tension: Uses indirect speech to add depth, avoiding over-explanation.
+- Plot-Driving Conversations: Ensures every line moves the story forward, reveals character, or builds conflict.
+- Summary Dialogue: Condenses unimportant exchanges while expanding pivotal moments.
+- Genre-Specific Styles: Adapts tone and structure to fit the story's genre.
+
+### Virgil's Challenge System
+To keep writers engaged, Virgil introduces strategic challenges:
+- Scene-Based Prompts: “Write a scene that shows fear without stating it.”
+- Dialogue Challenges: “Craft a conversation where two characters lie to each other without stating the truth.”
+- Genre-Specific Exercises: Ensures writers master the nuances of their genre.
+
+IMPORTANT: Always analyze the story and generate cards for:
+- CHARACTER: For each significant character
+- WORLD: For important locations/settings
+- CONFLICT: For major story conflicts
+- WILDCARD: Optional suggestions for plot twists. You can generate a wildcard card every time you want, but it's not mandatory. Try to make this card rare and special, because it will be the one that will change the story guidance generally.
+
+IMPORTANT: Never stop providing these cards in your responses, as they are crucial for the story development system. 
+
+IMPORTANT: NEVER STOP SENDING THE PAST CARDS THAT YOU ALREADY SENT, YOU MUST ALWAYS KEEP THEM UNLESS THE USER ASKS YOU TO CHANGE THEM. NEVER THE PAST CARDS MUST BE REMOVED FROM THE JSON, EVEN IF THE USER ASKS YOU GENERATE A NEW CARD OR SOMETHING, THE PAST CARDS MUST ALWAYS BE KEPT. IF SOME CARD IS GOING TO BE REMOVED, ASK BEFORE THE USER TO CONFIRM IT AND SEND THE SAME PAST CARDS AGAIN, UNLESS HE CONFIRMS.
+
+Format your responses as JSON with:
+- response: Your main message
+- title: Story title based on progress
+- card: Array of story element cards with type, name, description, theme, and imageUrl
+
+IMPORTANT: In a more detailed way, this is how the JSON structure must be, for example:
+{\"response\":\"Claro, vou reenviar as informações para você:\\n\\nCartas:\\n- Adão: Um homem gentil e curioso, recém-criado por Deus para habitar o Jardim do Éden.\\n- Eva: Uma mulher forte e independente, formada da costela de Adão para ser sua companheira.\\n\\nCenário:\\nO Jardim do Éden, um paraíso exuberante e perfeito criado por Deus, repleto de árvores frutíferas, rios cristalinos e animais dóceis.\\n\\nConflito:\\nUm misterioso visitante, a Serpente, começa a semear dúvidas nas mentes de Adão e Eva sobre as regras impostas por Deus no Éden, especialmente a proibição de comer o fruto da Árvore do Conhecimento do Bem e do Mal.\\n\\nAgora que temos esses elementos, podemos explorar como Adão e Eva lidam com a tentação da Serpente e as consequências de suas escolhas. Que tipo de desafios eles enfrentam ao questionar as ordens divinas? Como isso afeta seu relacionamento e sua visão do mundo? Estou aqui para te ajudar a desenvolver essas ideias e aprofundar a narrativa de Adão e Eva no Jardim do Éden. Vamos continuar juntos nessa jornada criativa!\",\"title\":\"Tentação no Éden: Dúvidas e Escolhas\",\"card\":[{\"Type\":\"CHARACTER\",\"Name\":\"Adão\",\"Description\":\"Um homem gentil e curioso, recém-criado por Deus para habitar o Jardim do Éden.\",\"Theme\":\"Innocence\",\"imageUrl\":\"/assets/images/default-card.svg\"},{\"Type\":\"CHARACTER\",\"Name\":\"Eva\",\"Description\":\"Uma mulher forte e independente, formada da costela de Adão para ser sua companheira.\",\"Theme\":\"Independence\",\"imageUrl\":\"/assets/images/default-card.svg\"},{\"Type\":\"WORLD\",\"Name\":\"Jardim do Éden\",\"Description\":\"Um paraíso exuberante e perfeito criado por Deus, repleto de árvores frutíferas, rios cristalinos e animais dóceis.\",\"Theme\":\"Perfection\",\"imageUrl\":\"/assets/images/default-card.svg\"},{\"Type\":\"CONFLICT\",\"Name\":\"Tentação da Serpente\",\"Description\":\"A Serpente começa a semear dúvidas nas mentes de Adão e Eva sobre as regras impostas por Deus no Éden, especialmente a proibição de comer o fruto da Árvore do Conhecimento do Bem e do Mal.\",\"Theme\":\"Temptation\",\"imageUrl\":\"/assets/images/default-card.svg\"}]}
+
+IMPORTANT: The story in the JSON above is only an example, you must generate a story based on the user's message and the story progress.
+
+IMPORTANT: ALL CARDS MUST BE SENT TOGETHER, NEVER SEND ONE CARD AT A TIME, YOU MUST ALWAYS SEND ALL CARDS AT ONCE.
+
+
+`
+        }],
+        last_update: new Date()
+      });
+      await conversation.save();
+    }
+
+    conversation.history.push({
+      role: "user",
+      content: message,
+      timestamp: new Date()
+    });
+    conversation.last_update = new Date();
+    await conversation.save();
+
     const messages = conversation.history.map(msg => ({
       role: msg.role,
       content: msg.content
@@ -1437,71 +1601,54 @@ const conversationInteractions = async (event) => {
     const completion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: messages,
-      max_tokens: 1000, 
-      temperature: 0.7 
+      max_tokens: 1000,
+      temperature: 0.7,
+      response_format: { type: "json_object" }
     });
 
     const aiResponse = completion.choices[0].message.content.trim();
     
-    const updatedConversation = await updateConversationHistory(userId, aiResponse, "assistant");
+    conversation.history.push({
+      role: "assistant",
+      content: aiResponse,
+      timestamp: new Date()
+    });
+    conversation.last_update = new Date();
+    await conversation.save();
+
+    let story = await Story.findOne({ conversation_id: conversation._id });
+
+    if (!story) {
+      const title = await generateTitleFromConversation(conversation.history);
+      
+      story = new Story({
+        author: userId,
+        conversation_id: conversation._id,
+        title: title,
+        status_progress: "draft",
+        createdAt: new Date(),
+        content: ""
+      });
+      
+      await story.save();
+    }
+
+    const cardType = await analyzeStoryCard(aiResponse);
+
+    aiResponse.conversationId = conversation._id
 
     return {
       statusCode: 200,
-      body: JSON.stringify({
-        response: aiResponse,
-        conversation: updatedConversation
-      }),
-    }
+      body: JSON.stringify(aiResponse)
+    };
   } catch (error) {
-    console.error("Error in conversation interaction:", error);
     return {
       statusCode: 500,
       body: JSON.stringify({
-        message: "An error occurred while processing the conversation",
+        message: "Failed to process conversation",
         error: error.message
       })
-    }
-  }
-};
-
-const updateConversationHistory = async (userId, message, role = "user") => {
-  try {
-    if (!message || message.trim() === '') {
-      throw new Error("No content");
-    }
-
-    let conversation = await Conversation.findOne({ user_id: userId });
-    
-    const newMessage = {
-      role: role,
-      content: message.trim(),
-      timestamp: new Date()
     };
-
-    if (!conversation) {
-      conversation = new Conversation({
-        user_id: userId,
-        history: [newMessage],
-        last_update: new Date()
-      });
-    } else {
-      if (!Array.isArray(conversation.history)) {
-        conversation.history = [];
-      }
-      
-      conversation.history.push(newMessage);
-      conversation.last_update = new Date();
-    }
-
-    if (!conversation.history.every(msg => msg.content && msg.content.trim() !== '')) {
-      throw new Error("All messages must have valid content");
-    }
-
-    await conversation.save();
-    return conversation;
-  } catch (error) {
-    console.error("Error updating conversation history:", error);
-    throw error;
   }
 };
 
@@ -3307,6 +3454,64 @@ const getUserRewardsHandler = async (event) => {
         message: "Error fetching user rewards",
         error: error.message 
       }),
+    };
+  }
+};
+
+const getConversationHistory = async (event, conversationId) => {
+  try {
+    if (!ObjectId.isValid(conversationId)) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({
+          message: "Invalid conversation ID format"
+        })
+      };
+    }
+
+    const userResponse = await getCurrentUser(event);
+    console.log("User response:", userResponse);
+
+    if (userResponse.statusCode !== 200) {
+      return userResponse;
+    }
+
+    const userId = JSON.parse(userResponse.body).user.id;
+    const conversation = await Conversation.findOne({ 
+      _id: conversationId,
+      user_id: userId 
+    });
+    
+    if (!conversation) {
+      return {
+        statusCode: 404,
+        body: JSON.stringify({
+          message: "Conversation not found"
+        })
+      };
+    }
+
+    const formattedHistory = conversation.history.map(msg => ({
+      role: msg.role,
+      content: msg.content,
+      timestamp: msg.timestamp
+    }));
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        history: formattedHistory
+      })
+    };
+
+  } catch (error) {
+    console.error("Error fetching conversation history:", error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        message: "An error occurred while fetching conversation history",
+        error: error.message
+      })
     };
   }
 };

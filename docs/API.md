@@ -63,7 +63,63 @@ Authorization: Bearer YOUR_JWT_TOKEN
   ```
 - **Response**: Created story object
 
-... (rest of the API documentation)
+### AI Interactions
+
+#### Get All Conversations
+
+- **GET** `/api/ai/interaction`
+- **Description**: Retrieves all conversations for the authenticated user
+- **Response**:
+  ```json
+  {
+    "conversations": [
+      {
+        "id": "string",
+        "title": "string",
+        "lastUpdate": "date"
+      }
+    ]
+  }
+  ```
+
+#### Get Conversation History
+
+- **GET** `/api/ai/interaction/:id`
+- **Description**: Retrieves the history of a specific conversation
+- **Parameters**:
+  - `id`: Conversation ID (string)
+- **Response**:
+  ```json
+  {
+    "history": [
+      {
+        "role": "system" | "user" | "assistant",
+        "content": "string",
+        "timestamp": "date"
+      }
+    ]
+  }
+  ```
+
+#### Send Message to Conversation
+
+- **POST** `/api/ai/interaction`
+- **Description**: Sends a message to start a new conversation or continue an existing one
+- **Body**:
+  ```json
+  {
+    "message": "string",
+    "conversationId": "string" // optional - if not provided, creates new conversation
+  }
+  ```
+- **Response**:
+  ```json
+  {
+    "response": "string",
+    "conversationId": "string",
+    "title": "string"
+  }
+  ```
 
 #### Recovery password
 

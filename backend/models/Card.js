@@ -9,20 +9,23 @@ const cardSchema = new mongoose.Schema({
   type: {
     type: String,
     required: true,
-    enum: ['character', 'plot', 'setting', 'theme']
+    enum: ['CHARACTER', 'WORLD', 'CONFLICT']
   },
-  content: {
+  name: {
     type: String,
     required: true
   },
-  rarity: {
+  description: {
     type: String,
-    enum: ['common', 'uncommon', 'rare', 'legendary'],
-    default: 'common'
+    required: true
   },
-  customization: {
-    type: Object,
-    default: {}
+  theme: {
+    type: String,
+    required: true
+  },
+  imageUrl: {
+    type: String,
+    default: '/assets/images/default-card.svg'
   },
   createdAt: {
     type: Date,

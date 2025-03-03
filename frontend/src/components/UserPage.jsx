@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
     Box,
     Container,
@@ -15,13 +15,14 @@ import {
     Edit,
     Share,
 } from "@mui/icons-material";
+import { useAppContext } from '../contexts/AppContext';
 
 const UserPage = () => {
-    const { userId } = useParams();
+    const { state } = useAppContext();
     const [userProfile, setUserProfile] = useState({
-        name: 'Jane Smith',
-        username: 'janesmith',
-        email: 'jane.smith@example.com',
+        name: state?.user?.user?.username,
+        username: state?.user?.user?.username,
+        email: state?.user?.user?.email,
         bio: 'Aspiring author with a passion for speculative fiction and creative storytelling.',
         genres: ['Science Fiction', 'Fantasy', 'Horror', 'Adventure'],
         wordCount: 175000,
@@ -37,7 +38,7 @@ const UserPage = () => {
             savedPrompts: 18,
             friends: 10,
         },
-        avatar: '/assets/images/avatar-2.svg',
+        avatar: '/assets/profile/defaultProfileIcon.svg',
         recentStories: [
             {
                 title: 'The Lost City',
@@ -54,48 +55,57 @@ const UserPage = () => {
 
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        const fetchProfile = async () => {
-            try {
-                setLoading(true);
-                const response = await fetch(`/api/profile/${userId}`);
-                if (!response.ok) {
-                    throw new Error("Failed to fetch profile");
-                }
-                const data = await response.json();
-                setUserProfile(data);
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
+        setUserProfile({
+            name: state?.user?.user?.username,
+            username: state?.user?.user?.username,
+            email: state?.user?.user?.email,
+        });
+    }, [state?.user?.user?.username, state?.user?.user?.email]);
 
-        fetchProfile();
-    }, [userId]);
+    // useEffect(() => {
+    //     const fetchProfile = async () => {
+    //         try {
+    //             setLoading(true);
+    //             const response = await fetch(`/api/profile/${userId}`);
+    //             if (!response.ok) {
+    //                 throw new Error("Failed to fetch profile");
+    //             }
+    //             const data = await response.json();
+    //             setUserProfile(data);
+    //         } catch (err) {
+    //             setError(err.message);
+    //         } finally {
+    //             setLoading(false);
+    //         }
+    //     };
 
-    const handleUpdateProfile = async (updatedProfile) => {
-        try {
-            setLoading(true);
-            const response = await fetch(`/api/profile/${userId}`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(updatedProfile),
-            });
-            if (!response.ok) {
-                throw new Error("Failed to update profile");
-            }
-            const data = await response.json();
-            setUserProfile(data);
-        } catch (err) {
-            setError(err.message);
-        } finally {
-            setLoading(false);
-        }
-    };
+    //     fetchProfile();
+    // }, [userId]);
+
+    // const handleUpdateProfile = async (updatedProfile) => {
+    //     try {
+    //         setLoading(true);
+    //         const response = await fetch(`/api/profile/${userId}`, {
+    //             method: "POST",
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //             },
+    //             body: JSON.stringify(updatedProfile),
+    //         });
+    //         if (!response.ok) {
+    //             throw new Error("Failed to update profile");
+    //         }
+    //         const data = await response.json();
+    //         setUserProfile(data);
+    //     } catch (err) {
+    //         setError(err.message);
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
 
     if (loading) {
         return (
@@ -128,6 +138,8 @@ const UserPage = () => {
     //         </Box>
     //     );
     // }
+
+    
 
     return (
         <Box
@@ -200,7 +212,7 @@ const UserPage = () => {
                         </Box>
                         <Box
                             component="img"
-                            src="/assets/images/avatar-1.svg"
+                            src='/assets/profile/defaultProfileIcon.svg'
                             alt="User Avatar"
                             sx={{ width: 120, height: 120, borderRadius: "5px", mb: 2 }}
                         />
@@ -276,27 +288,67 @@ const UserPage = () => {
                             display: "flex",
                             flexDirection: "column",
                             position: "relative",
+                            background: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/assets/images/story-bg.svg')`,
+                            backgroundSize: "cover",
+                            backgroundPosition: "center",
+                            height: "550px",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            backdropFilter: "blur(8px)",
+                            '&::before': {
+                                content: '""',
+                                position: "absolute",
+                                top: 0,
+                                left: 0,
+                                right: 0,
+                                bottom: 0,
+                                backdropFilter: "blur(4px)",
+                                borderRadius: "16px",
+                                zIndex: 0,
+                            },
+                            cursor: "pointer",
+                            
                         }}
+                        onClick={() => navigate('/virgil-chat')}
+                        
                     >
                         <Box
-                            component="img"
-                            src="/assets/images/story-bg.svg"
-                            alt="Story Banner"
-                            sx={{ width: "100%", borderRadius: "8px", mb: 2, cursor: "pointer", }}
-                        />
-                        <Typography
                             sx={{
-                                color: "white",
-                                fontFamily: 'PixelSplitter, "Courier New", monospace',
-                                position: "absolute",
-                                textAlign: "left",
-                                bottom: 45,
-                                left: 30,
-                                width: "100%",
+                                position: "relative",
+                                zIndex: 1,
+                                textAlign: "center",
+                                padding: "2rem",
                             }}
                         >
-                            STORY NAME
-                        </Typography>
+                            <Typography
+                                sx={{
+                                    color: "white",
+                                    fontFamily: 'PixelSplitter, "Courier New", monospace',
+                                    textAlign: "center",
+                                    width: "100%",
+                                    '& span': {
+                                        color: "#BFFF00",
+                                        fontWeight: "bold",
+                                    }
+                                }}
+                            >
+                                Go back to your <span>writing-environment</span>
+                            </Typography>
+
+                            <Typography
+                                sx={{
+                                    color: "white",
+                                    fontFamily: 'PixelSplitter, "Courier New", monospace',
+                                    marginTop: "20px",
+                                    '& span': {
+                                        color: "#BFFF00",
+                                        fontWeight: "bold",
+                                    }
+                                }}
+                            >
+                                The user page is <span>under construction</span>, please wait for the <span>next update</span>. Click here to go back to your <span>writing-environment</span>.
+                            </Typography>
+                        </Box>
                     </Paper>
 
                     <Box sx={{ width: "30%", display: "flex", flexDirection: "column", gap: 2 }}>
@@ -325,7 +377,7 @@ const UserPage = () => {
                                     <Grid item xs={6} key={item}>
                                         <Box
                                             component="img"
-                                            src={`/assets/images/story-${item}.svg`}
+                                            src={`/assets/profile/story-${item}.svg`}
                                             alt={`Story Deck ${item}`}
                                             sx={{
                                                 width: "100%",
@@ -367,7 +419,7 @@ const UserPage = () => {
                                     <Grid item xs={4} key={item}>
                                         <Box
                                             component="img"
-                                            src={`/assets/images/badge-1.svg`}
+                                            src={`/assets/icons/badge.svg`}
                                             alt={`Badge ${item}`}
                                             sx={{
                                                 width: "100%",

@@ -18,6 +18,7 @@ const {
 const connectDB = require("../config/database.js");
 const logger = require("../utils/logger.js");
 const { getCurrentUser } = require("./currentUser.js");
+const { errorHandler } = require('../utils/errorHandler.js');
 
 // Debug environment variables loading
 console.log('Loading environment variables from:', path.resolve(__dirname, '../../.env'));
@@ -318,6 +319,21 @@ app.post("/ai/generate-prompt", async (req, res) => {
   }
 });
 
+app.get("/ai/interaction/:id", async (req, res) => {
+  try {
+    const response = await handleAIRoutes({
+      httpMethod: "GET",
+      path: `/interaction/${req.params.id}`,
+      headers: req.headers,
+      queryStringParameters: req.query,
+    });
+    res.status(response.statusCode).json(JSON.parse(response.body));
+  } catch (error) {
+    logger.error("Get conversation history error:", error);
+    res.status(error.statusCode || 500).json({ message: error.message });
+  }
+});
+
 app.post("/ai/interaction", async (req, res) => {
   try {
     const response = await handleAIRoutes({
@@ -383,6 +399,21 @@ app.post('/ai/dashboard-analysis', async (req, res) => {
       message: 'Internal server error processing dashboard analysis',
       success: false 
     });
+  }
+});
+
+app.get("/ai/interaction", async (req, res) => {
+  try {
+    const response = await handleAIRoutes({
+      httpMethod: "GET",
+      path: "/interaction",
+      headers: req.headers,
+      queryStringParameters: req.query,
+    });
+    res.status(response.statusCode).json(JSON.parse(response.body));
+  } catch (error) {
+    logger.error("Get all conversations error:", error);
+    res.status(error.statusCode || 500).json({ message: error.message });
   }
 });
 
