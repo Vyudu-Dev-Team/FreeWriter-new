@@ -177,6 +177,14 @@ const VirgilChat = () => {
         setSelectedCard(card);
     };
 
+    // Adicione esta função para lidar com o Enter
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleSubmit(e);
+        }
+    };
+
     return (
         <Box sx={{ display: 'flex', height: '100vh', flexDirection: { xs: 'column', md: 'row' } }}>
             <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
@@ -186,7 +194,24 @@ const VirgilChat = () => {
                     <div className="cards-section">
                         {/* Área Superior - Carta Selecionada */}
                         <div className="selected-card-area">
-                            {selectedCard && <FlipCard card={selectedCard} />}
+                            {cards.length > 0 ? (
+                                selectedCard && <FlipCard card={selectedCard} />
+                            ) : (
+                                <div className="no-cards-message" style={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    height: '100%',
+                                    fontFamily: 'PixelSplitter',
+                                    
+                                    textAlign: 'center',
+                                    padding: '20px',
+                                    fontSize: '1rem',
+                                    marginTop: '150px'
+                                }}>
+                                    <h1>Write your story with <span style={{ color: '#D8F651' }}>Virgil's Guidance</span> to generate your cards and deck!</h1>
+                                </div>
+                            )}
                         </div>
 
                         {/* Área Inferior - Deck de Cartas */}
@@ -352,6 +377,7 @@ const VirgilChat = () => {
                                             type="text"
                                             value={message}
                                             onChange={(e) => setMessage(e.target.value)}
+                                            onKeyPress={handleKeyPress}
                                             placeholder="Type your message..."
                                             disabled={isLoading}
                                         />
