@@ -382,7 +382,12 @@ function LoginComponent() {
                   color: "rgba(73, 11, 244, 0.9)",
                 },
               }}
-              onClick={() => navigate("/my-story")}
+              onClick={() => {
+                // dispatch({ type: "SET_ERROR", payload: null });
+                alert(
+                  "The unregistered story writing is not available at this moment. Please register to continue!"
+                );
+              }}
             >
               Write a Story Without an Account
             </Typography>

@@ -197,7 +197,8 @@ function RegisterComponent() {
         console.log("Registration attempt result:", success);
 
         if (success) {
-          navigate("/dashboard");
+          alert("Registration successful! Kindly login to continue.");
+          navigate("/login");
         }
       } catch (registerError) {
         console.error("Detailed register error:", registerError);
