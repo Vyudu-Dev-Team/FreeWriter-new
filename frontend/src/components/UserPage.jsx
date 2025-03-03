@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
     Box,
     Container,
@@ -55,7 +55,8 @@ const UserPage = () => {
 
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
-    
+    const navigate = useNavigate();
+
     useEffect(() => {
         setUserProfile({
             name: state?.user?.user?.username,
@@ -137,6 +138,8 @@ const UserPage = () => {
     //         </Box>
     //     );
     // }
+
+    
 
     return (
         <Box
@@ -285,37 +288,67 @@ const UserPage = () => {
                             display: "flex",
                             flexDirection: "column",
                             position: "relative",
-                            background: `url('/assets/images/story-bg.svg') no-repeat center center`,
+                            background: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/assets/images/story-bg.svg')`,
                             backgroundSize: "cover",
-                            height: "500px",
+                            backgroundPosition: "center",
+                            height: "550px",
                             justifyContent: "center",
                             alignItems: "center",
-                            backdropFilter: "blur(10px)",
+                            backdropFilter: "blur(8px)",
+                            '&::before': {
+                                content: '""',
+                                position: "absolute",
+                                top: 0,
+                                left: 0,
+                                right: 0,
+                                bottom: 0,
+                                backdropFilter: "blur(4px)",
+                                borderRadius: "16px",
+                                zIndex: 0,
+                            },
+                            cursor: "pointer",
+                            
                         }}
+                        onClick={() => navigate('/virgil-chat')}
+                        
                     >
-
-                        <Typography
+                        <Box
                             sx={{
-                                color: "white",
-                                fontFamily: 'PixelSplitter, "Courier New", monospace',
-                                // position: "absolute",
+                                position: "relative",
+                                zIndex: 1,
                                 textAlign: "center",
-                                
-                                width: "100%",
+                                padding: "2rem",
                             }}
                         >
-                            Go back to your writing-environment
-                        </Typography>
+                            <Typography
+                                sx={{
+                                    color: "white",
+                                    fontFamily: 'PixelSplitter, "Courier New", monospace',
+                                    textAlign: "center",
+                                    width: "100%",
+                                    '& span': {
+                                        color: "#BFFF00",
+                                        fontWeight: "bold",
+                                    }
+                                }}
+                            >
+                                Go back to your <span>writing-environment</span>
+                            </Typography>
 
-                        <Typography
-                            sx={{
-                                color: "white",
-                                fontFamily: 'PixelSplitter, "Courier New", monospace',
-                                marginTop: "20px",
-                            }}
-                        >
-                            The user page is under construction, please wait for the next update. Click here to go back to your writing-environment.
-                        </Typography>
+                            <Typography
+                                sx={{
+                                    color: "white",
+                                    fontFamily: 'PixelSplitter, "Courier New", monospace',
+                                    marginTop: "20px",
+                                    '& span': {
+                                        color: "#BFFF00",
+                                        fontWeight: "bold",
+                                    }
+                                }}
+                            >
+                                The user page is <span>under construction</span>, please wait for the <span>next update</span>. Click here to go back to your <span>writing-environment</span>.
+                            </Typography>
+                        </Box>
                     </Paper>
 
                     <Box sx={{ width: "30%", display: "flex", flexDirection: "column", gap: 2 }}>
