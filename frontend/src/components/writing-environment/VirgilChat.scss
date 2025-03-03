@@ -171,10 +171,11 @@
         }
         .writingSteps{
             width: 372px;
-            height: 159px;
+            min-height: 159px;
             background-color: black;
             border: 3px solid white;
             border-radius: 13px;
+            padding: 10px;
         }
 
         .writingPoints, .writerLevel{

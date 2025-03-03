@@ -384,6 +384,11 @@ const VirgilChat = () => {
                             </div>
                             <div className="writingSteps">
                                 {/* This section will be used later */}
+                                <p><i>ALFA</i> ENVIRONMENT</p>
+                                <div className="writingStepsContainer">
+                                    <p>1. You are using an <span style={{ color: '#D8F651' }}>Alfa version</span> of the app.</p>
+                                    <p>2. Use the app to generate your story meanwhile we prepare <span style={{ color: '#D8F651' }}>Virgil's new Skills</span> to make your story more <span style={{ color: 'rgb(255, 0, 227)' }}>magical</span>!</p>
+                                </div>
                             </div>
                         </div>
                     </div>
