@@ -285,26 +285,36 @@ const UserPage = () => {
                             display: "flex",
                             flexDirection: "column",
                             position: "relative",
+                            background: `url('/assets/images/story-bg.svg') no-repeat center center`,
+                            backgroundSize: "cover",
+                            height: "500px",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            backdropFilter: "blur(10px)",
                         }}
                     >
-                        <Box
-                            component="img"
-                            src="/assets/images/story-bg.svg"
-                            alt="Story Banner"
-                            sx={{ width: "100%", borderRadius: "8px", mb: 2, cursor: "pointer", }}
-                        />
+
                         <Typography
                             sx={{
                                 color: "white",
                                 fontFamily: 'PixelSplitter, "Courier New", monospace',
-                                position: "absolute",
-                                textAlign: "left",
-                                bottom: 45,
-                                left: 30,
+                                // position: "absolute",
+                                textAlign: "center",
+                                
                                 width: "100%",
                             }}
                         >
-                            STORY NAME
+                            Go back to your writing-environment
+                        </Typography>
+
+                        <Typography
+                            sx={{
+                                color: "white",
+                                fontFamily: 'PixelSplitter, "Courier New", monospace',
+                                marginTop: "20px",
+                            }}
+                        >
+                            The user page is under construction, please wait for the next update. Click here to go back to your writing-environment.
                         </Typography>
                     </Paper>
 

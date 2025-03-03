@@ -16,6 +16,8 @@ const FlipCard = ({ card }) => {
                 return '/assets/cards/cardWorldBackgroundIcon.svg';
             case 'CONFLICT':
                 return '/assets/cards/cardConflictBackgroundIcon.svg';
+            case 'WILDCARD':
+                return '/assets/cards/cardWildcardBackgroundIcon.svg';
             default:
                 return 'https://placehold.co/400x300';
         }
